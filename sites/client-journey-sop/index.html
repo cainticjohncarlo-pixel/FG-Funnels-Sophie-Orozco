@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>New Client Journey System — SOP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--cream:#F7F4EE;--card:#FFFFFF;--ink:#1E1B16;--muted:#6B6459;--terra:#A9502C;--terra-soft:#F3E3DA;--green:#1D4A33;--green-soft:#E4EEE7;--gold:#B98A2F;--line:#E4DDD2;--warn-bg:#FBEFE7;--warn:#8C3D14;--stop-bg:#FBE9E7;--stop:#8C2D14}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--cream);color:var(--ink);font-family:'Inter',system-ui,sans-serif;line-height:1.65;font-size:16px}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 20px 90px}
+  header.hero{background:var(--ink);color:#F7F4EE;padding:48px 20px 40px;text-align:center}
+  .hero .brand{font-family:'Playfair Display',serif;font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#CDB68A;margin-bottom:12px}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,42px);font-weight:600;line-height:1.15;margin-bottom:12px}
+  .hero p{color:#BFB8AC;max-width:680px;margin:0 auto;font-size:15.5px}
+  .hero .ver{margin-top:14px;font-size:12.5px;color:#CDB68A;letter-spacing:.08em;text-transform:uppercase}
+  section{margin-top:44px}
+  h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3.4vw,30px);font-weight:600;margin-bottom:10px}
+  .lead{color:var(--muted);font-size:15.5px;margin-bottom:6px;max-width:820px}
+  .kicker{color:var(--terra);font-weight:700;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
+  code{font-family:ui-monospace,monospace;font-size:12.5px;background:#F4F1EA;border:1px solid var(--line);border-radius:5px;padding:1px 6px}
+  .small{font-size:14px;color:var(--muted)}
+  .lbl{font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:7px}
+  .toc{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin-top:14px}
+  .toc a{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;color:var(--ink);text-decoration:none;font-size:14px;display:flex;gap:10px;align-items:center}
+  .toc a:hover{border-color:var(--terra)}
+  .toc .n{flex:none;width:26px;height:26px;border-radius:50%;background:var(--green);color:#fff;font-weight:700;font-size:12.5px;display:flex;align-items:center;justify-content:center}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;margin-top:20px;scroll-margin-top:16px}
+  .chead{display:flex;gap:14px;align-items:flex-start;padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:18px}
+  .num{flex:none;width:36px;height:36px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px}
+  .card h3{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;line-height:1.25;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .one{color:var(--muted);font-size:15px;margin-top:4px}
+  .badge{font-family:'Inter',sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:3px 10px}
+  .b-live{background:var(--green-soft);color:var(--green)}
+  .b-draft{background:#F1EDE4;color:#6B6459}
+  .b-part{background:var(--terra-soft);color:var(--terra)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start}
+  @media(max-width:860px){.two{grid-template-columns:1fr}}
+  .card p{margin-bottom:8px;font-size:15px}
+  .steps{padding-left:22px;display:flex;flex-direction:column;gap:7px;font-size:15px}
+  .steps li::marker{color:var(--terra);font-weight:700}
+  .diagram{background:#FBF9F5;border:1px solid var(--line);border-radius:14px;padding:12px 8px 6px}
+  .diagram svg{width:100%;height:auto;display:block}
+  .dtitle{font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:2px 8px 8px}
+  .n-t{fill:var(--ink);stroke:none}.n-t-t{fill:#F7F4EE;font-family:'Inter',sans-serif;font-size:14.5px;font-weight:600}
+  .n-a{fill:#fff;stroke:var(--green);stroke-width:1.6}.n-a-t{fill:var(--ink);font-family:'Inter',sans-serif;font-size:14.5px;font-weight:500}
+  .n-w{fill:var(--green-soft);stroke:var(--green);stroke-width:1.2}.n-w-t{fill:var(--green);font-family:'Inter',sans-serif;font-size:14.5px;font-weight:600}
+  .n-d{fill:var(--terra-soft);stroke:var(--terra);stroke-width:1.4}.n-d-t{fill:var(--terra);font-family:'Inter',sans-serif;font-size:14.5px;font-weight:700}
+  .n-e{fill:#EDE9E1;stroke:none}.n-e-t{fill:var(--muted);font-family:'Inter',sans-serif;font-size:12.5px;font-weight:600}
+  .lbl-yes{fill:var(--green-soft);stroke:var(--green);stroke-width:1}.lbl-yes-t{fill:var(--green);font-family:'Inter',sans-serif;font-size:11.5px;font-weight:700}
+  .lbl-no{fill:#F1EDE4;stroke:#B5AEA3;stroke-width:1}.lbl-no-t{fill:var(--muted);font-family:'Inter',sans-serif;font-size:11.5px;font-weight:700}
+  .note-t{fill:var(--muted);font-family:'Inter',sans-serif;font-size:12px;font-style:italic}
+  .edge{fill:none;stroke:#6B6459;stroke-width:1.4}
+  .tblwrap{overflow-x:auto;background:#FBF9F5;border:1px solid var(--line);border-radius:12px;margin:8px 0 14px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{text-align:left;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);padding:10px 14px;border-bottom:1px solid var(--line);line-height:1.35;vertical-align:bottom}
+  td{padding:9px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  .note{border-left:4px solid var(--terra);border-radius:0 12px 12px 0;padding:12px 16px;margin:12px 0 6px;font-size:14px}
+  .note.warn{background:var(--warn-bg);color:var(--warn)}.note.warn b{color:var(--warn)}
+  .note.stop{background:var(--stop-bg);color:var(--stop);border-color:var(--stop)}.note.stop b{color:var(--stop)}
+  .note.ok{background:var(--green-soft);color:var(--green);border-color:var(--green)}.note.ok b{color:var(--green)}
+  .note code{background:#fff}
+  .tagbtn{display:inline-flex;align-items:center;gap:8px;background:#F4F1EA;border:1px solid var(--line);border-radius:8px;padding:5px 11px;font-family:ui-monospace,monospace;font-size:12.5px;color:var(--ink);cursor:pointer;transition:.15s;text-align:left;margin:2px 6px 2px 0}
+  .tagbtn:hover{background:var(--terra-soft);border-color:var(--terra)}
+  .tagbtn.copied{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+  .tagbtn .ic{opacity:.5;font-size:11px}
+  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:14px}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .box .n{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--terra);color:#fff;font-weight:700;font-size:13px;margin-bottom:8px}
+  .box b{display:block;margin-bottom:4px;font-size:15px}
+  .box p{font-size:13.5px;color:var(--muted)}
+  footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#F7F4EE;padding:11px 20px;border-radius:999px;font-size:14px;transition:.25s;pointer-events:none;opacity:0}
+  .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+  .top{position:fixed;right:20px;bottom:24px;background:var(--ink);color:#F7F4EE;border:none;border-radius:999px;padding:11px 18px;font-size:13px;cursor:pointer;opacity:0;transition:.2s;font-family:inherit}
+  .top.show{opacity:.92}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="brand">Sophie Orozco Coaching</div>
+  <h1>New Client Journey System</h1>
+  <p>How a client is looked after from the day they buy to the day they finish, and which workflow does each part.</p>
+  <div class="ver">Standard Operating Procedure · v2.0 · Sept 30, 2026</div>
+</header>
+<div class="wrap">
+
+<section>
+  <div class="kicker">Start here</div>
+  <h2>What this system is</h2>
+  <p class="lead">From the moment a client buys until they finish their program, one system runs their journey: their first email, their start date, their coach handoff, Luann's check-ins, the client's milestone emails, the session count, and the alert before the last session. Everything is timed from each client's own start date, so nothing goes out in batches and nobody gets an email that does not match where they are.</p>
+  <p class="lead">Ten pieces, listed below in the order they happen. Each one names the workflow exactly as it appears in GHL, what starts it, what it does step by step, and a flowchart.</p>
+  <div class="toc"><a href="#wf1"><span class="n">1</span>Onboarding Email</a><a href="#wf2"><span class="n">2</span>WF-Closed Won Client Setup</a><a href="#wf3"><span class="n">3</span>WF- Coach Handoff</a><a href="#wf4"><span class="n">4</span>WF-CS Milestone Tasks</a><a href="#wf5"><span class="n">5</span>WF-CS Accelerator Weekly</a><a href="#wf6"><span class="n">6</span>Client Check-in Alerts</a><a href="#wf7"><span class="n">7</span>Six milestone workflows</a><a href="#wf8"><span class="n">8</span>WF- Session Counter</a><a href="#wf9"><span class="n">9</span>WF- Last Session Alert</a><a href="#wf10"><span class="n">10</span>Hand-off to Continuation</a></div>
+</section>
+
+<section>
+  <div class="kicker">The big picture</div>
+  <h2>One client, start to finish</h2>
+  <div class="two"><div><div class="diagram"><div class="dtitle">The whole journey</div><svg viewBox="0 0 560 804" xmlns="http://www.w3.org/2000/svg" role="img">
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6B6459"/></marker></defs>
+<rect class="n-t" x="115.0" y="16" width="330" height="58" rx="14"/><text class="n-t-t" x="280.0" y="36.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Closer moves the card to Closed</tspan><tspan x="280.0" dy="18">Won and adds the program tag</tspan></text><path class="edge" d="M280.0,74 L280.0,96" marker-end="url(#arr)"/><rect class="n-a" x="115.0" y="96" width="330" height="58" rx="14"/><text class="n-a-t" x="280.0" y="116.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Onboarding email with the Circle</tspan><tspan x="280.0" dy="18">link goes to the client</tspan></text><path class="edge" d="M280.0,154 L280.0,176" marker-end="url(#arr)"/><rect class="n-a" x="115.0" y="176" width="330" height="58" rx="14"/><text class="n-a-t" x="280.0" y="196.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Program start date recorded,</tspan><tspan x="280.0" dy="18">session count set, Luann alerted</tspan></text><path class="edge" d="M280.0,234 L280.0,256" marker-end="url(#arr)"/><rect class="n-a" x="115.0" y="256" width="330" height="58" rx="14"/><text class="n-a-t" x="280.0" y="276.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Luann assigns the coach, coach</tspan><tspan x="280.0" dy="18">receives the client brief</tspan></text><path class="edge" d="M280.0,314 L280.0,336" marker-end="url(#arr)"/><rect class="n-a" x="115.0" y="336" width="330" height="58" rx="14"/><text class="n-a-t" x="280.0" y="356.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Luann&#x27;s check-in emails and tasks:</tspan><tspan x="280.0" dy="18">day 7, 21, 42, 63, 85, 90</tspan></text><path class="edge" d="M280.0,394 L280.0,416" marker-end="url(#arr)"/><rect class="n-a" x="115.0" y="416" width="330" height="58" rx="14"/><text class="n-a-t" x="280.0" y="436.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Client milestone emails at week 3,</tspan><tspan x="280.0" dy="18">4, 5, 6, 9, 12, per program</tspan></text><path class="edge" d="M280.0,474 L280.0,496" marker-end="url(#arr)"/><rect class="n-a" x="115.0" y="496" width="330" height="58" rx="14"/><text class="n-a-t" x="280.0" y="516.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Every coaching session counted on</tspan><tspan x="280.0" dy="18">the record</tspan></text><path class="edge" d="M280.0,554 L280.0,576" marker-end="url(#arr)"/><rect class="n-a" x="115.0" y="576" width="330" height="58" rx="14"/><text class="n-a-t" x="280.0" y="596.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Last session: coach alerted,</tspan><tspan x="280.0" dy="18">client told what comes next</tspan></text><path class="edge" d="M280.0,634 L280.0,656" marker-end="url(#arr)"/><rect class="n-a" x="115.0" y="656" width="330" height="58" rx="14"/><text class="n-a-t" x="280.0" y="676.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">What-comes-next email offers the</tspan><tspan x="280.0" dy="18">continuation programs</tspan></text><path class="edge" d="M280.0,714 L280.0,736" marker-end="url(#arr)"/><rect class="n-e" x="115.0" y="736" width="330" height="40" rx="16"/><text class="n-e-t" x="280.0" y="756.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Continuation Tracker takes over</tspan></text></svg></div></div><div>
+    <div class="lbl">Three ideas that make it work</div>
+    <div class="grid3" style="grid-template-columns:1fr">
+      <div class="box"><span class="n">1</span><b>One date</b><p>The start date is stamped once, at Closed Won. Every wait, alert and email counts from it. Nobody types dates.</p></div>
+      <div class="box"><span class="n">2</span><b>One tag decides the program</b><p>The program tag says what the client bought and whether they are a man or a woman. Onboarding, milestones and the continuation offer all read it.</p></div>
+      <div class="box"><span class="n">3</span><b>People do the human parts only</b><p>Assigning the coach, doing the check-in, having the conversation. The system does the timing, the records and the reminders.</p></div>
+    </div>
+  </div></div>
+</section>
+
+<section>
+  <div class="kicker">The workflows</div>
+  <h2>Ten pieces, in the order they happen</h2>
+  <p class="lead">A green badge means it is running today. A grey badge means it is built in GHL and waiting to be switched on.</p>
+  
+<section class="card" id="wf1">
+  <div class="chead"><div class="num">1</div><div>
+    <div class="lbl">Workflow name in GHL</div>
+    <h3>Onboarding Email- (one per program and gender) <span class="badge b-live">Live</span></h3>
+    <p class="one">Ten small workflows, one per program. The client's first email, with their Circle community invitation.</p></div></div>
+  <div class="two">
+    <div>
+      <div class="lbl">What starts it</div>
+      <p>The closer adds the program tag to the contact, for example <code>client - rmm accelerator men</code>. Each tag starts its own workflow. Nothing else starts it.</p>
+      <div class="lbl" style="margin-top:14px">What it does, step by step</div>
+      <ol class="steps"><li>Closer marks the sale Closed Won and adds the program tag, copied word for word from the <a href='https://client-tagging-sop.vercel.app' target='_blank' rel='noopener'>Client Tagging SOP</a>.</li><li>The matching onboarding workflow starts within a minute.</li><li>It sends the welcome email for that program, from hello@sophieorozco.com, with the Circle invitation link and the first steps.</li><li>The workflow ends. It never sends anything else.</li></ol>
+      <div class="lbl" style="margin-top:14px">What it means for the team</div>
+      <p>The client hears from us minutes after buying. If the tag is wrong or missing, nothing sends and nobody is alerted, which is why the tagging SOP exists.</p>
+      
+    </div>
+    <div><div class="diagram"><div class="dtitle">Onboarding Email</div><svg viewBox="0 0 560 244" xmlns="http://www.w3.org/2000/svg" role="img">
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6B6459"/></marker></defs>
+<rect class="n-t" x="115.0" y="16" width="330" height="58" rx="14"/><text class="n-t-t" x="280.0" y="36.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Program tag added, e.g. client -</tspan><tspan x="280.0" dy="18">rmm accelerator men</tspan></text><path class="edge" d="M280.0,74 L280.0,96" marker-end="url(#arr)"/><rect class="n-a" x="115.0" y="96" width="330" height="58" rx="14"/><text class="n-a-t" x="280.0" y="116.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Send the program&#x27;s onboarding</tspan><tspan x="280.0" dy="18">email with the Circle link</tspan></text><path class="edge" d="M280.0,154 L280.0,176" marker-end="url(#arr)"/><rect class="n-e" x="115.0" y="176" width="330" height="40" rx="16"/><text class="n-e-t" x="280.0" y="196.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Done</tspan></text></svg></div></div>
+  </div>
+</section>
+<section class="card" id="wf2">
+  <div class="chead"><div class="num">2</div><div>
+    <div class="lbl">Workflow name in GHL</div>
+    <h3>WF-Closed Won Client Setup <span class="badge b-draft">Built, not switched on</span></h3>
+    <p class="one">Stamps the start date, sets the session count, and alerts Luann. Everything later is timed from this date.</p></div></div>
+  <div class="two">
+    <div>
+      <div class="lbl">What starts it</div>
+      <p>The opportunity card is moved to the <b>Closed Won</b> stage of the sales pipeline.</p>
+      <div class="lbl" style="margin-top:14px">What it does, step by step</div>
+      <ol class="steps"><li>Sets <code>program_start_date</code> on the contact to today's date.</li><li>Sends Luann an internal email: New client, with the client's name and program.</li><li>Reads the program and sets <code>Sessions Purchased</code> and <code>Sessions Remaining</code>: 6 for RMM, VIP, Couples and RFB, 12 for RFB 1 Year, 4 for RMM Plus. Programs without 1:1 sessions are left blank.</li><li>Later, once the contract templates are loaded: sends the program's agreement for e-signature and files the signed copy on the contact.</li></ol>
+      <div class="lbl" style="margin-top:14px">What it means for the team</div>
+      <p>One date drives every email and alert that follows, so it is set by the system and never typed by hand.</p>
+      
+    </div>
+    <div><div class="diagram"><div class="dtitle">WF-Closed Won Client Setup</div><svg viewBox="0 0 560 446" xmlns="http://www.w3.org/2000/svg" role="img">
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6B6459"/></marker></defs>
+<rect class="n-t" x="115.0" y="16" width="330" height="40" rx="14"/><text class="n-t-t" x="280.0" y="36.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Card moved to Closed Won</tspan></text><path class="edge" d="M280.0,56 L280.0,78" marker-end="url(#arr)"/><rect class="n-a" x="115.0" y="78" width="330" height="40" rx="14"/><text class="n-a-t" x="280.0" y="98.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Set program_start_date = today</tspan></text><path class="edge" d="M280.0,118 L280.0,140" marker-end="url(#arr)"/><rect class="n-a" x="115.0" y="140" width="330" height="40" rx="14"/><text class="n-a-t" x="280.0" y="160.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Email Luann: new client</tspan></text><path class="edge" d="M280.0,180 L280.0,202" marker-end="url(#arr)"/><rect class="n-d" x="120.0" y="202" width="320" height="40" rx="14"/><text class="n-d-t" x="280.0" y="222.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Which program?</tspan></text><path class="edge" d="M220.0,242 L220.0,256 L145.6,256 L145.6,288" marker-end="url(#arr)"/><rect class="lbl-yes" x="100.3" y="255" width="90.6" height="22" rx="11"/><text class="lbl-yes-t" x="145.6" y="267" text-anchor="middle" dominant-baseline="middle">1:1 program</text><path class="edge" d="M340.0,242 L340.0,256 L414.4,256 L414.4,288" marker-end="url(#arr)"/><rect class="lbl-no" x="342.7" y="255" width="143.39999999999998" height="22" rx="11"/><text class="lbl-no-t" x="414.4" y="267" text-anchor="middle" dominant-baseline="middle">Group or self-paced</text><rect class="n-a" x="20.599999999999994" y="288" width="250" height="58" rx="14"/><text class="n-a-t" x="145.6" y="308.0" text-anchor="middle" dominant-baseline="middle"><tspan x="145.6" dy="0">Sessions Purchased and</tspan><tspan x="145.6" dy="18">Remaining = 6, 12 or 4</tspan></text><rect class="n-e" x="289.4" y="288" width="250" height="40" rx="16"/><text class="n-e-t" x="414.4" y="308.0" text-anchor="middle" dominant-baseline="middle"><tspan x="414.4" dy="0">No session tracking</tspan></text><path class="edge" d="M145.6,346 L145.6,360 L280.0,360 L280.0,378" marker-end="url(#arr)"/><path class="edge" d="M414.4,328 L414.4,342 L280.0,342 L280.0,378" marker-end="url(#arr)"/><rect class="n-e" x="115.0" y="378" width="330" height="40" rx="16"/><text class="n-e-t" x="280.0" y="398.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Done</tspan></text></svg></div></div>
+  </div>
+</section>
+<section class="card" id="wf3">
+  <div class="chead"><div class="num">3</div><div>
+    <div class="lbl">Workflow name in GHL</div>
+    <h3>WF- Coach Handoff <span class="badge b-draft">Built, not switched on</span></h3>
+    <p class="one">The moment Luann assigns a coach, the coach gets the full client brief.</p></div></div>
+  <div class="two">
+    <div>
+      <div class="lbl">What starts it</div>
+      <p>The contact's <b>Assigned User</b> is set or changed. That is Luann picking the coach on the contact record.</p>
+      <div class="lbl" style="margin-top:14px">What it does, step by step</div>
+      <ol class="steps"><li>Luann opens the contact and chooses the coach in the Assigned To field.</li><li>The workflow sends that coach an internal email: New client assigned to you, with name, email, phone, program, the intake answers, and where the signed agreement lives on the record.</li><li>If the client is ever reassigned, the new coach receives the same brief.</li></ol>
+      <div class="lbl" style="margin-top:14px">What it means for the team</div>
+      <p>Coaches never chase Luann for details. One click on the record is the whole handoff.</p>
+      
+    </div>
+    <div><div class="diagram"><div class="dtitle">WF- Coach Handoff</div><svg viewBox="0 0 560 208" xmlns="http://www.w3.org/2000/svg" role="img">
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6B6459"/></marker></defs>
+<rect class="n-t" x="115.0" y="16" width="330" height="40" rx="14"/><text class="n-t-t" x="280.0" y="36.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Assigned User set on the contact</tspan></text><path class="edge" d="M280.0,56 L280.0,78" marker-end="url(#arr)"/><rect class="n-a" x="115.0" y="78" width="330" height="40" rx="14"/><text class="n-a-t" x="280.0" y="98.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Email the coach: full client brief</tspan></text><path class="edge" d="M280.0,118 L280.0,140" marker-end="url(#arr)"/><rect class="n-e" x="115.0" y="140" width="330" height="40" rx="16"/><text class="n-e-t" x="280.0" y="160.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Done</tspan></text></svg></div></div>
+  </div>
+</section>
+<section class="card" id="wf4">
+  <div class="chead"><div class="num">4</div><div>
+    <div class="lbl">Workflow name in GHL</div>
+    <h3>WF-CS Milestone Tasks <span class="badge b-live">Live</span></h3>
+    <p class="one">Luann's own touchpoints: six emails and six tasks, timed from the day the client became a client.</p></div></div>
+  <div class="two">
+    <div>
+      <div class="lbl">What starts it</div>
+      <p>The tag <code>existing client</code> is added to the contact, which happens for every client at close.</p>
+      <div class="lbl" style="margin-top:14px">What it does, step by step</div>
+      <ol class="steps"><li>Day 7: sends the welcome email from luann@sophieorozco.com and creates the task <i>4 - Week 1 welcome</i> for Luann.</li><li>Day 21: sends the check-in email and creates <i>4 - Week 3 check-in</i>.</li><li>Day 42: sends the halfway email and creates <i>4 - Week 6 progress check-in</i>.</li><li>Day 63: sends the graduation call email with the booking link and creates <i>3 - Week 9 schedule graduation call</i>.</li><li>Day 85: sends the renewal conversation email and creates <i>1 - Renewal conversation</i>.</li><li>Day 90: creates <i>1 - Day 90 review renewal + remove Circle access</i>. No client email, this one is internal.</li></ol>
+      <div class="lbl" style="margin-top:14px">What it means for the team</div>
+      <p>Luann works one task list, sorted by due date. The number at the front of each task puts renewals above routine check-ins. Every task opens the client's record.</p>
+      
+    </div>
+    <div><div class="diagram"><div class="dtitle">WF-CS Milestone Tasks</div><svg viewBox="0 0 560 908" xmlns="http://www.w3.org/2000/svg" role="img">
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6B6459"/></marker></defs>
+<rect class="n-t" x="115.0" y="16" width="330" height="40" rx="14"/><text class="n-t-t" x="280.0" y="36.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Tag added: existing client</tspan></text><path class="edge" d="M280.0,56 L280.0,78" marker-end="url(#arr)"/><rect class="n-w" x="115.0" y="78" width="330" height="40" rx="14"/><text class="n-w-t" x="280.0" y="98.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Wait to day 7</tspan></text><path class="edge" d="M280.0,118 L280.0,140" marker-end="url(#arr)"/><rect class="n-a" x="115.0" y="140" width="330" height="40" rx="14"/><text class="n-a-t" x="280.0" y="160.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Welcome email + task</tspan></text><path class="edge" d="M280.0,180 L280.0,202" marker-end="url(#arr)"/><rect class="n-w" x="115.0" y="202" width="330" height="40" rx="14"/><text class="n-w-t" x="280.0" y="222.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Wait to day 21</tspan></text><path class="edge" d="M280.0,242 L280.0,264" marker-end="url(#arr)"/><rect class="n-a" x="115.0" y="264" width="330" height="40" rx="14"/><text class="n-a-t" x="280.0" y="284.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Check-in email + task</tspan></text><path class="edge" d="M280.0,304 L280.0,326" marker-end="url(#arr)"/><rect class="n-w" x="115.0" y="326" width="330" height="40" rx="14"/><text class="n-w-t" x="280.0" y="346.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Wait to day 42</tspan></text><path class="edge" d="M280.0,366 L280.0,388" marker-end="url(#arr)"/><rect class="n-a" x="115.0" y="388" width="330" height="40" rx="14"/><text class="n-a-t" x="280.0" y="408.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Halfway email + task</tspan></text><path class="edge" d="M280.0,428 L280.0,450" marker-end="url(#arr)"/><rect class="n-w" x="115.0" y="450" width="330" height="40" rx="14"/><text class="n-w-t" x="280.0" y="470.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Wait to day 63</tspan></text><path class="edge" d="M280.0,490 L280.0,512" marker-end="url(#arr)"/><rect class="n-a" x="115.0" y="512" width="330" height="40" rx="14"/><text class="n-a-t" x="280.0" y="532.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Graduation call email + task</tspan></text><path class="edge" d="M280.0,552 L280.0,574" marker-end="url(#arr)"/><rect class="n-w" x="115.0" y="574" width="330" height="40" rx="14"/><text class="n-w-t" x="280.0" y="594.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Wait to day 85</tspan></text><path class="edge" d="M280.0,614 L280.0,636" marker-end="url(#arr)"/><rect class="n-a" x="115.0" y="636" width="330" height="40" rx="14"/><text class="n-a-t" x="280.0" y="656.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Renewal email + task</tspan></text><path class="edge" d="M280.0,676 L280.0,698" marker-end="url(#arr)"/><rect class="n-w" x="115.0" y="698" width="330" height="40" rx="14"/><text class="n-w-t" x="280.0" y="718.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Wait to day 90</tspan></text><path class="edge" d="M280.0,738 L280.0,760" marker-end="url(#arr)"/><rect class="n-a" x="115.0" y="760" width="330" height="58" rx="14"/><text class="n-a-t" x="280.0" y="780.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Task: review renewal, Circle</tspan><tspan x="280.0" dy="18">access</tspan></text><path class="edge" d="M280.0,818 L280.0,840" marker-end="url(#arr)"/><rect class="n-e" x="115.0" y="840" width="330" height="40" rx="16"/><text class="n-e-t" x="280.0" y="860.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Done</tspan></text></svg></div></div>
+  </div>
+</section>
+<section class="card" id="wf5">
+  <div class="chead"><div class="num">5</div><div>
+    <div class="lbl">Workflow name in GHL</div>
+    <h3>WF-CS Accelerator Weekly <span class="badge b-live">Live</span></h3>
+    <p class="one">A weekly accountability task for Luann, Accelerator clients only, until the client completes.</p></div></div>
+  <div class="two">
+    <div>
+      <div class="lbl">What starts it</div>
+      <p>The tag <code>client - accelerator men</code> or <code>client - accelerator women</code> is added.</p>
+      <div class="lbl" style="margin-top:14px">What it does, step by step</div>
+      <ol class="steps"><li>Waits 7 days.</li><li>Creates the task <i>4 - Verify accountability submission</i> for Luann.</li><li>Checks for the tag <code>client - completed</code>. If it is there, the loop ends.</li><li>If not, goes back to the wait and repeats the following week.</li></ol>
+      <div class="lbl" style="margin-top:14px">What it means for the team</div>
+      <p>One task a week per Accelerator client, without anyone setting reminders. Adding <code>client - completed</code> at the end of the program stops it.</p>
+      
+    </div>
+    <div><div class="diagram"><div class="dtitle">WF-CS Accelerator Weekly</div><svg viewBox="0 0 560 402" xmlns="http://www.w3.org/2000/svg" role="img">
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6B6459"/></marker></defs>
+<rect class="n-t" x="115.0" y="16" width="330" height="58" rx="14"/><text class="n-t-t" x="280.0" y="36.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Tag added: client - accelerator</tspan><tspan x="280.0" dy="18">men or women</tspan></text><path class="edge" d="M280.0,74 L280.0,96" marker-end="url(#arr)"/><rect class="n-w" x="115.0" y="96" width="330" height="40" rx="14"/><text class="n-w-t" x="280.0" y="116.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Wait 7 days</tspan></text><path class="edge" d="M280.0,136 L280.0,158" marker-end="url(#arr)"/><rect class="n-a" x="115.0" y="158" width="330" height="58" rx="14"/><text class="n-a-t" x="280.0" y="178.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Task for Luann: verify</tspan><tspan x="280.0" dy="18">accountability submission</tspan></text><path class="edge" d="M280.0,216 L280.0,238" marker-end="url(#arr)"/><rect class="n-d" x="120.0" y="238" width="320" height="40" rx="14"/><text class="n-d-t" x="280.0" y="258.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Has client - completed?</tspan></text><path class="edge" d="M220.0,278 L220.0,292 L145.6,292 L145.6,324" marker-end="url(#arr)"/><rect class="lbl-yes" x="126.69999999999999" y="291" width="37.8" height="22" rx="11"/><text class="lbl-yes-t" x="145.6" y="303" text-anchor="middle" dominant-baseline="middle">Yes</text><path class="edge" d="M340.0,278 L340.0,292 L414.4,292 L414.4,324" marker-end="url(#arr)"/><rect class="lbl-no" x="398.79999999999995" y="291" width="31.2" height="22" rx="11"/><text class="lbl-no-t" x="414.4" y="303" text-anchor="middle" dominant-baseline="middle">No</text><rect class="n-e" x="20.599999999999994" y="324" width="250" height="40" rx="16"/><text class="n-e-t" x="145.6" y="344.0" text-anchor="middle" dominant-baseline="middle"><tspan x="145.6" dy="0">Loop ends</tspan></text><rect class="n-a" x="289.4" y="324" width="250" height="40" rx="14"/><text class="n-a-t" x="414.4" y="344.0" text-anchor="middle" dominant-baseline="middle"><tspan x="414.4" dy="0">Back to the 7 day wait</tspan></text></svg></div></div>
+  </div>
+</section>
+<section class="card" id="wf6">
+  <div class="chead"><div class="num">6</div><div>
+    <div class="lbl">Workflow name in GHL</div>
+    <h3>Client Check-in Alerts <span class="badge b-live">Live</span></h3>
+    <p class="one">Date-based alerts to the client's CSM at each milestone, so nothing depends on remembering a calendar.</p></div></div>
+  <div class="two">
+    <div>
+      <div class="lbl">What starts it</div>
+      <p>A milestone day arrives, counted from <code>program_start_date</code>: day 21, 42, 63, 69 or 90. The contact must carry the tag <code>cs alerts - date based</code>.</p>
+      <div class="lbl" style="margin-top:14px">What it does, step by step</div>
+      <ol class="steps"><li>On each milestone day the workflow checks which milestone fired.</li><li>Sends the milestone email to the address in the contact's <code>csm_email</code> field, and an in-app alert.</li><li>On day 90 it also removes the <code>cs alerts - date based</code> tag, so the client drops out of the alert cycle.</li></ol>
+      <div class="lbl" style="margin-top:14px">What it means for the team</div>
+      <p>The CSM sees a client's milestone on the day it happens, even for clients enrolled months apart.</p>
+      
+    </div>
+    <div><div class="diagram"><div class="dtitle">Client Check-in Alerts</div><svg viewBox="0 0 560 340" xmlns="http://www.w3.org/2000/svg" role="img">
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6B6459"/></marker></defs>
+<rect class="n-t" x="115.0" y="16" width="330" height="58" rx="14"/><text class="n-t-t" x="280.0" y="36.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Day 21, 42, 63, 69 or 90 after</tspan><tspan x="280.0" dy="18">program start</tspan></text><path class="edge" d="M280.0,74 L280.0,96" marker-end="url(#arr)"/><rect class="n-d" x="120.0" y="96" width="320" height="40" rx="14"/><text class="n-d-t" x="280.0" y="116.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Has cs alerts - date based?</tspan></text><path class="edge" d="M220.0,136 L220.0,150 L145.6,150 L145.6,182" marker-end="url(#arr)"/><rect class="lbl-yes" x="126.69999999999999" y="149" width="37.8" height="22" rx="11"/><text class="lbl-yes-t" x="145.6" y="161" text-anchor="middle" dominant-baseline="middle">Yes</text><path class="edge" d="M340.0,136 L340.0,150 L414.4,150 L414.4,182" marker-end="url(#arr)"/><rect class="lbl-no" x="398.79999999999995" y="149" width="31.2" height="22" rx="11"/><text class="lbl-no-t" x="414.4" y="161" text-anchor="middle" dominant-baseline="middle">No</text><rect class="n-a" x="20.599999999999994" y="182" width="250" height="58" rx="14"/><text class="n-a-t" x="145.6" y="202.0" text-anchor="middle" dominant-baseline="middle"><tspan x="145.6" dy="0">Email csm_email + in-app</tspan><tspan x="145.6" dy="18">alert for that milestone</tspan></text><path class="edge" d="M145.6,240 L145.6,262" marker-end="url(#arr)"/><rect class="n-a" x="20.599999999999994" y="262" width="250" height="40" rx="14"/><text class="n-a-t" x="145.6" y="282.0" text-anchor="middle" dominant-baseline="middle"><tspan x="145.6" dy="0">Day 90: remove the tag</tspan></text><rect class="n-e" x="289.4" y="182" width="250" height="40" rx="16"/><text class="n-e-t" x="414.4" y="202.0" text-anchor="middle" dominant-baseline="middle"><tspan x="414.4" dy="0">Nothing</tspan></text></svg></div></div>
+  </div>
+</section>
+<section class="card" id="wf7">
+  <div class="chead"><div class="num">7</div><div>
+    <div class="lbl">Workflow name in GHL</div>
+    <h3>WF- Week 3, 4, 5, 6, 9 and 12 (six milestone workflows) <span class="badge b-draft">Built, not switched on</span></h3>
+    <p class="one">Emails to the client at the right week of their own program. Six workflows, one email each.</p></div></div>
+  <div class="two">
+    <div>
+      <div class="lbl">What starts it</div>
+      <p>The milestone day arrives, counted from <code>program_start_date</code>. Each workflow also checks the client's program, so only the right people get it.</p>
+      <div class="lbl" style="margin-top:14px">What it does, step by step</div>
+      <ol class="steps"><li>The day arrives for that client. A day that already passed when the client entered never fires, so nobody gets a week 3 email in week 10.</li><li>The workflow checks the program. If the milestone does not apply, nothing sends.</li><li>Check-in and completion emails send once and stop.</li><li>The three <b>Next Steps</b> workflows do more: they split by gender, send the continuation offer with five program buttons, tag the contact <code>outreach sent</code>, put a card at <b>Outreach Sent</b> in the Continuation Programs pipeline, wait 5 days, and if the client has not clicked, replied or enrolled, move the card to <b>Needs Follow-Up</b> and create a task for Luann. That part is described in the Continuation Tracker SOP.</li></ol>
+      <div class="lbl" style="margin-top:14px">What it means for the team</div>
+      <p>Every client gets the same journey, on their own calendar, with the offer arriving exactly when their program is wrapping up.</p>
+      <div class="tblwrap "><table><thead><tr><th>Workflow</th><th>When</th><th>Who gets it</th><th>Email</th></tr></thead><tbody><tr><td>WF- Week 3 Check-In</td><td>Day 21</td><td>Every client</td><td>Check-in</td></tr><tr><td>WF- Week 4 Next Steps</td><td>Day 28</td><td>RMM Plus only</td><td>What-comes-next, the continuation offer</td></tr><tr><td>WF- Week 5 Next Steps</td><td>Day 35</td><td>6-session programs: RMM, VIP, Couples, RFB</td><td>What-comes-next, the continuation offer</td></tr><tr><td>WF- Week 6 Check-In</td><td>Day 42</td><td>All except RMM Plus</td><td>Check-in</td></tr><tr><td>WF- Week 9 Next Steps</td><td>Day 63</td><td>RFB 1 Year only</td><td>What-comes-next, the continuation offer</td></tr><tr><td>WF- Week 12 Completion</td><td>Day 84</td><td>RFB 1 Year only</td><td>Completion</td></tr></tbody></table></div>
+    </div>
+    <div><div class="diagram"><div class="dtitle">The six milestone workflows</div><svg viewBox="0 0 560 316" xmlns="http://www.w3.org/2000/svg" role="img">
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6B6459"/></marker></defs>
+<rect class="n-t" x="115.0" y="16" width="330" height="58" rx="14"/><text class="n-t-t" x="280.0" y="36.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Milestone day arrives for this</tspan><tspan x="280.0" dy="18">client</tspan></text><path class="edge" d="M280.0,74 L280.0,96" marker-end="url(#arr)"/><rect class="n-d" x="120.0" y="96" width="320" height="58" rx="14"/><text class="n-d-t" x="280.0" y="116.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Does the milestone apply to their</tspan><tspan x="280.0" dy="18">program?</tspan></text><path class="edge" d="M220.0,154 L220.0,168 L145.6,168 L145.6,200" marker-end="url(#arr)"/><rect class="lbl-yes" x="126.69999999999999" y="167" width="37.8" height="22" rx="11"/><text class="lbl-yes-t" x="145.6" y="179" text-anchor="middle" dominant-baseline="middle">Yes</text><path class="edge" d="M340.0,154 L340.0,168 L414.4,168 L414.4,200" marker-end="url(#arr)"/><rect class="lbl-no" x="398.79999999999995" y="167" width="31.2" height="22" rx="11"/><text class="lbl-no-t" x="414.4" y="179" text-anchor="middle" dominant-baseline="middle">No</text><rect class="n-a" x="20.599999999999994" y="200" width="250" height="58" rx="14"/><text class="n-a-t" x="145.6" y="220.0" text-anchor="middle" dominant-baseline="middle"><tspan x="145.6" dy="0">Send the email from</tspan><tspan x="145.6" dy="18">Luann</tspan></text><rect class="n-e" x="289.4" y="200" width="250" height="40" rx="16"/><text class="n-e-t" x="414.4" y="220.0" text-anchor="middle" dominant-baseline="middle"><tspan x="414.4" dy="0">Nothing sends</tspan></text><text class="note-t" x="280.0" y="296" text-anchor="middle">Next Steps emails continue into the Continuation Tracker</text></svg></div></div>
+  </div>
+</section>
+<section class="card" id="wf8">
+  <div class="chead"><div class="num">8</div><div>
+    <div class="lbl">Workflow name in GHL</div>
+    <h3>WF- Session Counter <span class="badge b-draft">Built, not switched on</span></h3>
+    <p class="one">Keeps the session count on the client's record without a spreadsheet.</p></div></div>
+  <div class="two">
+    <div>
+      <div class="lbl">What starts it</div>
+      <p>An appointment on a <b>coaching session calendar</b> is marked <b>Showed</b> or <b>No-Show</b>. Sales and reset-call calendars are excluded.</p>
+      <div class="lbl" style="margin-top:14px">What it does, step by step</div>
+      <ol class="steps"><li>Adds 1 to <code>Sessions Used</code>.</li><li>Subtracts 1 from <code>Sessions Remaining</code>.</li><li>Ends. It runs again on every session, so re-entry is on.</li></ol>
+      <div class="lbl" style="margin-top:14px">What it means for the team</div>
+      <p>Any coach can open a record and see exactly where the client stands. No-shows count as used, as Chris decided.</p>
+      
+    </div>
+    <div><div class="diagram"><div class="dtitle">WF- Session Counter</div><svg viewBox="0 0 560 288" xmlns="http://www.w3.org/2000/svg" role="img">
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6B6459"/></marker></defs>
+<rect class="n-t" x="115.0" y="16" width="330" height="58" rx="14"/><text class="n-t-t" x="280.0" y="36.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Coaching session marked Showed or</tspan><tspan x="280.0" dy="18">No-Show</tspan></text><path class="edge" d="M280.0,74 L280.0,96" marker-end="url(#arr)"/><rect class="n-a" x="115.0" y="96" width="330" height="40" rx="14"/><text class="n-a-t" x="280.0" y="116.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Sessions Used + 1</tspan></text><path class="edge" d="M280.0,136 L280.0,158" marker-end="url(#arr)"/><rect class="n-a" x="115.0" y="158" width="330" height="40" rx="14"/><text class="n-a-t" x="280.0" y="178.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Sessions Remaining - 1</tspan></text><path class="edge" d="M280.0,198 L280.0,220" marker-end="url(#arr)"/><rect class="n-e" x="115.0" y="220" width="330" height="40" rx="16"/><text class="n-e-t" x="280.0" y="240.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Done, runs again next session</tspan></text></svg></div></div>
+  </div>
+</section>
+<section class="card" id="wf9">
+  <div class="chead"><div class="num">9</div><div>
+    <div class="lbl">Workflow name in GHL</div>
+    <h3>WF- Last Session Alert <span class="badge b-draft">Built, not switched on</span></h3>
+    <p class="one">Warns the coach that the next session is the last, and tells the client what happens next.</p></div></div>
+  <div class="two">
+    <div>
+      <div class="lbl">What starts it</div>
+      <p>The <code>Sessions Remaining</code> field changes on the contact.</p>
+      <div class="lbl" style="margin-top:14px">What it does, step by step</div>
+      <ol class="steps"><li>Checks whether Sessions Remaining now equals 1.</li><li>If yes, sends the assigned coach an internal notification: this client's final session is next.</li><li>Sends the client a short note from Luann so questions about what comes next land in her inbox.</li><li>If the number is anything other than 1, nothing happens.</li></ol>
+      <div class="lbl" style="margin-top:14px">What it means for the team</div>
+      <p>The continuation conversation starts before the last session, not after the client has gone quiet.</p>
+      
+    </div>
+    <div><div class="diagram"><div class="dtitle">WF- Last Session Alert</div><svg viewBox="0 0 560 340" xmlns="http://www.w3.org/2000/svg" role="img">
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6B6459"/></marker></defs>
+<rect class="n-t" x="115.0" y="16" width="330" height="40" rx="14"/><text class="n-t-t" x="280.0" y="36.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Sessions Remaining changed</tspan></text><path class="edge" d="M280.0,56 L280.0,78" marker-end="url(#arr)"/><rect class="n-d" x="120.0" y="78" width="320" height="40" rx="14"/><text class="n-d-t" x="280.0" y="98.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Is it 1?</tspan></text><path class="edge" d="M220.0,118 L220.0,132 L145.6,132 L145.6,164" marker-end="url(#arr)"/><rect class="lbl-yes" x="126.69999999999999" y="131" width="37.8" height="22" rx="11"/><text class="lbl-yes-t" x="145.6" y="143" text-anchor="middle" dominant-baseline="middle">Yes</text><path class="edge" d="M340.0,118 L340.0,132 L414.4,132 L414.4,164" marker-end="url(#arr)"/><rect class="lbl-no" x="398.79999999999995" y="131" width="31.2" height="22" rx="11"/><text class="lbl-no-t" x="414.4" y="143" text-anchor="middle" dominant-baseline="middle">No</text><rect class="n-a" x="20.599999999999994" y="164" width="250" height="58" rx="14"/><text class="n-a-t" x="145.6" y="184.0" text-anchor="middle" dominant-baseline="middle"><tspan x="145.6" dy="0">Notify the coach: final</tspan><tspan x="145.6" dy="18">session next</tspan></text><path class="edge" d="M145.6,222 L145.6,244" marker-end="url(#arr)"/><rect class="n-a" x="20.599999999999994" y="244" width="250" height="58" rx="14"/><text class="n-a-t" x="145.6" y="264.0" text-anchor="middle" dominant-baseline="middle"><tspan x="145.6" dy="0">Email the client from</tspan><tspan x="145.6" dy="18">Luann</tspan></text><rect class="n-e" x="289.4" y="164" width="250" height="40" rx="16"/><text class="n-e-t" x="414.4" y="184.0" text-anchor="middle" dominant-baseline="middle"><tspan x="414.4" dy="0">Nothing</tspan></text></svg></div></div>
+  </div>
+</section>
+<section class="card" id="wf10">
+  <div class="chead"><div class="num">10</div><div>
+    <div class="lbl">Workflow name in GHL</div>
+    <h3>Hand-off to the Continuation Tracker <span class="badge b-draft">Built, not switched on</span></h3>
+    <p class="one">Where this system ends and the next one begins.</p></div></div>
+  <div class="two">
+    <div>
+      <div class="lbl">What starts it</div>
+      <p>Day 77 after <code>program_start_date</code>, handled by <b>WF-CT1 Graduation Entry</b> in the Continuation Tracker.</p>
+      <div class="lbl" style="margin-top:14px">What it does, step by step</div>
+      <ol class="steps"><li>The client is tagged <code>graduated</code> and a card is created at <b>Graduated</b> in the Continuation Programs pipeline.</li><li>From there the Continuation Tracker records every click, reply, purchase or decline.</li><li>See the <a href='https://continuation-tracker-sop.vercel.app' target='_blank' rel='noopener'>Continuation Tracker SOP</a> for that system.</li></ol>
+      <div class="lbl" style="margin-top:14px">What it means for the team</div>
+      <p>The two systems share one date, one pipeline and one set of tags, so a client never falls between them.</p>
+      
+    </div>
+    <div><div class="diagram"><div class="dtitle">Hand-off</div><svg viewBox="0 0 560 208" xmlns="http://www.w3.org/2000/svg" role="img">
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6B6459"/></marker></defs>
+<rect class="n-t" x="115.0" y="16" width="330" height="40" rx="14"/><text class="n-t-t" x="280.0" y="36.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Day 77 after program start</tspan></text><path class="edge" d="M280.0,56 L280.0,78" marker-end="url(#arr)"/><rect class="n-a" x="115.0" y="78" width="330" height="40" rx="14"/><text class="n-a-t" x="280.0" y="98.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Tag graduated, card at Graduated</tspan></text><path class="edge" d="M280.0,118 L280.0,140" marker-end="url(#arr)"/><rect class="n-e" x="115.0" y="140" width="330" height="40" rx="16"/><text class="n-e-t" x="280.0" y="160.0" text-anchor="middle" dominant-baseline="middle"><tspan x="280.0" dy="0">Continuation Tracker SOP</tspan></text></svg></div></div>
+  </div>
+</section>
+</section>
+
+<section>
+  <div class="kicker">The moving parts</div>
+  <h2>Fields and tags the system relies on</h2>
+  <p class="lead">Renaming or deleting any of these breaks the journey silently. Ask John before touching them.</p>
+  <div class="tblwrap "><table><thead><tr><th>Name</th><th>Type</th><th>What it is for</th></tr></thead><tbody><tr><td><code>program_start_date</code></td><td>Date field</td><td>The day the client closed. Every email, alert and task is timed from it.</td></tr><tr><td><code>Sessions Purchased</code>, <code>Sessions Used</code>, <code>Sessions Remaining</code></td><td>Number fields</td><td>The 1:1 session count. Set at close, moved by the Session Counter.</td></tr><tr><td><code>csm_email</code></td><td>Text field</td><td>The CSM's email. Client Check-in Alerts sends the milestone alert there.</td></tr><tr><td>Program tags, e.g. <code>client - rmm accelerator men</code></td><td>Tags</td><td>Which program and gender. Starts onboarding, decides milestones and the outreach email.</td></tr><tr><td><code>existing client</code></td><td>Tag</td><td>Marks a paying client. Starts Luann's milestone tasks and keeps lead automations away.</td></tr><tr><td><code>cs alerts - date based</code></td><td>Tag</td><td>Turns on the date-based CSM alerts for that client. Removed on day 90.</td></tr><tr><td><code>client - completed</code></td><td>Tag</td><td>Ends the weekly Accelerator accountability loop.</td></tr><tr><td>Assigned User</td><td>Contact field</td><td>The coach. Setting it fires the Coach Handoff.</td></tr></tbody></table></div>
+</section>
+
+<section>
+  <div class="kicker">Your part</div>
+  <h2>The only things a person does</h2>
+  <div class="tblwrap "><table><thead><tr><th>When</th><th>What you do</th></tr></thead><tbody><tr><td>A sale closes</td><td>Move the card to Closed Won, set Offer Discussed, add the program tag and <code>existing client</code>. Copy the tag from the Client Tagging SOP.</td></tr><tr><td>The new-client alert arrives</td><td>Open the contact and assign the coach. That one click sends the coach their brief.</td></tr><tr><td>A task lands on your list</td><td>Open it, do the touchpoint, mark it complete. The task links to the client.</td></tr><tr><td>A client replies to any email</td><td>Reply like normal email. The conversation is yours from there.</td></tr><tr><td>A session happens</td><td>The coach marks it Showed or No-Show on the calendar. That is the only bookkeeping.</td></tr><tr><td>The last-session alert arrives</td><td>Have the continuation conversation when the moment is right.</td></tr><tr><td>An Accelerator client finishes</td><td>Add <code>client - completed</code>. The weekly task stops.</td></tr><tr><td>You want an email's wording changed</td><td>Send John the new text. It is swapped in minutes.</td></tr></tbody></table></div>
+  <div class="note stop"><b>Never add a client into a workflow by hand.</b> The emails are timed from dates. A manual add has no dates and can fire every email at once. <b>Never edit a workflow yourself</b>, one change can affect every enrolled client. <b>Never re-add a tag a client already had</b>, that restarts automations. Message John instead, changes take minutes.</div>
+</section>
+
+<section>
+  <div class="kicker">Status</div>
+  <h2>What is live and what is waiting</h2>
+  <div class="tblwrap "><table><thead><tr><th>Piece</th><th>Status</th><th>What it is waiting on</th></tr></thead><tbody><tr><td>Onboarding Email (10 workflows)</td><td>Live</td><td></td></tr><tr><td>WF-CS Milestone Tasks</td><td>Live since Sept 15</td><td></td></tr><tr><td>WF-CS Accelerator Weekly</td><td>Live since Sept 15</td><td></td></tr><tr><td>Client Check-in Alerts</td><td>Live since Sept 15</td><td></td></tr><tr><td>WF-Closed Won Client Setup</td><td>Built, draft</td><td>Contract templates for the e-signature step, and the one-time start-date set for existing clients</td></tr><tr><td>WF- Coach Handoff</td><td>Built, draft</td><td>Switch on with Closed Won Client Setup</td></tr><tr><td>Six milestone workflows</td><td>Built, draft</td><td>The three Next Steps emails need the continuation buttons finished, see the Continuation Tracker SOP</td></tr><tr><td>WF- Session Counter and WF- Last Session Alert</td><td>Built, draft</td><td>The list of coaching session calendars to include</td></tr></tbody></table></div>
+</section>
+
+<footer><span>New Client Journey System · SOP v2.0 · Sophie Orozco Coaching</span><span>Maintained by John Carlo Caintic</span></footer>
+</div>
+<div class="toast" id="toast">Copied</div>
+<button class="top" id="top">↑ Top</button>
+<script>
+  const toast = document.getElementById('toast');
+  document.querySelectorAll('.tagbtn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const t = btn.dataset.tag;
+      try { await navigator.clipboard.writeText(t); }
+      catch (e) { const ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (err) {} document.body.removeChild(ta); }
+      btn.classList.add('copied'); const ic = btn.querySelector('.ic'); const old = ic.textContent; ic.textContent = 'copied ✓';
+      toast.textContent = 'Copied: ' + t; toast.classList.add('show');
+      setTimeout(() => { btn.classList.remove('copied'); ic.textContent = old; toast.classList.remove('show'); }, 1600);
+    });
+  });
+  const topBtn = document.getElementById('top');
+  topBtn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+  window.addEventListener('scroll', () => topBtn.classList.toggle('show', window.scrollY > 700));
+</script>
+</body>
+</html>

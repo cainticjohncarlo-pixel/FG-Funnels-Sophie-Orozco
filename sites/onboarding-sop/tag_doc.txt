@@ -1,0 +1,1101 @@
+Onboarding workflow sop
+Standard Operating Procedures
+Client Onboarding Automations
+Tag Reference and Workflow Guide
+Owner: Operations
+Audience: Closers, Client Success, Onboarding
+Purpose: Tell the closer exactly which tag to apply so the correct onboarding automation fires.
+1. How This Works
+Every offer has its own onboarding workflow. Each workflow sends one onboarding email and nothing else. The workflow starts when one of its triggers is met.
+The two triggers on every workflow
+Trigger
+	What it means
+	Contact Tag
+	A tag is added to the contact record. This is the trigger the closer controls. Add the tag and the email goes out.
+	 
+The tag naming standard
+Each workflow has its own specific Contact Tag trigger. Use the designated tag assigned to each workflow when tagging a contact. Adding the correct Contact Tag will automatically fire the corresponding workflow for that specific contact. Ensure that the correct tag is applied to trigger the intended automation.
+Closer workflow, two steps
+1
+	Close the sale and confirm exactly which offer the client bought.
+	2
+	Open the contact record and add the tag listed in the Tag to Apply column. Copy and paste it. Do not type it.
+	Rules that keep this clean
+One tag per client. Two tags means two onboarding emails.
+Tags are case sensitive and space sensitive. Always copy and paste from this document.
+If the client bought a couples package, tag the primary contact only. Do not tag both partners or the pair gets doubled up.
+If you tag the wrong offer, do not remove the tag and hope. Tell Client Success immediately so they can stop the sequence.
+If the offer is not on this list, do not improvise a tag. Ask Operations.
+	Trigger audit
+Use the exact workflow name as the Contact Tag. Adding this tag to a contact will trigger the corresponding workflow automation. Make sure the tag name matches the workflow name exactly to ensure the correct automation is activated.
+Workflow
+	Tag the trigger should use
+	Onboarding Email- (men) Couples
+	Couples Coaching (men)
+	Onboarding Email- (women) Couples
+	client - couples coaching
+	Onboarding Email- Premium Men Couples
+	client - via sophie men
+	Onboarding Email- Premium Women Couples
+	client - via sophie women
+	Onboarding Email- RMM Accelerator (men)
+	RMM Accelerator (men)
+	Onboarding Email- RMM Accelerator (women)
+	client - accelerator women
+	Onboarding Email- RMM Course only Men
+	client - course only men
+	Onboarding Email- RMM Course only Women
+	client - course only women
+	Onboarding Email- RMM Group Only (men)
+	client - group only men
+	Onboarding Email- RMM Group Only (women)
+	client - group only women
+	Onboarding Email- RMM Men
+	client - accelerator men
+	Onboarding Email- RMM Women
+	client - accelerator women
+	Onboarding Email- course only- men
+	No tag
+	Onboarding Email- course only- women
+	No tag
+	
+
+Onboarding Email- (women) Couples
+Workflow Name: Onboarding Email- (women) Couples 
+  
+
+
+
+Email: (women) Couples with Krissy
+Subject line: Welcome to Premium Couples Coaching: Let’s Get Started
+
+
+Hi {{contact.first_name}},
+We are so happy you're here.
+Welcome to Couples Coaching.
+You've made a meaningful investment in your relationship, and we're honored to support you both on this journey.
+Over the next 3 months, you'll receive personalized coaching designed to help you strengthen communication, rebuild connection, create greater understanding, and move forward together with clarity and intention.
+Let's get you set up.
+Step 1: Download the Circle App
+For the best experience, download the Circle app so you can easily access your resources and stay updated.
+Download the app here:
+🔗 Android:https://play.google.com/store/apps/details?id=so.circle.circle
+IOS: https://apps.apple.com/us/app/circle-communities/id1509651625
+Step 2: Join the Circle Community
+Your coaching experience begins inside our private Circle community.
+Click the link below to create your account and join:
+🔗 https://sophie-orozco-coaching.circle.so/join?invitation_token=f2fab4dbae90fc2ffa3f74b8d93198f4d34c0c44-5d6fe916-063b-40ab-a1ab-9b1c5b0d22e1
+Once you've joined, take a few minutes to explore the platform and introduce yourself inside the community.
+Please check the recorded video to navigate Circle: https://www.loom.com/share/d534e3f33ad547319a09cf7d9e834a3e
+https://www.loom.com/share/d534e3f33ad547319a09cf7d9e834a3e
+Inside Circle, you'll find:
+💌 Coaching resources and materials
+💌 Session recordings
+💌 Announcements and updates
+💌 Community support
+We encourage both partners to create their accounts and familiarize themselves with the platform.
+Step 3: Schedule Your Coaching Sessions
+Your Premium Couples Coaching package includes:
+💌 6 Private Couples Coaching Sessions
+💌 Session Recordings
+💌 3 Months of Personalized Support
+Please use the scheduling link below to book your sessions:
+📅 https://calendly.com/krissy-sophieorozco/new-meeting
+We recommend scheduling your sessions in advance to ensure consistency throughout the program.
+What to Expect
+These sessions are designed to help you:
+💌 Improve communication
+💌 Strengthen emotional connection
+💌 Navigate conflict more effectively
+💌 Build trust and understanding
+💌 Create a healthier and more fulfilling relationship
+This is a collaborative process.
+The greatest breakthroughs happen when both partners show up with openness, honesty, and a willingness to grow.
+Session Recordings
+All coaching sessions will be recorded and made available to you so you can revisit key insights, exercises, and breakthroughs between sessions.
+Details on how to access recordings will be provided inside Circle.
+Support
+If you have questions regarding your coaching sessions, scheduling, or program experience, please reach out through Circle.
+For technical support, login issues, or account access questions, please contact:
+📧 Hazel (Support Team)
+support@sophieorozco.com
+Office Hours & Team Support
+Our team is available Monday through Friday from 9:00 AM to 5:00 PM EST.
+Please allow 24–72 business hours for responses.
+One Final Reminder
+Lasting change doesn't happen from a single conversation.
+It happens through consistent effort, honest communication, and a commitment to growth.
+Show up fully.
+Stay curious.
+Trust the process.
+And remember that progress is built one conversation at a time.
+We're excited to support both of you throughout this journey.
+With love,
+The RMM Team
+
+
+
+
+Onboarding Email- (men) Couples
+Workflow Name: Onboarding Email- (men) Couples
+  
+
+
+
+Email: (men) Couples with Krissy
+Subject line: Welcome to Couples Coaching with Krissy: Your Next Steps
+
+
+
+
+
+
+Hi {{contact.first_name}},
+We are so happy you're here.
+
+
+Welcome to Couples Coaching.
+
+
+You've made a meaningful investment in your relationship, and we're honored to support you both on this journey.
+
+
+Over the next 3 months, you'll receive personalized coaching designed to help you strengthen communication, rebuild connection, create greater understanding, and move forward together with clarity and intention.
+
+
+Let's get you set up.
+
+
+Step 1: Download the Circle App
+For the best experience, download the Circle app so you can easily access your resources and stay updated.
+
+
+Download the app here:
+
+
+🔗 Android:https://play.google.com/store/apps/details?id=so.circle.circle
+IOS: https://apps.apple.com/us/app/circle-communities/id1509651625
+
+
+Step 2: Join the Circle Community
+Your coaching experience begins inside our private Circle community.
+
+
+Click the link below to create your account and join:
+
+
+🔗 https://sophie-orozco-coaching.circle.so/join?invitation_token=e034ff5634bd3f135c105022097c3db0b164d291-e1b559bc-b745-4031-aa9d-7bfacea7f79a
+
+
+
+
+
+
+Once you've joined, take a few minutes to explore the platform and introduce yourself inside the community.
+
+
+Please check the recorded video to navigate Circle: https://www.loom.com/share/d534e3f33ad547319a09cf7d9e834a3e
+
+
+https://www.loom.com/share/d534e3f33ad547319a09cf7d9e834a3e
+
+
+
+
+
+
+Inside Circle, you'll find:
+
+
+💌 Coaching resources and materials
+
+
+💌 Session recordings
+
+
+💌 Announcements and updates
+
+
+💌 Community support
+
+
+We encourage both partners to create their accounts and familiarize themselves with the platform.
+
+
+Step 3: Schedule Your Coaching Sessions
+Your Premium Couples Coaching package includes:
+
+
+💌 6 Private Couples Coaching Sessions
+
+
+💌 Session Recordings
+
+
+💌 3 Months of Personalized Support
+
+
+Please use the scheduling link below to book your sessions:
+
+
+📅 https://calendly.com/krissy-sophieorozco/new-meeting
+
+
+We recommend scheduling your sessions in advance to ensure consistency throughout the program.
+
+
+What to Expect
+These sessions are designed to help you:
+
+
+💌 Improve communication
+
+
+💌 Strengthen emotional connection
+
+
+💌 Navigate conflict more effectively
+
+
+💌 Build trust and understanding
+
+
+💌 Create a healthier and more fulfilling relationship
+
+
+This is a collaborative process.
+
+
+The greatest breakthroughs happen when both partners show up with openness, honesty, and a willingness to grow.
+
+
+Session Recordings
+All coaching sessions will be recorded and made available to you so you can revisit key insights, exercises, and breakthroughs between sessions.
+
+
+Details on how to access recordings will be provided inside Circle.
+
+
+Support
+If you have questions regarding your coaching sessions, scheduling, or program experience, please reach out through Circle.
+
+
+For technical support, login issues, or account access questions, please contact:
+
+
+📧 Hazel (Support Team)
+
+
+support@sophieorozco.com
+
+
+Office Hours & Team Support
+Our team is available Monday through Friday from 9:00 AM to 5:00 PM EST.
+
+
+Please allow 24–72 business hours for responses.
+
+
+One Final Reminder
+Lasting change doesn't happen from a single conversation.
+
+
+It happens through consistent effort, honest communication, and a commitment to growth.
+
+
+Show up fully.
+
+
+Stay curious.
+
+
+Trust the process.
+
+
+And remember that progress is built one conversation at a time.
+
+
+We're excited to support both of you throughout this journey.
+
+
+With love,
+
+
+The RMM Team
+
+
+
+
+
+
+
+
+
+
+Onboarding Email- Premium Men Couples
+Workflow Name: Onboarding Email- Premium Men Couples
+  
+
+
+
+
+
+Email: (men) Premium Couples with Krissy
+Subject line: Welcome to Premium Couples Coaching: Let’s Get Started
+
+
+Hi {{contact.first_name}},
+We are so happy you're here.
+Welcome to Premium Couples Coaching.
+You've made a powerful investment in yourself, your growth, and the future you're working to create. Over the next 12 weeks, you'll receive everything included in the RMM program, along with additional personalized support to help you create meaningful and lasting transformation.
+Let's get you set up.
+Step 1: Download the Circle App
+Circle is where you'll access:
+💌 All course modules and lessons
+💌 Community discussions and support
+💌 Group coaching call details and replays
+💌 Announcements and program updates
+💌 Direct messaging support
+Download the app here:
+Android:https://play.google.com/store/apps/details?id=so.circle.circle
+IOS: https://apps.apple.com/us/app/circle-communities/id1509651625
+We highly recommend downloading the app so you can easily stay connected throughout the program, you can also access Circle on your laptop computer too using the link below. 
+Step 2: Accept Your Circle Invitation
+Click the link below and create your account:
+🔗Create Your Account Here 
+Once you've joined, take a few minutes to explore the platform and introduce yourself inside the community.
+Please check the recorded video to navigate Circle:
+Watch The Men’s Onboarding Video Here 
+Step 3: Onboarding Call Schedule
+Please make sure to join an onboarding call, the schedule for these can be found in the group call schedule on Circle. 
+During this call, we'll walk you through the program, answer your questions, and make sure you're fully set up for success.
+If you have any questions in the meantime, please contact our support team at: 
+📧 support@sophieorozco.com
+Step 4: Your 12 Private Coaching Calls
+Your Premium Couples Coaching package includes 12 private coaching calls
+These sessions are designed to help you gain clarity, receive personalized guidance, and stay accountable throughout your journey.
+Your call schedule and booking instructions will be sent to you directly from our Client Success Manager either via text or email. 
+Direct Message Support
+One of the additional benefits of Premium Couples Coaching is access to direct message support inside Circle.
+If you need guidance, have questions, or want feedback between calls, you can reach out directly through Circle messaging.
+Please allow 24–72 business hours for responses, Monday through Friday.
+Group Coaching Calls
+These calls are where we go deeper, gain clarity, and build momentum together.
+We strongly encourage you to attend live whenever possible.
+If you can't make a live session, don't worry, replays will be available inside Circle.
+📅 Please check the Events section inside Circle for the most up-to-date group coaching call schedule.
+Your Premium Couples Coaching Guarantee
+As part of Premium Couples Coaching, you also have access to our program guarantee.
+Specific guarantee details can be found inside your onboarding materials and discussed during the onboarding call.
+Office Hours & Team Support
+Our team is available Monday through Friday from 9:00 AM to 5:00 PM EST.
+We encourage you to fully engage in the program while also honoring your own pace and capacity as you move through the material.
+One Final Reminder
+The people who experience the greatest results are the ones who participate.
+Watch the lessons.
+Complete the exercises.
+Attend your coaching calls.
+Engage with the community.
+Ask questions.
+And most importantly, stay consistent.
+Small actions, repeated over time, create extraordinary change.
+We're honored to support you on this journey and excited to have you as part of the RMM Accelerator community.
+With love,
+The RMM Team
+
+
+Onboarding Email- Premium Women Couples
+Workflow Name: Onboarding Email- Premium Women Couples
+  
+
+
+
+Email: (Women) Premium Couples with Krissy
+Subject line: Welcome to Premium Couples Coaching: Let’s Get Started
+
+Hi {{contact.first_name}},
+We are so happy you're here.
+Welcome to Premium Couples Coaching.
+You've made a powerful investment in yourself, your growth, and the future you're working to create. Over the next 12 weeks, you'll receive everything included in the RMM program, along with additional personalized support to help you create meaningful and lasting transformation.
+Let's get you set up.
+Step 1: Download the Circle App
+Circle is where you'll access:
+💌 All course modules and lessons
+💌 Community discussions and support
+💌 Group coaching call details and replays
+💌 Announcements and program updates
+💌 Direct messaging support
+Download the app here:
+Android:https://play.google.com/store/apps/details?id=so.circle.circle
+IOS: https://apps.apple.com/us/app/circle-communities/id1509651625
+We highly recommend downloading the app so you can easily stay connected throughout the program, you can also access Circle on your laptop computer too using the link below. 
+Step 2: Accept Your Circle Invitation
+Click the link below and create your account:
+🔗Create Your Account Here 
+Once you've joined, take a few minutes to explore the platform and introduce yourself inside the community.
+Please check the recorded video to navigate Circle:
+Watch The Women’s Onboarding Video Here 
+Step 3: Onboarding Call Schedule
+Please make sure to join an onboarding call, the schedule for these can be found in the group call schedule on Circle. 
+During this call, we'll walk you through the program, answer your questions, and make sure you're fully set up for success.
+If you have any questions in the meantime, please contact our support team at: 
+📧 support@sophieorozco.com
+Step 4: Your 12 Private Coaching Calls
+Your Premium Couples Coaching package includes 12 private coaching calls
+These sessions are designed to help you gain clarity, receive personalized guidance, and stay accountable throughout your journey.
+Your call schedule and booking instructions will be sent to you directly from our Client Success Manager either via text or email. 
+Direct Message Support
+One of the additional benefits of Premium Couples Coaching is access to direct message support inside Circle.
+If you need guidance, have questions, or want feedback between calls, you can reach out directly through Circle messaging.
+Please allow 24–72 business hours for responses, Monday through Friday.
+Group Coaching Calls
+These calls are where we go deeper, gain clarity, and build momentum together.
+We strongly encourage you to attend live whenever possible.
+If you can't make a live session, don't worry, replays will be available inside Circle.
+📅 Please check the Events section inside Circle for the most up-to-date group coaching call schedule.
+Your Premium Couples Coaching Guarantee
+As part of Premium Couples Coaching, you also have access to our program guarantee.
+Specific guarantee details can be found inside your onboarding materials and discussed during the onboarding call.
+Office Hours & Team Support
+Our team is available Monday through Friday from 9:00 AM to 5:00 PM EST.
+We encourage you to fully engage in the program while also honoring your own pace and capacity as you move through the material.
+One Final Reminder
+The people who experience the greatest results are the ones who participate.
+Watch the lessons.
+Complete the exercises.
+Attend your coaching calls.
+Engage with the community.
+Ask questions.
+And most importantly, stay consistent.
+Small actions, repeated over time, create extraordinary change.
+We're honored to support you on this journey and excited to have you as part of the RMM Accelerator community.
+With love,
+The RMM Team
+
+
+
+
+Onboarding Email- RMM Accelerator (men)
+Workflow Name: Onboarding Email- RMM Accelerator (men)
+  
+
+
+
+
+
+Email: RMM Accelerator Men’s Course
+Subject line: Welcome to RMM Accelerator Men’s Program: Your Next Steps
+
+
+Hi {{contact.first_name}},
+We are so happy you're here.
+Welcome to RMM Accelerator Men’s Course.
+You've made a powerful investment in yourself, your growth, and the future you're working to create. Over the next 12 weeks, you'll receive everything included in the RMM program, along with additional personalized support to help you create meaningful and lasting transformation.
+Let's get you set up.
+Step 1: Download the Circle App
+Circle is where you'll access:
+💌 All course modules and lessons
+💌 Community discussions and support
+💌 Group coaching call details and replays
+💌 Announcements and program updates
+💌 Direct messaging support
+Download the app here:
+Android:https://play.google.com/store/apps/details?id=so.circle.circle
+IOS: https://apps.apple.com/us/app/circle-communities/id1509651625
+We highly recommend downloading the app so you can easily stay connected throughout the program, you can also access Circle on your laptop computer too using the link below. 
+Step 2: Accept Your Circle Invitation
+Click the link below and create your account:
+🔗Create Your Account Here 
+Once you've joined, take a few minutes to explore the platform and introduce yourself inside the community.
+Please check the recorded video to navigate Circle:
+Watch The Men’s Onboarding Video Here 
+Step 3: Onboarding Call Schedule
+Please make sure to join an onboarding call, the schedule for these can be found in the group call schedule on Circle. 
+During this call, we'll walk you through the program, answer your questions, and make sure you're fully set up for success.
+If you have any questions in the meantime, please contact our support team at: 
+📧 support@sophieorozco.com
+Step 4: Your 6 Private Coaching Calls
+Your Accelerator package includes 6 private coaching calls
+These sessions are designed to help you gain clarity, receive personalized guidance, and stay accountable throughout your journey.
+Your call schedule and booking instructions will be sent to you directly from our Client Success Manager either via text or email. 
+Direct Message Support
+One of the additional benefits of Accelerator is access to direct message support inside Circle.
+If you need guidance, have questions, or want feedback between calls, you can reach out directly through Circle messaging.
+Please allow 24–72 business hours for responses, Monday through Friday.
+Group Coaching Calls
+These calls are where we go deeper, gain clarity, and build momentum together.
+We strongly encourage you to attend live whenever possible.
+If you can't make a live session, don't worry, replays will be available inside Circle.
+📅 Please check the Events section inside Circle for the most up-to-date group coaching call schedule.
+Your Accelerator Guarantee
+As part of RMM Accelerator, you also have access to our program guarantee.
+Specific guarantee details can be found inside your onboarding materials and discussed during the onboarding call.
+Office Hours & Team Support
+Our team is available Monday through Friday from 9:00 AM to 5:00 PM EST.
+We encourage you to fully engage in the program while also honoring your own pace and capacity as you move through the material.
+One Final Reminder
+The people who experience the greatest results are the ones who participate.
+Watch the lessons.
+Complete the exercises.
+Attend your coaching calls.
+Engage with the community.
+Ask questions.
+And most importantly, stay consistent.
+Small actions, repeated over time, create extraordinary change.
+We're honored to support you on this journey and excited to have you as part of the RMM Accelerator community.
+With love,
+The RMM Team
+
+
+
+
+Onboarding Email- RMM Accelerator (women)
+Workflow Name: Onboarding Email- RMM Accelerator (women)
+  
+
+
+
+Email: RMM Accelerator Women's Program.
+Subject line: Welcome to RMM Accelerator Women’s Program: Your Next Steps
+
+
+Hi {{contact.first_name}},
+We are so happy you're here.
+Welcome to RMM Accelerator Women's Program.
+You've made a powerful investment in yourself, your growth, and the future you're working to create. Over the next 12 weeks, you'll receive everything included in the RMM program, along with additional personalized support to help you create meaningful and lasting transformation.
+Let's get you set up.
+Step 1: Download the Circle App
+Circle is where you'll access:
+💌 All course modules and lessons
+💌 Community discussions and support
+💌 Group coaching call details and replays
+💌 Announcements and program updates
+💌 Direct messaging support
+Download the app here:
+Android:https://play.google.com/store/apps/details?id=so.circle.circle
+IOS: https://apps.apple.com/us/app/circle-communities/id1509651625
+We highly recommend downloading the app so you can easily stay connected throughout the program, you can also access Circle on your laptop computer too using the link below. 
+Step 2: Accept Your Circle Invitation
+Click the link below and create your account:
+🔗Create Your Account Here 
+Once you've joined, take a few minutes to explore the platform and introduce yourself inside the community.
+Please check the recorded video to navigate Circle:
+ Watch The Women's Onboarding Video Here 
+Step 3: Onboarding Call Schedule
+Please make sure to join an onboarding call, the schedule for these can be found in the group call schedule on Circle. 
+During this call, we'll walk you through the program, answer your questions, and make sure you're fully set up for success.
+If you have any questions in the meantime, please contact our support team at: 
+📧 support@sophieorozco.com
+Step 4: Your 6 Private Coaching Calls
+Your Accelerator package includes 6 private coaching calls
+These sessions are designed to help you gain clarity, receive personalized guidance, and stay accountable throughout your journey.
+Your call schedule and booking instructions will be sent to you directly from our Client Success Manager either via text or email. 
+Direct Message Support
+One of the additional benefits of Accelerator is access to direct message support inside Circle.
+If you need guidance, have questions, or want feedback between calls, you can reach out directly through Circle messaging to your coach once you receive your assigned coach’s name. 
+Please allow 24–72 business hours for responses, Monday through Friday.
+Group Coaching Calls
+These calls are where we go deeper, gain clarity, and build momentum together.
+We strongly encourage you to attend live whenever possible.
+If you can't make a live session, don't worry, replays will be available inside Circle.
+📅 Please check the Events section inside Circle for the most up-to-date group coaching call schedule.
+Your Accelerator Guarantee
+As part of RMM Accelerator, you also have access to our program guarantee.
+Specific guarantee details can be found inside your onboarding materials and discussed during the onboarding call.
+Office Hours & Team Support
+Our team is available Monday through Friday from 9:00 AM to 5:00 PM EST.
+We encourage you to fully engage in the program while also honoring your own pace and capacity as you move through the material.
+One Final Reminder
+The people who experience the greatest results are the ones who participate.
+Watch the lessons.
+Complete the exercises.
+Attend your coaching calls.
+Engage with the community.
+Ask questions.
+And most importantly, stay consistent.
+Small actions, repeated over time, create extraordinary change.
+We're honored to support you on this journey and excited to have you as part of the RMM Accelerator community.
+With love,
+The RMM Team
+
+
+
+
+Onboarding Email- RMM Course only Men
+Workflow Name: Onboarding Email- RMM Course only Men
+  
+
+
+
+Email: Onboarding email
+Subject line: Welcome! Let's get you started.
+
+
+Hi {{contact.first_name}},
+We are so happy you're here.
+By joining RMM, you've made a powerful investment in yourself, your growth, and the future you're working to create.
+Over the next 12 weeks, you'll have access to the tools, resources, and community designed to support meaningful and lasting change.
+Let's get you set up.
+Step 1: Download the Circle App
+Circle is where you'll access:
+💌 All course modules and lessons
+💌 Community discussions and support
+💌 Group coaching call details and replays
+💌 Announcements and program updates
+Download the app here: https://community.circle.so/home
+We highly recommend downloading the app so you can easily stay connected throughout the program.
+Step 2: Accept Your Circle Invitation
+Click the link and create an account:
+🔗https://sophie-orozco-coaching.circle.so/join?invitation_token=e034ff5634bd3f135c105022097c3db0b164d291-e1b559bc-b745-4031-aa9d-7bfacea7f79a
+Please check the recorded video to navigate Circle: https://www.loom.com/share/e78b21eae571458182505bbe66b6632a
+
+
+
+Step 3: Community Guidelines & Support
+If you'd like to ask a question, please tag Luann directly inside the community.
+This allows everyone to benefit from the conversation and keeps valuable insights available to the entire group.
+Please allow 24–72 business hours for responses, Monday through Friday.
+For technical support, login issues, or account access questions, please contact:
+📧 Hazel (Support Team) support@sophieorozco.com
+For program-related questions, our team will be happy to guide you in the appropriate direction.
+Group Coaching Calls
+These calls are where we go deeper, gain clarity, and build momentum together.
+We strongly encourage you to attend live whenever possible.
+If you can't make a live session, don't worry—replays will be available inside Circle.
+📅 Please check the Events section inside Circle for the most up-to-date group coaching call schedule.
+Office Hours & Team Support
+Our team is available Monday through Friday from 9:00 AM to 5:00 PM EST.
+We encourage you to fully engage in the program while also honoring your own pace and capacity as you move through the material.
+One Final Reminder
+The people who experience the greatest results are the ones who participate.
+Watch the lessons.
+Complete the exercises.
+Engage with the community.
+Ask questions.
+And most importantly, stay consistent.
+Small actions, repeated over time, create extraordinary change.
+We're honored to support you on this journey and excited to have you as part of the RMM community.
+With love,
+The RMM Team
+
+
+
+
+
+
+
+Onboarding Email- RMM Course only Women
+Workflow Name: Onboarding Email- RMM Course only Women
+  
+
+
+
+Email: Onboarding email
+Subject line: Welcome! Let's get you started.
+
+
+Hi {{contact.first_name}},
+We are so happy you're here.
+By joining RMM, you've made a powerful investment in yourself, your growth, and the future you're working to create.
+Over the next 12 weeks, you'll have access to the tools, resources, and community designed to support meaningful and lasting change.
+Let's get you set up.
+Step 1: Download the Circle App
+Circle is where you'll access:
+💌 All course modules and lessons
+💌 Community discussions and support
+💌 Group coaching call details and replays
+💌 Announcements and program updates
+Download the app here: https://community.circle.so/home
+We highly recommend downloading the app so you can easily stay connected throughout the program.
+Step 2: Accept Your Circle Invitation
+Click the link and create an account:
+🔗https://sophie-orozco-coaching.circle.so/join?invitation_token=e034ff5634bd3f135c105022097c3db0b164d291-e1b559bc-b745-4031-aa9d-7bfacea7f79a
+Please check the recorded video to navigate Circle: https://www.loom.com/share/e78b21eae571458182505bbe66b6632a
+
+
+
+Step 3: Community Guidelines & Support
+If you'd like to ask a question, please tag Luann directly inside the community.
+This allows everyone to benefit from the conversation and keeps valuable insights available to the entire group.
+Please allow 24–72 business hours for responses, Monday through Friday.
+For technical support, login issues, or account access questions, please contact:
+📧 Hazel (Support Team) support@sophieorozco.com
+For program-related questions, our team will be happy to guide you in the appropriate direction.
+Group Coaching Calls
+These calls are where we go deeper, gain clarity, and build momentum together.
+We strongly encourage you to attend live whenever possible.
+If you can't make a live session, don't worry—replays will be available inside Circle.
+📅 Please check the Events section inside Circle for the most up-to-date group coaching call schedule.
+Office Hours & Team Support
+Our team is available Monday through Friday from 9:00 AM to 5:00 PM EST.
+We encourage you to fully engage in the program while also honoring your own pace and capacity as you move through the material.
+One Final Reminder
+The people who experience the greatest results are the ones who participate.
+Watch the lessons.
+Complete the exercises.
+Engage with the community.
+Ask questions.
+And most importantly, stay consistent.
+Small actions, repeated over time, create extraordinary change.
+We're honored to support you on this journey and excited to have you as part of the RMM community.
+With love,
+The RMM Team
+
+
+
+
+
+
+
+Onboarding Email- RMM Group Only (men)
+Workflow Name: Onboarding Email- RMM Group Only (men)
+  
+
+
+
+Email: Onboarding email
+Subject line: You're In! Here's How to Access Your Course
+
+
+Hi {{contact.first_name}},
+We are so happy you're here.
+By joining RMM, you've made a powerful investment in yourself, your growth, and the future you're working to create.
+Over the next 12 weeks, you'll have access to the tools, resources, and community designed to support meaningful and lasting change.
+Let's get you set up.
+Step 1: Download the Circle App
+Circle is where you'll access:
+💌 All course modules and lessons
+💌 Community discussions and support
+💌 Group coaching call details and replays
+💌 Announcements and program updates
+Download the app here: https://community.circle.so/home
+We highly recommend downloading the app so you can easily stay connected throughout the program.
+Step 2: Accept Your Circle Invitation
+Click the link and create an account:
+🔗https://sophie-orozco-coaching.circle.so/join?invitation_token=e034ff5634bd3f135c105022097c3db0b164d291-e1b559bc-b745-4031-aa9d-7bfacea7f79a
+Please check the recorded video to navigate Circle: https://www.loom.com/share/e78b21eae571458182505bbe66b6632a
+
+
+
+Step 3: Community Guidelines & Support
+If you'd like to ask a question, please tag Luann directly inside the community.
+This allows everyone to benefit from the conversation and keeps valuable insights available to the entire group.
+Please allow 24–72 business hours for responses, Monday through Friday.
+For technical support, login issues, or account access questions, please contact:
+📧 Hazel (Support Team) support@sophieorozco.com
+For program-related questions, our team will be happy to guide you in the appropriate direction.
+Group Coaching Calls
+These calls are where we go deeper, gain clarity, and build momentum together.
+We strongly encourage you to attend live whenever possible.
+If you can't make a live session, don't worry—replays will be available inside Circle.
+📅 Please check the Events section inside Circle for the most up-to-date group coaching call schedule.
+Office Hours & Team Support
+Our team is available Monday through Friday from 9:00 AM to 5:00 PM EST.
+We encourage you to fully engage in the program while also honoring your own pace and capacity as you move through the material.
+One Final Reminder
+The people who experience the greatest results are the ones who participate.
+Watch the lessons.
+Complete the exercises.
+Engage with the community.
+Ask questions.
+And most importantly, stay consistent.
+Small actions, repeated over time, create extraordinary change.
+We're honored to support you on this journey and excited to have you as part of the RMM community.
+With love,
+The RMM Team
+
+
+
+
+Onboarding Email- RMM Group Only (women)
+Workflow Name: Onboarding Email- RMM Group Only (women)
+  
+
+
+
+Email: Onboarding email
+Subject line: You're In! Here's How to Access Your Course
+
+
+Hi {{contact.first_name}},
+We are so happy you're here.
+By joining RMM, you've made a powerful investment in yourself, your growth, and the future you're working to create.
+Over the next 12 weeks, you'll have access to the tools, resources, and community designed to support meaningful and lasting change.
+Let's get you set up.
+Step 1: Download the Circle App
+Circle is where you'll access:
+💌 All course modules and lessons
+💌 Community discussions and support
+💌 Group coaching call details and replays
+💌 Announcements and program updates
+Download the app here: https://community.circle.so/home
+We highly recommend downloading the app so you can easily stay connected throughout the program.
+Step 2: Accept Your Circle Invitation
+Click the link and create an account:
+🔗https://sophie-orozco-coaching.circle.so/join?invitation_token=e034ff5634bd3f135c105022097c3db0b164d291-e1b559bc-b745-4031-aa9d-7bfacea7f79a
+Please check the recorded video to navigate Circle: https://www.loom.com/share/e78b21eae571458182505bbe66b6632a
+
+
+
+Step 3: Community Guidelines & Support
+If you'd like to ask a question, please tag Luann directly inside the community.
+This allows everyone to benefit from the conversation and keeps valuable insights available to the entire group.
+Please allow 24–72 business hours for responses, Monday through Friday.
+For technical support, login issues, or account access questions, please contact:
+📧 Hazel (Support Team) support@sophieorozco.com
+For program-related questions, our team will be happy to guide you in the appropriate direction.
+Group Coaching Calls
+These calls are where we go deeper, gain clarity, and build momentum together.
+We strongly encourage you to attend live whenever possible.
+If you can't make a live session, don't worry—replays will be available inside Circle.
+📅 Please check the Events section inside Circle for the most up-to-date group coaching call schedule.
+Office Hours & Team Support
+Our team is available Monday through Friday from 9:00 AM to 5:00 PM EST.
+We encourage you to fully engage in the program while also honoring your own pace and capacity as you move through the material.
+One Final Reminder
+The people who experience the greatest results are the ones who participate.
+Watch the lessons.
+Complete the exercises.
+Engage with the community.
+Ask questions.
+And most importantly, stay consistent.
+Small actions, repeated over time, create extraordinary change.
+We're honored to support you on this journey and excited to have you as part of the RMM community.
+With love,
+The RMM Team
+
+
+
+
+
+
+
+Onboarding Email- RMM Men
+Workflow Name: Onboarding Email- RMM Men
+  
+
+
+
+Email: RMM Men Email
+Subject line: Welcome to RMM Men’s Course: Let’s Get You Set Up
+
+
+Hi {{contact.first_name}},
+We are so happy you're here.
+Welcome to RMM Men’s Course.
+You've made a powerful investment in yourself, your growth, and the future you're working to create. Over the next 12 weeks, you'll receive everything included in the RMM program, along with additional personalized support to help you create meaningful and lasting transformation.
+Let's get you set up.
+Step 1: Download the Circle App
+Circle is where you'll access:
+💌 All course modules and lessons
+💌 Community discussions and support
+💌 Group coaching call details and replays
+💌 Announcements and program updates
+💌 Direct messaging support
+Download the app here:
+Android:https://play.google.com/store/apps/details?id=so.circle.circle
+IOS: https://apps.apple.com/us/app/circle-communities/id1509651625
+We highly recommend downloading the app so you can easily stay connected throughout the program, you can also access Circle on your laptop computer too using the link below. 
+Step 2: Accept Your Circle Invitation
+Click the link below and create your account:
+🔗Create Your Account Here 
+Once you've joined, take a few minutes to explore the platform and introduce yourself inside the community.
+Please check the recorded video to navigate Circle:
+Watch The Men’s Onboarding Video Here 
+Step 3: Onboarding Call Schedule
+Please make sure to join an onboarding call, the schedule for these can be found in the group call schedule on Circle. 
+During this call, we'll walk you through the program, answer your questions, and make sure you're fully set up for success.
+If you have any questions in the meantime, please contact our support team at: 
+📧 support@sophieorozco.com
+Step 4: Group Coaching Calls Schedule
+Group Coaching Calls
+These calls are where we go deeper, gain clarity, and build momentum together.
+We strongly encourage you to attend live whenever possible.
+If you can't make a live session, don't worry, replays will be available inside Circle.
+📅 Please check the Events section inside Circle for the most up-to-date group coaching call schedule.
+Office Hours & Team Support
+Our team is available Monday through Friday from 9:00 AM to 5:00 PM EST.
+We encourage you to fully engage in the program while also honoring your own pace and capacity as you move through the material.
+One Final Reminder
+The people who experience the greatest results are the ones who participate.
+Watch the lessons.
+Complete the exercises.
+Attend your coaching calls.
+Engage with the community.
+Ask questions.
+And most importantly, stay consistent.
+Small actions, repeated over time, create extraordinary change.
+We're honored to support you on this journey and excited to have you as part of the RMM Accelerator community.
+With love,
+The RMM Team
+
+
+
+
+
+
+
+Onboarding Email- RMM Women
+Workflow Name: Onboarding Email- RMM Women
+  
+
+
+
+Email: RMM Women Email
+Subject line: Welcome to RMM Women’s Course: Let’s Get You Set Up
+
+
+Hi {{contact.first_name}},
+We are so happy you're here.
+Welcome to RMM Women’s Course.
+You've made a powerful investment in yourself, your growth, and the future you're working to create. Over the next 12 weeks, you'll receive everything included in the RMM program, along with additional personalized support to help you create meaningful and lasting transformation.
+Let's get you set up.
+Step 1: Download the Circle App
+Circle is where you'll access:
+💌 All course modules and lessons
+💌 Community discussions and support
+💌 Group coaching call details and replays
+💌 Announcements and program updates
+💌 Direct messaging support
+Download the app here:
+Android:https://play.google.com/store/apps/details?id=so.circle.circle
+IOS: https://apps.apple.com/us/app/circle-communities/id1509651625
+We highly recommend downloading the app so you can easily stay connected throughout the program, you can also access Circle on your laptop computer too using the link below. 
+Step 2: Accept Your Circle Invitation
+Click the link below and create your account:
+🔗Create Your Account Here
+Once you've joined, take a few minutes to explore the platform and introduce yourself inside the community.
+Please check the recorded video to navigate Circle:
+Watch The Women’’s Onboarding Video Here 
+Step 3: Onboarding Call Schedule
+Please make sure to join an onboarding call, the schedule for these can be found in the group call schedule on Circle. 
+During this call, we'll walk you through the program, answer your questions, and make sure you're fully set up for success.
+If you have any questions in the meantime, please contact our support team at: 
+📧 support@sophieorozco.com
+Step 4: Group Coaching Calls Schedule
+Group Coaching Calls
+These calls are where we go deeper, gain clarity, and build momentum together.
+We strongly encourage you to attend live whenever possible.
+If you can't make a live session, don't worry, replays will be available inside Circle.
+📅 Please check the Events section inside Circle for the most up-to-date group coaching call schedule.
+Office Hours & Team Support
+Our team is available Monday through Friday from 9:00 AM to 5:00 PM EST.
+We encourage you to fully engage in the program while also honoring your own pace and capacity as you move through the material.
+One Final Reminder
+The people who experience the greatest results are the ones who participate.
+Watch the lessons.
+Complete the exercises.
+Attend your coaching calls.
+Engage with the community.
+Ask questions.
+And most importantly, stay consistent.
+Small actions, repeated over time, create extraordinary change.
+We're honored to support you on this journey and excited to have you as part of the RMM Accelerator community.
+With love,
+The RMM Team
+
+
+
+
+Onboarding Email- course only- men
+Workflow Name: Onboarding Email- course only- men
+  
+
+
+
+Email: Course Only-Men
+Subject line: Your RMM Course Is Ready: Here’s How to Get Started
+
+
+Hi {{contact.first_name}},
+We are so happy you're here.
+Thank you for joining us.
+You've made an investment in yourself, your growth, and the future you're working to create - and that's something worth celebrating.
+This course has been designed to give you the tools, strategies, and insights you need to create meaningful, lasting change at your own pace.
+There are no live coaching calls or group sessions to keep up with.
+This is your journey, and you can move through the material whenever it works best for you.
+Let's get you set up.
+Step 1: Download the Circle App
+Your course is hosted inside Circle.
+For the best experience, we recommend downloading the Circle app so you can easily access your lessons from your computer, tablet, or mobile device.
+Download the app here:
+Android:https://play.google.com/store/apps/details?id=so.circle.circle
+IOS: https://apps.apple.com/us/app/circle-communities/id1509651625
+Step 2: Access Your Course
+Click the link below to access your course and create your account:
+🔗https://sophie-orozco-coaching.circle.so/join?invitation_token=6345afe8e2c4b5cf2ce000190c0dfef2e23f25a6-0ce46b61-f29d-4694-af32-f43650ee7156
+Once you've logged in, you'll have immediate access to all of your course materials.
+Step 3: Start With Module 1
+We recommend beginning with the first module and working through the course in order.
+Each lesson builds on the one before it, so taking your time will help you get the most out of the experience.
+As you move through the course:
+💌 Complete the workbook exercises.
+💌 Take time to reflect on each lesson.
+💌 Focus on applying what you learn before moving on.
+Remember, transformation happens through implementation- not just information.
+Need Help?
+If you have any technical questions or need assistance accessing your course, we're here to help.
+📧 Hazel (Support Team) support@sophieorozco.com
+Please allow 24–72 business hours for a response, Monday through Friday.
+One Final Reminder
+The people who experience the greatest transformation aren't the ones who rush through the course.
+They're the ones who slow down, do the work, and apply what they're learning.
+Progress is more important than perfection.
+Stay consistent.
+Trust the process.
+And remember, every small step forward matters.
+We're excited to be part of your journey and can't wait to see what's possible for you.
+With love,
+The RMM Team
+
+
+Onboarding Email- course only- women
+Workflow Name: Onboarding Email- course only- women
+  
+
+
+
+Email: Course Only-Women
+Subject line: Your RMM Course Is Ready: Here’s How to Get Started
+
+
+Hi {{contact.first_name}},
+We are so happy you're here.
+Thank you for joining us.
+You've made an investment in yourself, your growth, and the future you're working to create - and that's something worth celebrating.
+This course has been designed to give you the tools, strategies, and insights you need to create meaningful, lasting change at your own pace.
+There are no live coaching calls or group sessions to keep up with.
+This is your journey, and you can move through the material whenever it works best for you.
+Let's get you set up.
+Step 1: Download the Circle App
+Your course is hosted inside Circle.
+For the best experience, we recommend downloading the Circle app so you can easily access your lessons from your computer, tablet, or mobile device.
+Download the app here:
+Android:https://play.google.com/store/apps/details?id=so.circle.circle
+IOS: https://apps.apple.com/us/app/circle-communities/id1509651625
+Step 2: Access Your Course
+Click the link below to access your course and create your account:
+🔗https://sophie-orozco-coaching.circle.so/join?invitation_token=92681470e51642daa64a38b3f41bfa728557f618-2555b05e-a696-4a1d-86e0-1d6576dc1e0d
+Once you've logged in, you'll have immediate access to all of your course materials.
+Step 3: Start With Module 1
+We recommend beginning with the first module and working through the course in order.
+Each lesson builds on the one before it, so taking your time will help you get the most out of the experience.
+As you move through the course:
+💌 Complete the workbook exercises.
+💌 Take time to reflect on each lesson.
+💌 Focus on applying what you learn before moving on.
+Remember, transformation happens through implementation- not just information.
+Need Help?
+If you have any technical questions or need assistance accessing your course, we're here to help.
+📧 Hazel (Support Team) support@sophieorozco.com
+Please allow 24–72 business hours for a response, Monday through Friday.
+One Final Reminder
+The people who experience the greatest transformation aren't the ones who rush through the course.
+They're the ones who slow down, do the work, and apply what they're learning.
+Progress is more important than perfection.
+Stay consistent.
+Trust the process.
+And remember, every small step forward matters.
+We're excited to be part of your journey and can't wait to see what's possible for you.
+With love,
+The RMM Team

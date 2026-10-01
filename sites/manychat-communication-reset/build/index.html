@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Build Guide — Communication Reset | New Follower</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F7F4EE; --card:#FFFFFF; --ink:#1E1B16; --muted:#6B6459;
+    --terra:#A9502C; --terra-soft:#F3E3DA; --green:#1D4A33; --green-soft:#E4EEE7;
+    --gold:#B98A2F; --line:#E4DDD2; --warn-bg:#FBEFE7; --warn:#8C3D14;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--cream);color:var(--ink);font-family:'Inter',system-ui,sans-serif;line-height:1.65;font-size:16px}
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px 90px}
+  header.hero{background:var(--ink);color:#F7F4EE;padding:48px 20px 40px;text-align:center}
+  .hero .brand{font-family:'Playfair Display',serif;font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#CDB68A;margin-bottom:12px}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,40px);font-weight:600;line-height:1.15;margin-bottom:12px}
+  .hero p{color:#BFB8AC;max-width:640px;margin:0 auto;font-size:15.5px}
+  .hero a{color:#CDB68A}
+  section{margin-top:44px}
+  h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3.4vw,28px);font-weight:600;margin-bottom:8px}
+  .lead{color:var(--muted);font-size:15px;margin-bottom:4px}
+  .kicker{color:var(--terra);font-weight:700;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
+  code{font-family:ui-monospace,monospace;font-size:12.5px;background:#F4F1EA;border:1px solid var(--line);border-radius:5px;padding:1px 6px}
+  .small{font-size:14px;color:var(--muted)}
+  .lbl{font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:7px}
+  .overview{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:16px}
+  .ov{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .ov .n{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--terra);color:#fff;font-weight:700;font-size:13px;margin-bottom:8px}
+  .ov b{display:block;margin-bottom:4px;font-size:15px}
+  .ov p{font-size:13.5px;color:var(--muted)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;margin-top:18px;scroll-margin-top:16px}
+  .chead{display:flex;gap:14px;align-items:center;padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:16px}
+  .num{flex:none;width:34px;height:34px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px}
+  .card h3{font-family:'Playfair Display',serif;font-size:21px;font-weight:600;line-height:1.25}
+  .card p{margin-bottom:10px}
+  .card a{color:var(--green);font-weight:600}
+  .crumb{display:inline-block;background:#F4F1EA;border:1px solid var(--line);border-radius:6px;padding:1px 8px;font-size:14px;font-weight:600;white-space:nowrap}
+  .kv{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;align-items:center;margin:8px 0 12px;font-size:14.5px}
+  .kv .k{color:var(--muted);font-weight:600;white-space:nowrap}
+  .tagbtn{display:inline-flex;align-items:center;gap:8px;background:#F4F1EA;border:1px solid var(--line);border-radius:8px;padding:6px 12px;font-family:ui-monospace,monospace;font-size:13px;color:var(--ink);cursor:pointer;transition:.15s;text-align:left;margin:2px 6px 2px 0}
+  .tagbtn:hover{background:var(--terra-soft);border-color:var(--terra)}
+  .tagbtn.copied{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+  .tagbtn .ic{opacity:.5;font-size:11.5px}
+  .tblwrap{overflow-x:auto;background:#FBF9F5;border:1px solid var(--line);border-radius:12px;margin:8px 0 14px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{text-align:left;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);padding:10px 14px;border-bottom:1px solid var(--line)}
+  td{padding:9px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+  tr:last-child td{border-bottom:none}
+  .note{background:var(--warn-bg);border-left:4px solid var(--terra);border-radius:0 12px 12px 0;padding:12px 16px;margin:12px 0 4px;font-size:14px;color:var(--warn)}
+  .note b{color:var(--warn)}
+  .checks{display:flex;flex-direction:column;gap:8px}
+  .chk{display:flex;gap:12px;align-items:flex-start;background:#FBF9F5;border:1px solid var(--line);border-radius:10px;padding:10px 14px;cursor:pointer}
+  .chk input{margin-top:5px;width:16px;height:16px;accent-color:var(--green);flex:none}
+  .chk span{display:flex;flex-direction:column;font-size:14.5px}
+  .chk em{font-style:normal;color:var(--muted);font-size:13.5px}
+  .chk:has(input:checked){background:var(--green-soft);border-color:var(--green)}
+  .chk:has(input:checked) b{text-decoration:line-through;color:var(--muted)}
+  footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#F7F4EE;padding:11px 20px;border-radius:999px;font-size:14px;transition:.25s;pointer-events:none;opacity:0}
+  .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+  .top{position:fixed;right:20px;bottom:24px;background:var(--ink);color:#F7F4EE;border:none;border-radius:999px;padding:11px 18px;font-size:13px;cursor:pointer;opacity:0;transition:.2s;font-family:inherit}
+  .top.show{opacity:.92}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="brand">Sophie Orozco Coaching</div>
+  <h1>Build Guide: Communication Reset | New Follower</h1>
+  <p>Ten steps to build the ManyChat flow, connect it to GHL with one Zap, and test it before publishing. The messages themselves are on the <a href="../">structure page</a>.</p>
+</header>
+
+<div class="wrap">
+
+<section>
+  <div class="kicker">The setup</div>
+  <h2>Three pieces, one job</h2>
+  <div class="overview">
+    <div class="ov"><span class="n">A</span><b>ManyChat flow</b><p>Greets the follower, collects and confirms the email, applies two tags, sends one inbox message.</p></div>
+    <div class="ov"><span class="n">B</span><b>GHL workflow</b><p>Already published. <code>communication reset</code> tag in, course email out.</p></div>
+    <div class="ov"><span class="n">C</span><b>One Zap</b><p>Moves the confirmed contact from ManyChat into GHL with both GHL tags.</p></div>
+  </div>
+  <div class="note" style="margin-top:16px"><b>The rule that shapes everything:</b> GHL sends the course by email. The Instagram DM never contains the course or its link.</div>
+</section>
+
+<section><div class="kicker">Part A</div><h2>Build the flow in ManyChat</h2><p class=lead>Seven blocks. Build them in this order and keep the flow unpublished until Part D.</p>
+<div class="card" id="s1">
+  <div class="chead"><div class="num">1</div><h3>Open the new-follower automation</h3></div>
+  
+<p>Go to <span class="crumb">Automations</span> → <span class="crumb">Basic</span> → <span class="crumb">Say hi to new followers</span>.</p>
+<p>Confirm it is available for Sophie's connected Instagram account. Availability depends on Meta's eligibility rules, so if it is not there, stop and flag it.</p>
+<p>Set the opening delay to <b>5 minutes</b>, then select <span class="crumb">⋯</span> → <span class="crumb">Switch to Flow Builder</span>.</p>
+<div class="kv"><span class="k">Name it</span><span><button class="tagbtn" data-tag="Communication Reset | New Follower">Communication Reset | New Follower <span class="ic">copy</span></button></span></div>
+<div class="note"><b>Keep it unpublished</b> until every test in Part D passes.</div>
+
+</div>
+<div class="card" id="s2">
+  <div class="chead"><div class="num">2</div><h3>Create the two ManyChat tags</h3></div>
+  
+<p>Go to <span class="crumb">Settings</span> → <span class="crumb">Tags</span> and create these if they do not exist yet.</p>
+<div class="tblwrap"><table><thead><tr><th>Tag</th><th>What it is for</th></tr></thead><tbody><tr><td><button class="tagbtn" data-tag="Source_Instagram_Follow">Source_Instagram_Follow <span class="ic">copy</span></button></td><td>Records that the lead came from an Instagram follow</td></tr><tr><td><button class="tagbtn" data-tag="CR_Email_Confirmed">CR_Email_Confirmed <span class="ic">copy</span></button></td><td>Fires the Zap once the email is confirmed</td></tr></tbody></table></div>
+<p class="small">The two GHL tags, <code>communication reset</code> and <code>lead-instagram</code>, are added by the Zap in Part C, not in ManyChat.</p>
+
+</div>
+<div class="card" id="s3">
+  <div class="chead"><div class="num">3</div><h3>Welcome Message block</h3></div>
+  
+<div class="kv"><span class="k">Block name</span><span><button class="tagbtn" data-tag="Welcome Message">Welcome Message <span class="ic">copy</span></button></span></div>
+<p>Paste the welcome message from <a href="../#s2">step 2 on the structure page</a>. Add one button:</p>
+<div class="kv"><span class="k">Button</span><span><button class="tagbtn" data-tag="Yes, send it over!">Yes, send it over! <span class="ic">copy</span></button></span><span class="k">Goes to</span><span><b>Check Existing Email</b> (step 4)</span></div>
+<p class="small">Leave the no-interaction path empty. Their tap or reply is what opens the 24 hour messaging window for the rest of the conversation.</p>
+
+</div>
+<div class="card" id="s4">
+  <div class="chead"><div class="num">4</div><h3>Check Existing Email condition</h3></div>
+  
+<div class="kv"><span class="k">Block name</span><span><button class="tagbtn" data-tag="Check Existing Email">Check Existing Email <span class="ic">copy</span></button></span></div>
+<p>Add a <b>Condition</b> block after the welcome button. Condition: the <b>Email</b> system field has a value.</p>
+<div class="tblwrap"><table><thead><tr><th>Result</th><th>Next block</th></tr></thead><tbody><tr><td>Email exists</td><td><b>Confirm Email</b> (step 6)</td></tr><tr><td>Email is empty</td><td><b>Collect Email</b> (step 5)</td></tr></tbody></table></div>
+<p class="small">Both paths go through confirmation before any tag is applied.</p>
+
+</div>
+<div class="card" id="s5">
+  <div class="chead"><div class="num">5</div><h3>Collect Email block</h3></div>
+  
+<div class="kv"><span class="k">Block name</span><span><button class="tagbtn" data-tag="Collect Email">Collect Email <span class="ic">copy</span></button></span></div>
+<p>Add an Instagram message, then a <b>Data Collection</b> step inside it. Paste the email question from <a href="../#s3">step 3 on the structure page</a>.</p>
+<div class="tblwrap"><table><thead><tr><th>Setting</th><th>Configuration</th></tr></thead><tbody><tr><td>Reply type</td><td>Email</td></tr><tr><td>Save response</td><td>Email system field</td></tr><tr><td>Invalid response</td><td>Ask them to check and re-enter the address</td></tr><tr><td>Successful response</td><td>Continue to <b>Confirm Email</b></td></tr><tr><td>No response</td><td>End. Do not apply any tag</td></tr></tbody></table></div>
+<p class="small">Remove any skip button, or send it to an end with no delivery. Data Collection needs a paid ManyChat plan. The Email reply type checks the address format for you.</p>
+
+</div>
+<div class="card" id="s6">
+  <div class="chead"><div class="num">6</div><h3>Confirm Email block and the correction loop</h3></div>
+  
+<div class="kv"><span class="k">Block name</span><span><button class="tagbtn" data-tag="Confirm Email">Confirm Email <span class="ic">copy</span></button></span></div>
+<p>Add an Instagram message and paste the confirmation text from <a href="../#s4">step 4 on the structure page</a>. Replace the email placeholder with the variable picker → <b>Email</b>.</p>
+<div class="tblwrap"><table><thead><tr><th>Button</th><th>Goes to</th></tr></thead><tbody><tr><td><button class="tagbtn" data-tag="Yes, that&#x27;s correct">Yes, that&#x27;s correct <span class="ic">copy</span></button></td><td><b>Apply Confirmed Tags</b> (step 7)</td></tr><tr><td><button class="tagbtn" data-tag="Change my email">Change my email <span class="ic">copy</span></button></td><td><b>Collect Email</b> (step 5), then back here to confirm again</td></tr></tbody></table></div>
+<div class="note"><b>Tags come only from the Yes button.</b> An address they are still fixing must never start the Zap.</div>
+
+</div>
+<div class="card" id="s7">
+  <div class="chead"><div class="num">7</div><h3>Apply Confirmed Tags, then the inbox message</h3></div>
+  
+<div class="kv"><span class="k">Block name</span><span><button class="tagbtn" data-tag="Apply Confirmed Tags">Apply Confirmed Tags <span class="ic">copy</span></button></span></div>
+<p>Add an <b>Actions</b> block with these two actions, in this order:</p>
+<div class="tblwrap"><table><thead><tr><th>Order</th><th>Action</th></tr></thead><tbody><tr><td>1</td><td>Add tag <button class="tagbtn" data-tag="Source_Instagram_Follow">Source_Instagram_Follow <span class="ic">copy</span></button></td></tr><tr><td>2</td><td>Add tag <button class="tagbtn" data-tag="CR_Email_Confirmed">CR_Email_Confirmed <span class="ic">copy</span></button></td></tr></tbody></table></div>
+<p>Connect it to one last Instagram message:</p>
+<div class="kv"><span class="k">Block name</span><span><button class="tagbtn" data-tag="Check Your Inbox">Check Your Inbox <span class="ic">copy</span></button></span></div>
+<p>Use the text-only inbox message from <a href="../#s5">step 5 on the structure page</a>. No button, no course link.</p>
+<div class="note"><b>Wording to confirm with Daniel.</b> The tag starts the Zap, it does not confirm GHL has finished sending. "My team just sent it" can land a few seconds before the email does. "It's on its way to your inbox" is the safer wording. Daniel's call.</div>
+
+</div></section><section><div class="kicker">Part B</div><h2>Check the GHL workflow</h2><p class=lead>Nothing to build here. Just confirm the existing workflow is ready to receive the tag.</p>
+<div class="card" id="s8">
+  <div class="chead"><div class="num">8</div><h3>Verify 01 - Communication Reset Lead Magnet</h3></div>
+  
+<p>Go to <span class="crumb">Automation</span> → <span class="crumb">Workflows</span> → <span class="crumb">01 - Communication Reset Lead Magnet</span> and check:</p>
+<div class="tblwrap"><table><thead><tr><th>Check</th><th>Expected</th></tr></thead><tbody><tr><td>Status</td><td>Published</td></tr><tr><td>Trigger</td><td>Contact Tag</td></tr><tr><td>Trigger filter</td><td>Tag added: <button class="tagbtn" data-tag="communication reset">communication reset <span class="ic">copy</span></button></td></tr><tr><td>Email action</td><td>Sends the Communication Reset course</td></tr><tr><td>Course link in the email</td><td>The correct learner-facing access link</td></tr></tbody></table></div>
+<p class="small">Reuse this workflow. If a separate course-delivery workflow was made from earlier instructions, leave it unpublished.</p>
+
+</div></section><section><div class="kicker">Part C</div><h2>Build the one Zap</h2><p class=lead>ManyChat tag in, GHL contact out.</p>
+<div class="card" id="s9">
+  <div class="chead"><div class="num">9</div><h3>ManyChat → GHL | Communication Reset</h3></div>
+  
+<p>In Zapier select <span class="crumb">Create</span> → <span class="crumb">Zap</span>.</p>
+<div class="kv"><span class="k">Zap name</span><span><button class="tagbtn" data-tag="ManyChat → GHL | Communication Reset">ManyChat → GHL | Communication Reset <span class="ic">copy</span></button></span></div>
+<div class="lbl" style="margin-top:14px">Trigger</div>
+<div class="tblwrap"><table><thead><tr><th>Setting</th><th>Value</th></tr></thead><tbody><tr><td>App</td><td>ManyChat</td></tr><tr><td>Event</td><td>New Tagged User</td></tr><tr><td>Account</td><td>Sophie's ManyChat account</td></tr><tr><td>Tag</td><td><button class="tagbtn" data-tag="CR_Email_Confirmed">CR_Email_Confirmed <span class="ic">copy</span></button></td></tr></tbody></table></div>
+<p class="small">Test the trigger with a contact whose email has been saved and confirmed.</p>
+<div class="lbl" style="margin-top:14px">Action</div>
+<p>App <b>LeadConnector</b>, event <b>Add/Update Contact</b>. Sign in and pick the Sophie Orozco Coaching subaccount. Map:</p>
+<div class="tblwrap"><table><thead><tr><th>LeadConnector field</th><th>ManyChat value</th></tr></thead><tbody><tr><td>Email</td><td>Email system field</td></tr><tr><td>First Name</td><td>First name, if available</td></tr><tr><td>Last Name</td><td>Last name, if available</td></tr><tr><td>Instagram username, if the field is offered</td><td>Instagram username system field</td></tr><tr><td>Tags</td><td><button class="tagbtn" data-tag="communication reset,lead-instagram">communication reset,lead-instagram <span class="ic">copy</span></button></td></tr></tbody></table></div>
+<p class="small">If there is no Instagram username field, put it in <b>Notes</b> as <code>Instagram username: ...</code>. Leave a name field unmapped rather than mapping the wrong thing. Paste both tags into the one comma-separated Tags field.</p>
+<div class="note"><b>Testing the action sends a real email.</b> The GHL workflow is live, so use a test inbox you control.</div>
+
+</div></section><section><div class="kicker">Part D</div><h2>Test everything, then publish</h2><p class=lead>Use Preview → In messengers with a real test contact. ManyChat's visual preview does not run Zaps or validate inputs.</p>
+<div class="card" id="s10">
+  <div class="chead"><div class="num">10</div><h3>Run the checklist</h3></div>
+  
+<div class="checks"><label class="chk"><input type="checkbox" data-k="t1"><span><b>Ignore the welcome message</b><em>No further DM, no course email</em></span></label><label class="chk"><input type="checkbox" data-k="t2"><span><b>Tap the button with no saved email</b><em>Email collection appears</em></span></label><label class="chk"><input type="checkbox" data-k="t3"><span><b>Enter an invalid email</b><em>Retry prompt appears</em></span></label><label class="chk"><input type="checkbox" data-k="t4"><span><b>Tap the button with a saved email</b><em>Confirmation appears straight away</em></span></label><label class="chk"><input type="checkbox" data-k="t5"><span><b>Tap Change my email</b><em>New address is collected, then confirmed</em></span></label><label class="chk"><input type="checkbox" data-k="t6"><span><b>Tap Yes, that&#x27;s correct</b><em>Both ManyChat tags are applied</em></span></label><label class="chk"><input type="checkbox" data-k="t7"><span><b>Open Zapier history</b><em>LeadConnector action succeeded</em></span></label><label class="chk"><input type="checkbox" data-k="t8"><span><b>Open the GHL contact</b><em>Correct email, both GHL tags present</em></span></label><label class="chk"><input type="checkbox" data-k="t9"><span><b>Open the GHL workflow history</b><em>Contact entered 01 - Communication Reset Lead Magnet and the email sent</em></span></label><label class="chk"><input type="checkbox" data-k="t10"><span><b>Check the test inbox</b><em>Course email arrived and its link works</em></span></label><label class="chk"><input type="checkbox" data-k="t11"><span><b>Check Instagram</b><em>Final DM is the inbox message only</em></span></label></div>
+<p class="small" style="margin-top:12px">Ticks save in this browser only. When all eleven pass, publish the ManyChat flow and turn the Zap on.</p>
+
+</div></section>
+
+<footer>
+  <span>Build Guide · Communication Reset | New Follower · Updated Sept 28, 2026</span>
+  <span>Maintained by John Carlo Caintic</span>
+</footer>
+
+</div>
+
+<div class="toast" id="toast">Copied</div>
+<button class="top" id="top">↑ Top</button>
+
+<script>
+  const toast = document.getElementById('toast');
+  async function copyText(t) {
+    try { await navigator.clipboard.writeText(t); }
+    catch (e) {
+      const ta = document.createElement('textarea');
+      ta.value = t; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch (err) {}
+      document.body.removeChild(ta);
+    }
+  }
+  document.querySelectorAll('.tagbtn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      await copyText(btn.dataset.tag);
+      btn.classList.add('copied');
+      const ic = btn.querySelector('.ic'); const old = ic.textContent; ic.textContent = 'copied ✓';
+      toast.textContent = 'Copied: ' + btn.dataset.tag; toast.classList.add('show');
+      setTimeout(() => { btn.classList.remove('copied'); ic.textContent = old; toast.classList.remove('show'); }, 1600);
+    });
+  });
+  const KEY = 'cr-build-checks';
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { saved = {}; }
+  document.querySelectorAll('.chk input').forEach(cb => {
+    cb.checked = !!saved[cb.dataset.k];
+    cb.addEventListener('change', () => {
+      saved[cb.dataset.k] = cb.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+    });
+  });
+  const topBtn = document.getElementById('top');
+  topBtn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+  window.addEventListener('scroll', () => topBtn.classList.toggle('show', window.scrollY > 700));
+</script>
+</body>
+</html>

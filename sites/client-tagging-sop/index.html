@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Client Tagging SOP — Sophie Orozco Coaching</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F7F4EE; --card:#FFFFFF; --ink:#1E1B16; --muted:#6B6459;
+    --terra:#A9502C; --terra-soft:#F3E3DA; --green:#1D4A33; --green-soft:#E4EEE7;
+    --gold:#B98A2F; --line:#E4DDD2; --warn-bg:#FBEFE7; --warn:#8C3D14; --bad-bg:#FBE9E7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--cream);color:var(--ink);font-family:'Inter',system-ui,sans-serif;line-height:1.65;font-size:16px}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 20px 90px}
+  header.hero{background:var(--ink);color:#F7F4EE;padding:48px 20px 40px;text-align:center}
+  .hero .brand{font-family:'Playfair Display',serif;font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#CDB68A;margin-bottom:12px}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,40px);font-weight:600;line-height:1.15;margin-bottom:12px}
+  .hero p{color:#BFB8AC;max-width:640px;margin:0 auto;font-size:15.5px}
+  section{margin-top:40px}
+  h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3.4vw,28px);font-weight:600;margin-bottom:12px}
+  .kicker{color:var(--terra);font-weight:700;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
+  code{font-family:ui-monospace,monospace;font-size:12.5px;background:#F4F1EA;border:1px solid var(--line);border-radius:5px;padding:1px 6px;white-space:nowrap}
+  code.bad{background:var(--bad-bg);border-color:#E8C4BC;color:#8C2D14}
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:16px}
+  .step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .step .n{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--terra);color:#fff;font-weight:700;font-size:13px;margin-bottom:8px}
+  .step b{display:block;margin-bottom:4px;font-size:15px}
+  .step p{font-size:13.5px;color:var(--muted)}
+  .tblwrap{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:14px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{text-align:left;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);padding:12px 14px;border-bottom:1px solid var(--line);background:#FBF9F5;line-height:1.35;vertical-align:bottom}
+  td{padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  td a{color:var(--ink);font-weight:600;text-decoration:none}
+  td a:hover{color:var(--terra)}
+  td .g{font-size:12px;color:var(--muted);text-transform:capitalize}
+  .none{color:#B5AEA3;font-size:13px}
+  .auto{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:16px}
+  .abox{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .abox h4{font-size:15px;margin-bottom:4px}
+  .abox .wf{font-family:ui-monospace,monospace;font-size:12px;color:var(--muted);margin-bottom:8px}
+  .abox p{font-size:13.5px;color:var(--muted)}
+  .abox .who{margin-top:10px;font-size:13px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;margin-top:20px;scroll-margin-top:16px}
+  .chead{display:flex;gap:14px;align-items:flex-start;padding-bottom:16px;border-bottom:1px solid var(--line)}
+  .num{flex:none;width:34px;height:34px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px}
+  .card h3{font-family:'Playfair Display',serif;font-size:21px;font-weight:600;line-height:1.25}
+  .gtag{display:inline-block;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--terra);background:var(--terra-soft);border-radius:999px;padding:2px 10px;vertical-align:middle;margin-left:6px}
+  .cgrid{display:grid;grid-template-columns:1.1fr 1fr;gap:24px;margin-top:18px}
+  @media(max-width:760px){.cgrid{grid-template-columns:1fr}}
+  .lbl{font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:7px}
+  .small{font-size:14px;color:var(--muted)}
+  .taglist{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+  .tagbtn{display:inline-flex;align-items:center;gap:8px;background:#F4F1EA;border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-family:ui-monospace,monospace;font-size:13px;color:var(--ink);cursor:pointer;transition:.15s;text-align:left}
+  .tagbtn:hover{background:var(--terra-soft);border-color:var(--terra)}
+  .tagbtn.copied{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+  .tagbtn .ic{opacity:.5;font-size:11.5px}
+  .starts{list-style:none;display:flex;flex-direction:column;gap:9px;font-size:14px}
+  .starts li{padding-left:14px;position:relative;color:var(--muted)}
+  .starts li::before{content:"";position:absolute;left:0;top:10px;width:6px;height:6px;border-radius:50%;background:var(--terra)}
+  .starts b{color:var(--ink)}
+  .warnbox{background:var(--warn-bg);border-left:4px solid var(--terra);border-radius:0 12px 12px 0;padding:15px 18px;margin-top:16px}
+  .warnbox b{color:var(--warn)}
+  .warnbox p{font-size:14px;color:var(--warn);margin-top:3px}
+  .warnbox code{background:#fff}
+  footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#F7F4EE;padding:11px 20px;border-radius:999px;font-size:14px;transition:.25s;pointer-events:none;opacity:0}
+  .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+  .top{position:fixed;right:20px;bottom:24px;background:var(--ink);color:#F7F4EE;border:none;border-radius:999px;padding:11px 18px;font-size:13px;cursor:pointer;opacity:0;transition:.2s;font-family:inherit}
+  .top.show{opacity:.92}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="brand">Sophie Orozco Coaching</div>
+  <h1>Client Tagging SOP</h1>
+  <p>Every tag the sales team adds when a client closes, program by program, and the automation each tag starts. Click any value to copy it.</p>
+</header>
+
+<div class="wrap">
+
+<section>
+  <div class="kicker">At close, in this order</div>
+  <h2>How a new client gets set up</h2>
+  <div class="steps">
+    <div class="step"><span class="n">1</span><b>Close the opportunity</b><p>Move the card to Closed Won and set <b>Offer Discussed</b> to the program's value from the table below.</p></div>
+    <div class="step"><span class="n">2</span><b>Add every tag in the client's row</b><p>Find the program and the client's gender in the table, then add each tag shown. Copy them from this page, do not type them.</p></div>
+    <div class="step"><span class="n">3</span><b>The tags do the rest</b><p>The onboarding tag sends the welcome email. The RMM tag starts the 12 week emails. The check-in tag starts the weekly check-ins. A missing tag means that automation never runs.</p></div>
+  </div>
+  <div class="warnbox"><b>Copy each tag word for word.</b>
+    <p>An automation only starts when the tag matches exactly, character for character. Several tags look almost identical, so copy from this page instead of typing. A near miss starts nothing and nobody is alerted. One to know: the men's RMM tag is spelled <code>general- rrm men</code>, with two r's. That spelling is what the automation listens for, so use it as is.</p></div>
+</section>
+
+<section>
+  <div class="kicker">The whole picture</div>
+  <h2>Program, tags, Offer Discussed</h2>
+  <p class="small" style="margin-bottom:12px">Add <code>existing client</code> to every client as well. It is not repeated in the table.</p>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Program purchased</th><th>Onboarding tag</th><th>General - RMM Automation Sequence</th><th>Check - In Automation sequence</th><th>Offer Discussed</th></tr></thead>
+    <tbody><tr><td><a href="#p1">Couples Coaching</a><div class="g">men</div></td><td><code>client - couples coaching men</code></td><td><code>general- rrm men</code></td><td><span class="none">none</span></td><td>Couples Coaching (men)</td></tr><tr><td><a href="#p2">Couples Coaching</a><div class="g">women</div></td><td><code>client - couples coaching women</code></td><td><code>general- rmm women</code></td><td><span class="none">none</span></td><td>Couples Coaching (women)</td></tr><tr><td><a href="#p3">Couples Coaching VIP</a><div class="g">men</div></td><td><code>client - vip sophie men</code></td><td><code>general- rrm men</code></td><td><span class="none">none</span></td><td>Couples Coaching VIP (men)</td></tr><tr><td><a href="#p4">Couples Coaching VIP</a><div class="g">women</div></td><td><code>client - vip sophie women</code></td><td><code>general- rmm women</code></td><td><span class="none">none</span></td><td>Couples Coaching VIP (women)</td></tr><tr><td><a href="#p5">RMM Accelerator</a><div class="g">men</div></td><td><code>client - rmm accelerator men</code></td><td><code>general- rrm men</code></td><td><code>rmm- checkin (men)</code></td><td>RMM Accelerator Men</td></tr><tr><td><a href="#p6">RMM Accelerator</a><div class="g">women</div></td><td><code>client - rmm accelerator women</code></td><td><code>general- rmm women</code></td><td><code>rmm- checkin (women)</code></td><td>RMM Accelerator Women</td></tr><tr><td><a href="#p7">RMM Group Only</a><div class="g">men</div></td><td><code>client - group only men</code></td><td><code>general- rrm men</code></td><td><span class="none">none</span></td><td>RMM Group Only Men</td></tr><tr><td><a href="#p8">RMM Group Only</a><div class="g">women</div></td><td><code>client - group only women</code></td><td><code>general- rmm women</code></td><td><span class="none">none</span></td><td>RMM Group Only Women</td></tr><tr><td><a href="#p9">Self-Paced</a><div class="g">men</div></td><td><code>client - rmm self paced men</code></td><td><code>general- rrm men</code></td><td><span class="none">none</span></td><td>Self-Paced Lifetime Access</td></tr><tr><td><a href="#p10">Self-Paced</a><div class="g">women</div></td><td><code>client - rmm self paced women</code></td><td><code>general- rmm women</code></td><td><span class="none">none</span></td><td>Self-Paced Lifetime Access</td></tr></tbody>
+  </table></div>
+</section>
+
+<section>
+  <div class="kicker">What runs</div>
+  <h2>The three automations behind the tags</h2>
+  <div class="auto">
+    <div class="abox"><h4>Onboarding email</h4><div class="wf">Onboarding Email- ... (one per program and gender)</div>
+      <p>Sends the welcome email with the Circle invitation link the moment the program tag lands. The tag is the only trigger.</p>
+      <div class="who"><b>Who gets it:</b> every program.</div></div>
+    <div class="abox"><h4>RMM 12 weeks with calls</h4><div class="wf">GENERAL- RMM Men 12 Weeks with Calls<br>RMM Women 12 Weeks with Calls- GENERAL</div>
+      <p>The 12 week program email sequence. Starts on <code>general- rrm men</code> or <code>general- rmm women</code>.</p>
+      <div class="who"><b>Who gets it:</b> Couples Coaching, Couples Coaching VIP, RMM Accelerator, RMM Group Only, Self-Paced. Every program, per Hazel, Sept 30.</div></div>
+    <div class="abox"><h4>Check-in sequence</h4><div class="wf">Check-In Sequence (men)<br>Check-In Sequence (women)</div>
+      <p>The snapshot email, then the weekly check-ins starting with Week 1. Starts on <code>rmm- checkin (men)</code> or <code>rmm- checkin (women)</code>.</p>
+      <div class="who"><b>Who gets it:</b> RMM Accelerator only.</div></div>
+  </div>
+</section>
+
+<section>
+  <div class="kicker">Program by program</div>
+  <h2>Copy the tags for the client's program</h2>
+  <p class="small">Couples: each partner who has their own contact record gets the tags for their own gender.</p>
+  
+<section class="card" id="p1">
+  <div class="chead">
+    <div class="num">1</div>
+    <div>
+      <div class="lbl" style="margin-bottom:2px">Program purchased</div>
+      <h3>Couples Coaching <span class="gtag">men</span></h3>
+    </div>
+  </div>
+  <div class="cgrid">
+    <div>
+      <div class="lbl">Tags to add on the contact, all of them</div>
+      <div class="taglist"><button class="tagbtn" data-tag="client - couples coaching men">client - couples coaching men <span class="ic">copy</span></button><button class="tagbtn" data-tag="existing client">existing client <span class="ic">copy</span></button><button class="tagbtn" data-tag="general- rrm men">general- rrm men <span class="ic">copy</span></button></div>
+      <div class="lbl" style="margin-top:16px">Offer Discussed on the opportunity</div>
+      <button class="tagbtn" data-tag="Couples Coaching (men)">Couples Coaching (men) <span class="ic">copy</span></button>
+    </div>
+    <div>
+      <div class="lbl">What each tag starts</div>
+      <ul class="starts"><li><code>client - couples coaching men</code> starts <b>Onboarding Email- (men) Couples</b>: the onboarding email with the Circle invitation.</li><li><code>general- rrm men</code> starts <b>GENERAL- RMM Men 12 Weeks with Calls</b>: the 12 week program email sequence.</li><li><code>existing client</code> marks the record as a client so lead automations leave them alone.</li></ul>
+    </div>
+  </div>
+</section>
+<section class="card" id="p2">
+  <div class="chead">
+    <div class="num">2</div>
+    <div>
+      <div class="lbl" style="margin-bottom:2px">Program purchased</div>
+      <h3>Couples Coaching <span class="gtag">women</span></h3>
+    </div>
+  </div>
+  <div class="cgrid">
+    <div>
+      <div class="lbl">Tags to add on the contact, all of them</div>
+      <div class="taglist"><button class="tagbtn" data-tag="client - couples coaching women">client - couples coaching women <span class="ic">copy</span></button><button class="tagbtn" data-tag="existing client">existing client <span class="ic">copy</span></button><button class="tagbtn" data-tag="general- rmm women">general- rmm women <span class="ic">copy</span></button></div>
+      <div class="lbl" style="margin-top:16px">Offer Discussed on the opportunity</div>
+      <button class="tagbtn" data-tag="Couples Coaching (women)">Couples Coaching (women) <span class="ic">copy</span></button>
+    </div>
+    <div>
+      <div class="lbl">What each tag starts</div>
+      <ul class="starts"><li><code>client - couples coaching women</code> starts <b>Onboarding Email- (women) Couples</b>: the onboarding email with the Circle invitation.</li><li><code>general- rmm women</code> starts <b>RMM Women 12 Weeks with Calls- GENERAL</b>: the 12 week program email sequence.</li><li><code>existing client</code> marks the record as a client so lead automations leave them alone.</li></ul>
+    </div>
+  </div>
+</section>
+<section class="card" id="p3">
+  <div class="chead">
+    <div class="num">3</div>
+    <div>
+      <div class="lbl" style="margin-bottom:2px">Program purchased</div>
+      <h3>Couples Coaching VIP <span class="gtag">men</span></h3>
+    </div>
+  </div>
+  <div class="cgrid">
+    <div>
+      <div class="lbl">Tags to add on the contact, all of them</div>
+      <div class="taglist"><button class="tagbtn" data-tag="client - vip sophie men">client - vip sophie men <span class="ic">copy</span></button><button class="tagbtn" data-tag="existing client">existing client <span class="ic">copy</span></button><button class="tagbtn" data-tag="general- rrm men">general- rrm men <span class="ic">copy</span></button></div>
+      <div class="lbl" style="margin-top:16px">Offer Discussed on the opportunity</div>
+      <button class="tagbtn" data-tag="Couples Coaching VIP (men)">Couples Coaching VIP (men) <span class="ic">copy</span></button>
+    </div>
+    <div>
+      <div class="lbl">What each tag starts</div>
+      <ul class="starts"><li><code>client - vip sophie men</code> starts <b>Onboarding Email- Premium Men Couples</b>: the onboarding email with the Circle invitation.</li><li><code>general- rrm men</code> starts <b>GENERAL- RMM Men 12 Weeks with Calls</b>: the 12 week program email sequence.</li><li><code>existing client</code> marks the record as a client so lead automations leave them alone.</li></ul>
+    </div>
+  </div>
+</section>
+<section class="card" id="p4">
+  <div class="chead">
+    <div class="num">4</div>
+    <div>
+      <div class="lbl" style="margin-bottom:2px">Program purchased</div>
+      <h3>Couples Coaching VIP <span class="gtag">women</span></h3>
+    </div>
+  </div>
+  <div class="cgrid">
+    <div>
+      <div class="lbl">Tags to add on the contact, all of them</div>
+      <div class="taglist"><button class="tagbtn" data-tag="client - vip sophie women">client - vip sophie women <span class="ic">copy</span></button><button class="tagbtn" data-tag="existing client">existing client <span class="ic">copy</span></button><button class="tagbtn" data-tag="general- rmm women">general- rmm women <span class="ic">copy</span></button></div>
+      <div class="lbl" style="margin-top:16px">Offer Discussed on the opportunity</div>
+      <button class="tagbtn" data-tag="Couples Coaching VIP (women)">Couples Coaching VIP (women) <span class="ic">copy</span></button>
+    </div>
+    <div>
+      <div class="lbl">What each tag starts</div>
+      <ul class="starts"><li><code>client - vip sophie women</code> starts <b>Onboarding Email- Premium Women Couples</b>: the onboarding email with the Circle invitation.</li><li><code>general- rmm women</code> starts <b>RMM Women 12 Weeks with Calls- GENERAL</b>: the 12 week program email sequence.</li><li><code>existing client</code> marks the record as a client so lead automations leave them alone.</li></ul>
+    </div>
+  </div>
+</section>
+<section class="card" id="p5">
+  <div class="chead">
+    <div class="num">5</div>
+    <div>
+      <div class="lbl" style="margin-bottom:2px">Program purchased</div>
+      <h3>RMM Accelerator <span class="gtag">men</span></h3>
+    </div>
+  </div>
+  <div class="cgrid">
+    <div>
+      <div class="lbl">Tags to add on the contact, all of them</div>
+      <div class="taglist"><button class="tagbtn" data-tag="client - rmm accelerator men">client - rmm accelerator men <span class="ic">copy</span></button><button class="tagbtn" data-tag="existing client">existing client <span class="ic">copy</span></button><button class="tagbtn" data-tag="general- rrm men">general- rrm men <span class="ic">copy</span></button><button class="tagbtn" data-tag="rmm- checkin (men)">rmm- checkin (men) <span class="ic">copy</span></button></div>
+      <div class="lbl" style="margin-top:16px">Offer Discussed on the opportunity</div>
+      <button class="tagbtn" data-tag="RMM Accelerator Men">RMM Accelerator Men <span class="ic">copy</span></button>
+    </div>
+    <div>
+      <div class="lbl">What each tag starts</div>
+      <ul class="starts"><li><code>client - rmm accelerator men</code> starts <b>Onboarding Email- RMM Accelerator (men)</b>: the onboarding email with the Circle invitation.</li><li><code>general- rrm men</code> starts <b>GENERAL- RMM Men 12 Weeks with Calls</b>: the 12 week program email sequence.</li><li><code>rmm- checkin (men)</code> starts <b>Check-In Sequence (men)</b>: the snapshot email, then the weekly check-ins.</li><li><code>existing client</code> marks the record as a client so lead automations leave them alone.</li></ul>
+    </div>
+  </div>
+</section>
+<section class="card" id="p6">
+  <div class="chead">
+    <div class="num">6</div>
+    <div>
+      <div class="lbl" style="margin-bottom:2px">Program purchased</div>
+      <h3>RMM Accelerator <span class="gtag">women</span></h3>
+    </div>
+  </div>
+  <div class="cgrid">
+    <div>
+      <div class="lbl">Tags to add on the contact, all of them</div>
+      <div class="taglist"><button class="tagbtn" data-tag="client - rmm accelerator women">client - rmm accelerator women <span class="ic">copy</span></button><button class="tagbtn" data-tag="existing client">existing client <span class="ic">copy</span></button><button class="tagbtn" data-tag="general- rmm women">general- rmm women <span class="ic">copy</span></button><button class="tagbtn" data-tag="rmm- checkin (women)">rmm- checkin (women) <span class="ic">copy</span></button></div>
+      <div class="lbl" style="margin-top:16px">Offer Discussed on the opportunity</div>
+      <button class="tagbtn" data-tag="RMM Accelerator Women">RMM Accelerator Women <span class="ic">copy</span></button>
+    </div>
+    <div>
+      <div class="lbl">What each tag starts</div>
+      <ul class="starts"><li><code>client - rmm accelerator women</code> starts <b>Onboarding Email- RMM Accelerator(women)</b>: the onboarding email with the Circle invitation.</li><li><code>general- rmm women</code> starts <b>RMM Women 12 Weeks with Calls- GENERAL</b>: the 12 week program email sequence.</li><li><code>rmm- checkin (women)</code> starts <b>Check-In Sequence (women)</b>: the snapshot email, then the weekly check-ins.</li><li><code>existing client</code> marks the record as a client so lead automations leave them alone.</li></ul>
+    </div>
+  </div>
+</section>
+<section class="card" id="p7">
+  <div class="chead">
+    <div class="num">7</div>
+    <div>
+      <div class="lbl" style="margin-bottom:2px">Program purchased</div>
+      <h3>RMM Group Only <span class="gtag">men</span></h3>
+    </div>
+  </div>
+  <div class="cgrid">
+    <div>
+      <div class="lbl">Tags to add on the contact, all of them</div>
+      <div class="taglist"><button class="tagbtn" data-tag="client - group only men">client - group only men <span class="ic">copy</span></button><button class="tagbtn" data-tag="existing client">existing client <span class="ic">copy</span></button><button class="tagbtn" data-tag="general- rrm men">general- rrm men <span class="ic">copy</span></button></div>
+      <div class="lbl" style="margin-top:16px">Offer Discussed on the opportunity</div>
+      <button class="tagbtn" data-tag="RMM Group Only Men">RMM Group Only Men <span class="ic">copy</span></button>
+    </div>
+    <div>
+      <div class="lbl">What each tag starts</div>
+      <ul class="starts"><li><code>client - group only men</code> starts <b>Onboarding Email- RMM Group Only (men)</b>: the onboarding email with the Circle invitation.</li><li><code>general- rrm men</code> starts <b>GENERAL- RMM Men 12 Weeks with Calls</b>: the 12 week program email sequence.</li><li><code>existing client</code> marks the record as a client so lead automations leave them alone.</li></ul>
+    </div>
+  </div>
+</section>
+<section class="card" id="p8">
+  <div class="chead">
+    <div class="num">8</div>
+    <div>
+      <div class="lbl" style="margin-bottom:2px">Program purchased</div>
+      <h3>RMM Group Only <span class="gtag">women</span></h3>
+    </div>
+  </div>
+  <div class="cgrid">
+    <div>
+      <div class="lbl">Tags to add on the contact, all of them</div>
+      <div class="taglist"><button class="tagbtn" data-tag="client - group only women">client - group only women <span class="ic">copy</span></button><button class="tagbtn" data-tag="existing client">existing client <span class="ic">copy</span></button><button class="tagbtn" data-tag="general- rmm women">general- rmm women <span class="ic">copy</span></button></div>
+      <div class="lbl" style="margin-top:16px">Offer Discussed on the opportunity</div>
+      <button class="tagbtn" data-tag="RMM Group Only Women">RMM Group Only Women <span class="ic">copy</span></button>
+    </div>
+    <div>
+      <div class="lbl">What each tag starts</div>
+      <ul class="starts"><li><code>client - group only women</code> starts <b>Onboarding Email- RMM Group Only (women)</b>: the onboarding email with the Circle invitation.</li><li><code>general- rmm women</code> starts <b>RMM Women 12 Weeks with Calls- GENERAL</b>: the 12 week program email sequence.</li><li><code>existing client</code> marks the record as a client so lead automations leave them alone.</li></ul>
+    </div>
+  </div>
+</section>
+<section class="card" id="p9">
+  <div class="chead">
+    <div class="num">9</div>
+    <div>
+      <div class="lbl" style="margin-bottom:2px">Program purchased</div>
+      <h3>Self-Paced <span class="gtag">men</span></h3>
+    </div>
+  </div>
+  <div class="cgrid">
+    <div>
+      <div class="lbl">Tags to add on the contact, all of them</div>
+      <div class="taglist"><button class="tagbtn" data-tag="client - rmm self paced men">client - rmm self paced men <span class="ic">copy</span></button><button class="tagbtn" data-tag="existing client">existing client <span class="ic">copy</span></button><button class="tagbtn" data-tag="general- rrm men">general- rrm men <span class="ic">copy</span></button></div>
+      <div class="lbl" style="margin-top:16px">Offer Discussed on the opportunity</div>
+      <button class="tagbtn" data-tag="Self-Paced Lifetime Access">Self-Paced Lifetime Access <span class="ic">copy</span></button>
+    </div>
+    <div>
+      <div class="lbl">What each tag starts</div>
+      <ul class="starts"><li><code>client - rmm self paced men</code> starts <b>Onboarding Email- RMM- SELF PACED (Men)</b>: the onboarding email with the Circle invitation.</li><li><code>general- rrm men</code> starts <b>GENERAL- RMM Men 12 Weeks with Calls</b>: the 12 week program email sequence.</li><li><code>existing client</code> marks the record as a client so lead automations leave them alone.</li></ul>
+    </div>
+  </div>
+</section>
+<section class="card" id="p10">
+  <div class="chead">
+    <div class="num">10</div>
+    <div>
+      <div class="lbl" style="margin-bottom:2px">Program purchased</div>
+      <h3>Self-Paced <span class="gtag">women</span></h3>
+    </div>
+  </div>
+  <div class="cgrid">
+    <div>
+      <div class="lbl">Tags to add on the contact, all of them</div>
+      <div class="taglist"><button class="tagbtn" data-tag="client - rmm self paced women">client - rmm self paced women <span class="ic">copy</span></button><button class="tagbtn" data-tag="existing client">existing client <span class="ic">copy</span></button><button class="tagbtn" data-tag="general- rmm women">general- rmm women <span class="ic">copy</span></button></div>
+      <div class="lbl" style="margin-top:16px">Offer Discussed on the opportunity</div>
+      <button class="tagbtn" data-tag="Self-Paced Lifetime Access">Self-Paced Lifetime Access <span class="ic">copy</span></button>
+    </div>
+    <div>
+      <div class="lbl">What each tag starts</div>
+      <ul class="starts"><li><code>client - rmm self paced women</code> starts <b>Onboarding Email- RMM- SELF PACED (Women)</b>: the onboarding email with the Circle invitation.</li><li><code>general- rmm women</code> starts <b>RMM Women 12 Weeks with Calls- GENERAL</b>: the 12 week program email sequence.</li><li><code>existing client</code> marks the record as a client so lead automations leave them alone.</li></ul>
+    </div>
+  </div>
+</section>
+</section>
+
+<section>
+  <div class="kicker">Do not use these</div>
+  <h2>Tags that look right and start nothing</h2>
+  <p class="small" style="margin-bottom:12px">These exist in the account, some with clients on them from before. None of them starts an automation. If a client has one of these and nothing else, they got no onboarding email.</p>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Tag</th><th>Why not</th></tr></thead>
+    <tbody><tr><td><code class="bad">client - accelerator men / women</code></td><td>Looks like the Accelerator tag. Starts nothing. This is what Brendan Logan and Justin Huntington got, and neither received an onboarding email.</td></tr><tr><td><code class="bad">client - couples coaching</code></td><td>Missing the gender. Starts nothing.</td></tr><tr><td><code class="bad">client - couples coaching vip</code></td><td>Not the VIP tag. The VIP onboarding runs on client - vip sophie men / women.</td></tr><tr><td><code class="bad">client - course only men / women</code></td><td>Retired program. The automation is unpublished.</td></tr><tr><td><code class="bad">client - rmm course only men / women</code></td><td>Retired program. The automation is unpublished.</td></tr><tr><td><code class="bad">client - rmm men / women</code></td><td>Retired program. The automation is unpublished.</td></tr><tr><td><code class="bad">rmm- checkin</code></td><td>Missing (men) or (women). Starts nothing.</td></tr><tr><td><code class="bad">general- rmm men</code></td><td>Does not exist. The real men&#x27;s tag is spelled general- rrm men, with two r&#x27;s.</td></tr></tbody>
+  </table></div>
+</section>
+
+<footer>
+  <span>Client Tagging SOP · Sophie Orozco Coaching · Updated Sept 30, 2026</span>
+  <span>Maintained by John Carlo Caintic</span>
+</footer>
+
+</div>
+
+<div class="toast" id="toast">Copied</div>
+<button class="top" id="top">↑ Top</button>
+
+<script>
+  const toast = document.getElementById('toast');
+  document.querySelectorAll('.tagbtn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const tag = btn.dataset.tag;
+      try { await navigator.clipboard.writeText(tag); }
+      catch (e) {
+        const ta = document.createElement('textarea');
+        ta.value = tag; document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); } catch (err) {}
+        document.body.removeChild(ta);
+      }
+      btn.classList.add('copied');
+      const ic = btn.querySelector('.ic'); const old = ic.textContent; ic.textContent = 'copied ✓';
+      toast.textContent = 'Copied: ' + tag; toast.classList.add('show');
+      setTimeout(() => { btn.classList.remove('copied'); ic.textContent = old; toast.classList.remove('show'); }, 1600);
+    });
+  });
+  const topBtn = document.getElementById('top');
+  topBtn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+  window.addEventListener('scroll', () => topBtn.classList.toggle('show', window.scrollY > 700));
+</script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Client Journey System — How It Works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F7F4EE; --card:#FFFFFF; --ink:#1E1B16; --muted:#6B6459;
+    --terra:#A9502C; --terra-soft:#F3E3DA; --green:#1D4A33; --green-soft:#E4EEE7;
+    --gold:#B98A2F; --line:#E4DDD2; --warn-bg:#FBEFE7; --warn:#8C3D14;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--cream);color:var(--ink);font-family:'Inter',system-ui,sans-serif;line-height:1.6;font-size:16px}
+  .wrap{max-width:880px;margin:0 auto;padding:0 20px 80px}
+  header.hero{background:var(--ink);color:#F7F4EE;padding:56px 20px 48px;text-align:center}
+  .hero .brand{font-family:'Playfair Display',serif;font-size:15px;letter-spacing:.18em;text-transform:uppercase;color:#CDB68A;margin-bottom:14px}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(30px,5vw,44px);font-weight:600;line-height:1.15;max-width:680px;margin:0 auto 14px}
+  .hero p{color:#BFB8AC;max-width:560px;margin:0 auto;font-size:16px}
+  .pill{display:inline-block;margin-top:22px;background:#2C2820;border:1px solid #4A4438;color:#E8C97E;font-size:13px;font-weight:600;padding:7px 16px;border-radius:999px;letter-spacing:.04em}
+  section{margin-top:56px}
+  .kicker{color:var(--terra);font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
+  h2{font-family:'Playfair Display',serif;font-size:clamp(24px,3.6vw,32px);font-weight:600;line-height:1.2;margin-bottom:12px}
+  p.lead{color:var(--muted);max-width:640px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:28px;margin-top:22px;box-shadow:0 1px 2px rgba(30,27,22,.04)}
+  .autonum{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--terra);color:#fff;font-weight:700;font-size:15px;margin-right:12px;flex:none}
+  .card h3{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;display:flex;align-items:center;margin-bottom:4px}
+  .card .sys{color:var(--muted);font-size:12.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin:0 0 16px 46px}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start}
+  @media(max-width:700px){.cols{grid-template-columns:1fr}}
+  .label{font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:8px}
+  ul.plain{list-style:none}
+  ul.plain li{padding-left:22px;position:relative;margin-bottom:9px}
+  ul.plain li::before{content:"";position:absolute;left:2px;top:9px;width:8px;height:8px;border-radius:50%;background:var(--terra)}
+  /* flowcharts */
+  .flow{display:flex;flex-direction:column;align-items:center;gap:0;margin-top:4px}
+  .fnode{background:var(--green-soft);border:1.5px solid var(--green);color:var(--green);border-radius:10px;padding:10px 16px;font-size:14px;font-weight:600;text-align:center;max-width:300px;width:100%}
+  .fnode.start{background:var(--ink);border-color:var(--ink);color:#F3EBDD}
+  .fnode.action{background:#fff;border-color:var(--line);color:var(--ink);font-weight:500}
+  .fnode.you{background:var(--terra-soft);border-color:var(--terra);color:var(--terra)}
+  .farrow{color:var(--gold);font-size:20px;line-height:1;padding:6px 0;font-weight:700}
+  .fsplit{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;max-width:340px}
+  .fsplit .fnode{flex:1;min-width:120px;max-width:160px;font-size:12.5px;padding:8px 10px}
+  .fnote{font-size:12.5px;color:var(--muted);text-align:center;margin-top:10px;max-width:300px}
+  /* master flow */
+  .master .fnode{max-width:420px}
+  /* tables */
+  table{width:100%;border-collapse:collapse;margin-top:14px;font-size:14.5px}
+  th{text-align:left;background:var(--green-soft);color:var(--green);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;padding:10px 12px;border:1px solid var(--line)}
+  td{padding:11px 12px;border:1px solid var(--line);vertical-align:top}
+  tr:nth-child(even) td{background:#FBF9F5}
+  .tablewrap{overflow-x:auto}
+  /* callouts */
+  .ok{background:var(--green-soft);border-left:4px solid var(--green);border-radius:0 10px 10px 0;padding:14px 18px;font-size:14.5px;color:var(--green);margin-top:16px}
+  .warnbox{background:var(--warn-bg);border-left:4px solid var(--terra);border-radius:0 10px 10px 0;padding:14px 18px;font-size:14.5px;color:var(--warn);margin-top:16px}
+  .nevers{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:20px}
+  .never{background:#fff;border:1.5px solid var(--terra);border-radius:12px;padding:20px}
+  .never .no{font-size:22px;margin-bottom:8px}
+  .never b{display:block;margin-bottom:6px;color:var(--warn)}
+  .never p{font-size:14px;color:var(--muted)}
+  footer{margin-top:70px;padding-top:24px;border-top:1px solid var(--line);color:var(--muted);font-size:13.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="brand">Sophie Orozco Coaching · FG Funnels</div>
+  <h1>Client Journey System<br>— How It Works</h1>
+  <p>A plain-language guide to every automation in the system, what it does for you, and the few things only you do.</p>
+  <div class="pill">Built &amp; tested · switching on soon</div>
+</header>
+
+<div class="wrap">
+
+<section>
+  <div class="kicker">The Big Picture</div>
+  <h2>The system runs each client's journey by itself</h2>
+  <p class="lead">From the moment a client signs up until they finish their program, everything is timed to <b>each client's own start date</b> — records, check-in emails, session counts, and your alerts. Nothing goes out in batches, and no client ever gets an email that doesn't match where they are in their program.</p>
+
+  <div class="card master">
+    <div class="label">The whole journey at a glance</div>
+    <div class="flow">
+      <div class="fnode start">Client signs up</div>
+      <div class="farrow">↓</div>
+      <div class="fnode action">Start date &amp; program recorded · session count set</div>
+      <div class="farrow">↓</div>
+      <div class="fnode you">You get a new-client alert → you assign their coach</div>
+      <div class="farrow">↓</div>
+      <div class="fnode action">Coach receives their full brief automatically</div>
+      <div class="farrow">↓</div>
+      <div class="fnode">Check-in emails arrive at the right week — for that client</div>
+      <div class="farrow">↓</div>
+      <div class="fnode action">Every session updates the count by itself</div>
+      <div class="farrow">↓</div>
+      <div class="fnode">Final session → coach alerted, client notified from you</div>
+      <div class="farrow">↓</div>
+      <div class="fnode start">What-comes-next email offers their continuation path</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="kicker">The Five Automations</div>
+  <h2>What each one does, in plain language</h2>
+
+  <!-- 1 -->
+  <div class="card">
+    <h3><span class="autonum">1</span>When a Client Signs Up</h3>
+    <div class="sys">System name: WF-K1 Closed Won Client Setup</div>
+    <div class="cols">
+      <div>
+        <div class="label">What starts it</div>
+        <p>A sale is marked as won.</p>
+        <div class="label" style="margin-top:16px">What it does, all by itself</div>
+        <ul class="plain">
+          <li>Records that day as the client's official <b>program start date</b> — every future email is timed from it</li>
+          <li>Reads which program they bought and sets their session count: <b>4, 6, or 12</b></li>
+          <li>Sends <b>you</b> an alert for every new client — coaching and non-coaching — so you track everyone from day one</li>
+          <li>(Once contracts are loaded) sends their program's agreement for e-signature and files the signed copy on their profile</li>
+        </ul>
+      </div>
+      <div>
+        <div class="label">Flow</div>
+        <div class="flow">
+          <div class="fnode start">Sale marked won</div>
+          <div class="farrow">↓</div>
+          <div class="fnode action">Start date recorded</div>
+          <div class="farrow">↓</div>
+          <div class="fnode action">Session count set (4 / 6 / 12)</div>
+          <div class="farrow">↓</div>
+          <div class="fnode you">Alert lands in your inbox</div>
+          <div class="farrow">↓</div>
+          <div class="fnode action">Contract sent for e-signature</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="card">
+    <h3><span class="autonum">2</span>The Milestone Emails</h3>
+    <div class="sys">System names: WF-K2a to WF-K2f (six automations)</div>
+    <p style="margin-bottom:4px">Each client gets check-in emails at the right week of <b>their</b> program — written in your voice and sent from your email, so replies come straight to you.</p>
+    <div class="tablewrap">
+    <table>
+      <tr><th>Email</th><th>When it arrives</th><th>Who gets it</th></tr>
+      <tr><td>Week 3 check-in</td><td>3 weeks after their start</td><td>Every client</td></tr>
+      <tr><td>Week 5 what-comes-next</td><td>5 weeks after start</td><td>6-session programs</td></tr>
+      <tr><td>Week 6 check-in</td><td>6 weeks after start</td><td>All except RMM Plus</td></tr>
+      <tr><td>Week 4 what-comes-next</td><td>4 weeks after start</td><td>RMM Plus only</td></tr>
+      <tr><td>Week 9 what-comes-next</td><td>9 weeks after start</td><td>RFB 1 Year only</td></tr>
+      <tr><td>Week 12 completion</td><td>12 weeks after start</td><td>RFB 1 Year only</td></tr>
+    </table>
+    </div>
+    <div class="cols" style="margin-top:20px">
+      <div>
+        <div class="label">Flow</div>
+        <div class="flow">
+          <div class="fnode start">Client's own start date</div>
+          <div class="farrow">↓</div>
+          <div class="fnode action">The right week arrives for that client</div>
+          <div class="farrow">↓</div>
+          <div class="fnode action">System checks their program</div>
+          <div class="farrow">↓</div>
+          <div class="fsplit">
+            <div class="fnode">Milestone applies → email sends from you</div>
+            <div class="fnode action">Doesn't apply → nothing sends</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="label">Built-in safety</div>
+        <div class="ok">If a client is already <b>past</b> a milestone when they enter the system, that email is <b>skipped</b> rather than sent late. Nobody ever gets a “week&nbsp;3” email in week&nbsp;10.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="card">
+    <h3><span class="autonum">3</span>The Session Counter</h3>
+    <div class="sys">System name: WF-K3 Session Counter</div>
+    <div class="cols">
+      <div>
+        <div class="label">What starts it</div>
+        <p>A session on a coach's calendar is marked as <b>attended</b> — or as a <b>no-show</b> (no-shows count as used, as you decided).</p>
+        <div class="label" style="margin-top:16px">What it does</div>
+        <ul class="plain">
+          <li>Adds one to <b>Sessions Used</b> and subtracts one from <b>Sessions Remaining</b> on the client's profile</li>
+          <li>Any coach can glance at a record and see exactly where the client stands</li>
+          <li>Nobody keeps a spreadsheet</li>
+        </ul>
+      </div>
+      <div>
+        <div class="label">Flow</div>
+        <div class="flow">
+          <div class="fnode start">Session marked attended or no-show</div>
+          <div class="farrow">↓</div>
+          <div class="fnode action">Sessions Used +1</div>
+          <div class="farrow">↓</div>
+          <div class="fnode action">Sessions Remaining −1</div>
+          <div class="farrow">↓</div>
+          <div class="fnode">Count visible on the client's profile</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <div class="card">
+    <h3><span class="autonum">4</span>The Last-Session Alert</h3>
+    <div class="sys">System name: WF-K4 Last Session Alert</div>
+    <div class="cols">
+      <div>
+        <div class="label">What starts it</div>
+        <p>A client's Sessions Remaining reaches <b>1</b>.</p>
+        <div class="label" style="margin-top:16px">What it does</div>
+        <ul class="plain">
+          <li>Alerts their <b>coach</b> that the next session is the final one</li>
+          <li>Sends the client a heads-up note <b>from you</b> — so their questions about what happens next come straight to your inbox</li>
+        </ul>
+      </div>
+      <div>
+        <div class="label">Flow</div>
+        <div class="flow">
+          <div class="fnode start">Sessions Remaining hits 1</div>
+          <div class="farrow">↓</div>
+          <div class="fsplit">
+            <div class="fnode">Coach alerted: “final session next”</div>
+            <div class="fnode you">Client notified — from you</div>
+          </div>
+          <div class="farrow">↓</div>
+          <div class="fnode you">You have the continuation conversation</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5 -->
+  <div class="card">
+    <h3><span class="autonum">5</span>The Coach Handoff</h3>
+    <div class="sys">System name: WF-K5 Coach Handoff</div>
+    <div class="cols">
+      <div>
+        <div class="label">What starts it</div>
+        <p>You assign a client to a coach in the system — one click.</p>
+        <div class="label" style="margin-top:16px">What it does</div>
+        <ul class="plain">
+          <li>Instantly sends that coach everything they need: the client's name, program, intake summary, and where to find their signed agreement</li>
+          <li>If you ever <b>reassign</b> a client, the new coach gets the same brief automatically</li>
+        </ul>
+      </div>
+      <div>
+        <div class="label">Flow</div>
+        <div class="flow">
+          <div class="fnode you">You assign the coach</div>
+          <div class="farrow">↓</div>
+          <div class="fnode action">Coach receives the full brief</div>
+          <div class="farrow">↓</div>
+          <div class="fnode">Coach sees only their own clients in the system</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="kicker">Your Part</div>
+  <h2>The only things a human does</h2>
+  <div class="tablewrap">
+  <table>
+    <tr><th>When</th><th>What you do</th></tr>
+    <tr><td>A new-client alert arrives</td><td>Assign them to their coach — that one click sends the coach their full brief</td></tr>
+    <tr><td>A client replies to any check-in email</td><td>Reply like normal email — the conversation is yours from there</td></tr>
+    <tr><td>A last-session alert arrives</td><td>Have the continuation conversation when the moment is right</td></tr>
+    <tr><td>A session happens</td><td>The coach marks it attended or no-show on the calendar — that's the only bookkeeping</td></tr>
+    <tr><td>You want an email's wording changed</td><td>Send John the new text — it's swapped in minutes</td></tr>
+  </table>
+  </div>
+</section>
+
+<section>
+  <div class="kicker">Important</div>
+  <h2>Please never do these — ask John instead</h2>
+  <div class="nevers">
+    <div class="never"><div class="no">🚫</div><b>Never add a contact into a workflow manually</b><p>The emails are timed to each client's dates. A manual add has no dates attached and fires <b>every email at once</b>.</p></div>
+    <div class="never"><div class="no">🚫</div><b>Never edit the workflows themselves</b><p>Even small changes can affect every enrolled client at once.</p></div>
+    <div class="never"><div class="no">🚫</div><b>Never re-add a tag a client already had</b><p>That can restart automations and duplicate emails to the client.</p></div>
+  </div>
+  <div class="warnbox" style="margin-top:18px">Anything you want changed or fixed: message John. Changes take minutes and stay safe.</div>
+</section>
+
+<section>
+  <div class="kicker">Current Status</div>
+  <h2>Built, tested, ready to switch on</h2>
+  <div class="warnbox">Going live waits on three things: the what-comes-next email pricing confirmation, the contract files, and the start-date setup for existing clients. Everything else is done.</div>
+</section>
+
+<footer>
+  <span>Client Journey System · Sophie Orozco Coaching</span>
+  <span>Prepared by John Carlo Caintic</span>
+</footer>
+
+</div>
+</body>
+</html>

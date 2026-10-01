@@ -1,0 +1,2274 @@
+# GHL New Pipeline Rebuild  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+Trigger: When does it run?
+
+  - It starts when a deal’s pipeline stage changes to a specific stage in a specific pipeline:
+      
+      - Pipeline = ID vbghucibzVL3RRatcaYG
+      - Stage = ID 51e4d7d3-7f56-415b-b253-8ddc452cb7d1  
+        In practice, this is your “Closed Won” (or similar) stage for Program 1.
+
+-----
+
+### 1\) Tag the contact as an existing client
+
+Action: Add Tag: existing client
+
+  - Immediately adds the tag existing client to the contact who just closed.
+
+-----
+
+### 2\) Decide which program/gender segment they belong to
+
+Action: yes (If/Else condition with 3 branches)  
+This condition checks a contact detail field (ID NqOmlbO6kQeJx881jid6) for membership in specific values. It has three outcomes:
+
+  - Branch: Men
+      
+      - Condition: The contact’s field contains one of these values:
+          
+          - RMM men
+          - RMM VIP Sophie (men)
+          - RMM Group Only Men
+          - RMM Course only Men
+          - RMM Accelerator Men
+  - Branch: Women
+      
+      - Condition: The contact’s field contains one of these values:
+          
+          - RMM women
+          - RMM VIP Sophie (women)
+          - RMM Group Only Women
+          - RMM Course only Women
+          - RMM Accelerator Women
+  - Branch: None (Else)
+      
+      - Used when the contact does not match any of the Men/Women program values above (for example: field is empty, Couples, or some other program).
+
+-----
+
+### 3\) If they’re in a Men program
+
+Branch: Men → Add Tag → Go to
+
+  - Add Tag
+      
+      - Adds tag rmm- checkin (men) to the contact.
+      - This is clearly meant to enroll them in your weekly check-in emails for men.
+  - Go to
+      
+      - Jumps to the Notify Krissy internal notification step (node e23db132-3e51-49e9-a203-1dc14679742b).
+
+-----
+
+### 4\) If they’re in a Women program
+
+Branch: Women → Add Tag → Notify Krissy
+
+  - Add Tag
+      
+      - Adds tag rmm- checkin (women) to the contact.
+      - This enrolls them in the weekly check-in emails for women.
+  - Notify Krissy (Internal Notification)
+      
+      - Sends an internal email notification (not to the client, but to a team member) with:
+          
+          - From name: {{location.name}}
+          - From email: {{location.email}}
+          - To: the selected user uLWcXHmRp4GXKtgU62su (labeled as Krissy in the step name).
+          - Subject: New client closed: {{contact.name}}
+          - Body:
+              
+              - Says that {{contact.name}} just closed and was tagged automatically.
+              - Shows Program: {{contact.offer\_discussed}}.
+              - Tells Krissy to check the record to begin onboarding.
+
+-----
+
+### 5\) If they don’t match Men or Women (Else branch)
+
+Branch: None → Add task → Go to
+
+  - Add task (Task Notification)
+      
+      - Creates a task for the assigned user (contact.assigned\_user) with:
+          
+          - Title:
+              
+              - “Check-in tag needed - Offer Discussed empty or Couples/other program”
+          - Body:
+              
+              - Explains that {{contact.name}} closed but could not be auto-tagged for weekly check-ins.
+              - Instructs the assignee to verify the program and gender, then manually add either:
+                  
+                  - rmm- checkin (men) or
+                  - rmm- checkin (women)
+          - Due date:
+              
+              - 1 day from now (no weekend skipping configured).
+  - Go to
+      
+      - After creating the task, it jumps to the same Notify Krissy step used in the Women branch (node e23db132-3e51-49e9-a203-1dc14679742b).
+      - So Krissy still gets notified of the new client, even if auto-tagging failed.
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+Triggers
+
+  - Invitee Canceled (Calendly)
+      
+      - Fires when Calendly sends an “Invitee Canceled” webhook.
+      - Condition: scope = Organization (so it’s listening at the organization level in Calendly).
+      - Any contact whose appointment is canceled will enter this workflow via this trigger.
+  - Invitee No Show Created (Calendly)
+      
+      - Fires when Calendly sends an “Invitee No Show Created” webhook.
+      - Condition: scope = Organization.
+      - Any contact marked as a no-show in Calendly will enter this workflow via this trigger.  
+        -----
+
+Condition / Branching logic
+
+  - If/Else condition – “yes” node with branches “No-Show”, “Cancelled”, and “None”  
+    This is a multi-branch condition that checks which trigger caused the contact to enter:
+      
+      - Branch: “No-Show”
+          
+          - Condition: Trigger == Invitee No Show Created (ID: nkGpKBQ0WUuB6IEZxFYG).
+          - So this branch runs only when the workflow was started by the No-Show trigger.
+      - Branch: “Cancelled”
+          
+          - Condition: Trigger == Invitee Canceled (ID: UM4rSNSchlBmaCYMIXrK).
+          - So this branch runs only when the workflow was started by the Canceled trigger.
+      - Branch: “None”
+          
+          - This is the “else” branch.
+          - It runs if the contact entered the workflow from some other trigger (or if neither of the above conditions match).
+          - In your current setup, there are no actions under “None”, so nothing happens for that path  
+            -----
+              
+            Actions under each branch
+
+<!-- end list -->
+
+  - No-Show branch → Create or update opportunity
+      
+      - Action: Create or update opportunity
+      - Pipeline: vbghucibzVL3RRatcaYG (your “Closer” or main sales pipeline).
+      - Stage: cb02c509-10c2-4ef1-bf52-491fc727bb43 (this is your dedicated “No-Show” stage).
+      - Opportunity name: {{contact.name}}
+      - Opportunity source: {{contact.source}}
+      - Monetary value: empty (you can fill this later or manually).
+  - Effectively:
+      
+      - When someone is marked as a no-show in Calendly, the workflow creates or updates an opportunity for that contact and moves it into your “No-Show” stage.
+  - Cancelled branch → Create or update opportunity
+      
+      - Action: Create or update opportunity
+      - Pipeline: same pipeline vbghucibzVL3RRatcaYG.
+      - Stage: c26db954-fe95-47dd-9307-28f738bf6e7f (your dedicated “Cancelled” stage).
+      - Opportunity name: {{contact.name}}
+      - Opportunity source: {{contact.source}}
+      - Monetary value: empty.
+  - Effectively:
+      
+      - When someone cancels their appointment in Calendly, the workflow creates or updates an opportunity for that contact and moves it into your “Cancelled” stage.
+  - None branch
+      
+      - No actions configured.
+      - If a contact ever hits this branch, nothing happens to their opportunity.  
+
+# SMS Automations  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+Overall purpose:  
+It’s an SMS reminder and warm‑up sequence that runs automatically for people who book and confirm a “Relationship Reset Call” (or similar calls on several calendars). It sends multiple texts from the moment the call is booked up to 5 minutes before the appointment.
+
+-----
+
+### Triggers (how contacts enter the workflow)
+
+There are 13 appointment-based triggers. They’re all variations of the same idea:
+
+  - They fire when:
+      
+      - The event type is “normal”
+      - The contact is either the main contact or a guest
+      - The appointment status is confirmed
+      - The appointment is in a specific calendar (each trigger points to a different calendar ID)
+
+Names include:
+
+  - “Copy of Relationship Reset Call”
+  - Multiple “Relationship Reset Call” triggers (each tied to a different calendar)
+  - “RR Call with Luann”
+  - “Closer - Steph Waring Calendly”
+
+Effect:  
+Any time a call is confirmed on one of those calendars, the contact is enrolled into this SMS sequence.
+
+-----
+
+### Actions (what happens after the trigger)
+
+Once a contact is enrolled, they go through this linear series of steps:
+
+  - SMS 1:
+      
+      - Sent immediately after the appointment is confirmed.
+      - Message:
+          
+          - Confirms the call time and date using appointment fields:  
+            {{appointment.only\_start\_time}} and {{appointment.only\_start\_date}}
+          - Asks them to reply “YES” to confirm.
+          - Reminds them to watch the pre‑call information and follow instructions on the confirmation page.
+  - Wait 30 seconds after SMS 1 (time-based wait):
+      
+      - Pauses for 30 seconds after SMS 1 is sent.
+  - SMS 2:
+      
+      - Sent after that 30‑second wait.
+      - Message:
+          
+          - Tells them you’ll send resources to their email.
+          - Emphasizes reading those resources so they’re prepared.
+          - Ends with a positive, excited tone.
+  - 24 hours before the call (appointment-based wait):
+      
+      - Waits until 24 hours before the appointment start time.
+      - If the appointment timing changes, this wait is tied to the appointment, so it adjusts relative to the new start time (within the platform’s normal appointment-wait behavior).
+      - Condition is set to “skip” if the timing no longer makes sense (e.g., if it’s already inside that window when they enter).
+  - SMS 3:
+      
+      - Sent 24 hours before the call.
+      - Message:
+          
+          - Friendly reminder that you’re scheduled to chat tomorrow at {{appointment.only\_start\_time}}.
+          - Keeps it short: “Talk soon”.
+  - 6 hours before the call (appointment-based wait):
+      
+      - Waits until 6 hours before the appointment.
+  - SMS 4:
+      
+      - Sent 6 hours before the call.
+      - Message:
+          
+          - Sends a podcast link you and your husband recorded.
+          - Explains it’s part 1 of 3 and asks for their thoughts.
+          - This is a “warm‑up” / value‑add message to deepen engagement before the call.
+  - 1 hour before the call (appointment-based wait):
+      
+      - Waits until 1 hour before the appointment.
+  - SMS 5:
+      
+      - Sent 1 hour before the call.
+      - Message:
+          
+          - “Your call with my team starts in 1 hour.”
+          - Asks them to find a quiet spot.
+          - Provides a reschedule link using {{custom\_values.precall\_booking\_link}} in case something came up.
+  - 5 minutes before the call (appointment-based wait):
+      
+      - Waits until 5 minutes before the appointment.
+  - SMS 6:
+      
+      - Sent 5 minutes before the call.
+      - Message:
+          
+          - “5 minutes out\! We’ll see you soon {{[contact.name](http://contact.name/)}}.”
+          - Final nudge to be ready right before the call.
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+Here’s what this “Canceled Appointment Recovery \> SMS” workflow is doing, step by step, in plain language.
+
+There is no trigger configured yet, so right now it won’t start on its own. Once a trigger is added (e.g., “Appointment Canceled”), this is the path a contact would follow:
+
+-----
+
+### 1\. Initial delay
+
+  - Wait 10 mins:  
+    After the trigger fires (once you add one), the workflow waits 10 minutes before sending anything.
+
+-----
+
+### 2\. First outreach after cancellation
+
+  - SMS 1:  
+    Message:  
+    *{{contact.first\_name}}, it’s Sophie. I noticed you cancelled your call. Just want to make sure everything is okay? Let me know.**  
+    *Purpose: A gentle check‑in right after they cancel, inviting a reply.
+  - Wait for reply (up to 1 day) – on SMS replies from staff
+      
+      - The workflow now waits to see if a staff user replies to the contact via SMS.
+      - It will wait up to 1 day.
+  - This wait has two branches:
+      
+      - Branch A – “wait” (primary):  
+        If a staff user replies to the contact before the 1‑day timeout, the contact goes to a Go to step that jumps them into the “Booked/Rebooked” condition node (explained below).  
+        In practice, this means: if your team engages with them quickly, the workflow checks whether they’ve booked again and can end or move accordingly.
+      - Branch B – “timeout”:  
+        If no staff reply happens within 1 day, the contact goes forward to the first “Booked/Rebooked” condition.
+
+-----
+
+### 3\. First “Booked/Rebooked” check
+
+  - If/Else condition – “Booked/Rebooked” (first one):  
+    This condition checks if the contact looks “saved” already by either:
+      
+      - Being in a specific workflow contact state (an internal workflow condition), or
+      - Having the tag calendly-appointment-booked (indicating they booked/rebooked via Calendly).
+  - It has two branches:
+      
+      - Yes branch (“Branch”):  
+        This branch is defined but currently has no actions under it.  
+        Effectively, if they have rebooked / have the tag, nothing else happens in this workflow (it just stops for them).
+      - None branch (“None”):  
+        If they have not rebooked and don’t have the tag, they move on to SMS 2.
+
+-----
+
+### 4\. Second outreach if they still haven’t rebooked
+
+  - SMS 2:  
+    Message:  
+    *Hey I know asking for help can feel scary… I was in your exact position. Were you able to get the help you need?**  
+    *Purpose: A more emotional, empathetic follow‑up to re‑engage them if they didn’t rebook after the first message.
+  - Wait for reply (up to 1 day) – on SMS replies from staff  
+    Again, the workflow waits up to 1 day for a staff user to reply to the contact via SMS.  
+    Two branches:
+      
+      - Branch A – “wait” (primary):  
+        If a staff user replies within that day, the contact just stops here (no further steps are attached to this branch).  
+        In practice: if your team engages, the automation backs off.
+      - Branch B – “timeout”:  
+        If no staff reply within 1 day, the contact goes to the second “Booked/Rebooked” condition.
+
+-----
+
+### 5\. Second “Booked/Rebooked” check
+
+  - If/Else condition – “Booked/Rebooked” (second one):  
+    This is essentially the same logic as the first condition:
+      
+      - Checks if they’re in that workflow contact state, or
+      - Have the calendly-appointment-booked tag.
+  - Branches:
+      
+      - Yes branch (“Branch”):  
+        Defined but empty again. If they’ve rebooked, the workflow effectively ends for them.
+      - None branch (“None”):  
+        If they still haven’t rebooked / don’t have the tag, they get SMS 3.
+
+-----
+
+### 6\. Final nudge
+
+  - SMS 3:  
+    Message:  
+    *{{contact.first\_name}}?**  
+    *Purpose: A very short “nudge” message to prompt a response from someone who has ignored the previous two texts and hasn’t rebooked.  
+    There are no further steps after this, so the workflow ends here.
+
+Here’s what this “No-Show Recovery \> SMS” workflow is doing, step by step, in plain language.
+
+There’s currently no trigger defined, so nothing runs yet until you add one (for example: “Appointment No-Show” or “Contact Added to Workflow”). Once a trigger is added, the flow would behave like this:
+
+-----
+
+### 1\. Initial wait and first SMS
+
+  - Wait 10 mins
+      
+      - After the trigger fires (whatever you choose later), the workflow waits 10 minutes.
+  - SMS 1
+      
+      - Message:  
+        {{contact.first\_name}}, it’s Sophie. I saw you missed your call. Just want to make sure everything is okay? Let me know..
+      - Purpose: Gentle check-in right after a missed call/no-show.
+  - Wait for reply (up to 1 day) – Path A
+      
+      - The workflow waits to see if a staff user replies to the contact via SMS.
+      - This is a “wait until user replied” step with a 1‑day timeout and two branches:
+          
+          - Primary branch (they get a staff reply within 1 day)
+              
+              - Sends an Internal Notification (SMS to your team):  
+                {{contact.name}} Has responded to the no-show recovery SMS sequence. Please check and take action accordingly.
+              - Then a Go to jumps to a later “Booked?” check (node a26e6daf-...).
+          - Timeout branch (no staff reply within 1 day)
+              
+              - Goes directly to that same “Booked?” condition (node a26e6daf-...).
+
+So after SMS 1 and up to 1 day of waiting, everyone ends up at the first Booked? check.
+
+-----
+
+### 2\. First “Booked?” check (after SMS 1)
+
+  - If/Else condition – “Booked?” (node a26e6daf-...)
+      
+      - This checks a workflow contact condition (likely “Has this contact booked?” or similar, tied to a workflow flag or appointment status).
+      - It has:
+          
+          - A Yes branch (node d4b737af-...) that currently has no actions configured.
+          - A None/No branch (node 5591757f-...) for contacts who have not booked.
+  - If NOT booked → SMS 2
+      
+      - In the None branch:
+          
+          - SMS 2:  
+            Hey I know asking for help can feel scary… I was in your exact position. Were you able to get the help you need?
+              
+              - This is a more empathetic follow-up for those who still haven’t booked.
+  - Wait for reply (up to 1 day) – Path B
+      
+      - After SMS 2, there’s another “wait until staff user replies” step with a 1‑day timeout:
+          
+          - Primary branch (staff replies within 1 day)
+              
+              - Sends another Internal Notification to your team:  
+                {{contact.name}} Has responded to the no-show recovery SMS sequence. Please check and take action accordingly.
+              - Then a Go to jumps to a second “Booked?” check (node 8da69f02-...).
+          - Timeout branch (no staff reply within 1 day)
+              
+              - Goes directly to that same second “Booked?” condition (node 8da69f02-...).
+
+Again, regardless of reply, everyone flows into the second Booked? check.
+
+-----
+
+### 3\. Second “Booked?” check (after SMS 2)
+
+  - If/Else condition – “Booked?” (node 8da69f02-...)
+      
+      - Same idea: checks if the contact is now considered Booked.
+      - It has:
+          
+          - A Yes branch (node 9c83405f-...) with no actions configured.
+          - A None/No branch (node ea908773-...) for those still not booked.
+  - If still NOT booked → SMS 3
+      
+      - In the None branch:
+          
+          - SMS 3:  
+            {{contact.first\_name}}?
+              
+              - A very short “nudge” message to re-engage if they’ve ignored the previous texts.
+
+After SMS 3, the workflow ends (no further steps are defined).
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+ 
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+Overall purpose:  
+Recover people who started but didn’t finish a form (coming from Zapier), by sending up to 4 SMS messages, checking if they book an appointment (e.g. via Calendly), and notifying your team when they reply.
+
+Note: The JSON you shared doesn’t include the trigger itself, but from the name it’s clearly meant to start when Zapier sends a “form abandonment” contact into this workflow.
+
+-----
+
+### 1\. First outreach
+
+  - SMS 1
+      
+      - Message:  
+        {{contact.first\_name}}, it’s Sophie Orozco. I saw that you partially filled out my form but did not complete it. Are you still looking to get some help?
+      - Goal: Re‑engage the person and invite a simple “yes/no” style reply.
+  - Wait for reply (up to 1 day)
+      
+      - The workflow waits up to 1 day to see if there is a user reply on SMS.
+      - This is a “multi‑path” wait with two outcomes:
+          
+          - Primary branch – “wait” (they reply):  
+            As soon as a staff user replies to the contact’s message, this branch runs.
+          - Timeout branch – “timeout” (no reply within 1 day):  
+            If no reply within 1 day, the timeout branch runs.
+  - If they reply to SMS 1 (primary branch):
+      
+      - Internal Notification
+          
+          - Sends an internal SMS to your team:  
+            {{contact.name}} Has responded to the Abandonment recovery SMS sequence. Please check and take action accordingly.
+      - Go To “Booked?” condition (first time)
+          
+          - Jumps to the first Booked? condition node (ID b79f2af0...).
+  - If they do NOT reply to SMS 1 within 1 day (timeout branch):
+      
+      - Goes directly to the same Booked? condition node.
+
+-----
+
+### 2\. First “Booked?” check (Condition 1)
+
+Condition: “Booked?”
+
+  - Checks if the contact has:
+      
+      - A specific workflow contact flag (likely set when they book), OR
+      - The tag calendly-appointment-booked.
+
+Branches:
+
+  - Yes branch (if booked):
+      
+      - Currently just a placeholder “Branch” node with no actions.
+      - Effectively: if they’ve already booked, nothing more happens from this branch.
+  - None (No) branch (if NOT booked):
+      
+      - Continues the follow‑up sequence with SMS 2.
+
+-----
+
+### 3\. Second outreach (if not booked yet)
+
+  - SMS 2
+      
+      - Message:  
+        Hey just bumping this last message ^^
+      - Goal: Light nudge if they didn’t respond or didn’t book.
+  - Wait for reply (up to 1 day)
+      
+      - Again, a 1‑day “wait for user reply” on SMS with two outcomes:
+          
+          - Primary branch – they reply:
+              
+              - Internal Notification to your team with the same message as before.
+              - Go To the second Booked? condition node (ID f5d7def9...).
+          - Timeout branch – no reply in 1 day:
+              
+              - Goes directly to that same second Booked? condition.
+
+-----
+
+### 4\. Second “Booked?” check (Condition 2)
+
+Condition: “Booked?”
+
+  - Same logic: checks the workflow contact flag OR the calendly-appointment-booked tag.
+
+Branches:
+
+  - Yes branch (booked):
+      
+      - Placeholder “Branch” node with no actions (sequence effectively ends here).
+  - None (No) branch (not booked):
+      
+      - Sends SMS 3.
+
+-----
+
+### 5\. Third outreach (if still not booked)
+
+  - SMS 3
+      
+      - Message:  
+        {{contact.name}} I know asking for help can be scary but it’s the first step in reconciliation. The work we do truly only requires one willing person. Is that you?
+      - Tone: More emotional/empathetic, inviting a commitment.
+  - Wait for reply (up to 1 day)
+      
+      - Same pattern:
+          
+          - Primary branch – they reply:
+              
+              - Internal Notification to your team with the same “has responded” message.
+              - Go To the third Booked? condition node (ID 95849da9...).
+          - Timeout branch – no reply in 1 day:
+              
+              - Goes directly to that third Booked? condition.
+
+-----
+
+### 6\. Third “Booked?” check (Condition 3)
+
+Condition: “Booked?”
+
+  - Again checks the workflow contact flag OR the calendly-appointment-booked tag.
+
+Branches:
+
+  - Yes branch (booked):
+      
+      - Placeholder “Branch” node with no actions (sequence ends).
+  - None (No) branch (not booked):
+      
+      - Sends SMS 4.
+
+-----
+
+### 7\. Final outreach
+
+  - SMS 4
+      
+      - Message:  
+        Hey I’m just going to assume now might not be the right time and that’s okay. Do you need additional resources? My youtube is a great place to start if so.
+      - Purpose: Graceful exit + offer free resources (YouTube) if they’re not ready to work with you.
+  - End of sequence
+      
+      - There are no further waits or checks after SMS 4; the workflow ends here for that contact.
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+# CAL  
+
+ 
+
+Overall purpose:  
+When someone cancels a Calendly appointment, the workflow tries to recover the booking with a targeted email sequence. If they still don’t rebook, it hands off to your team for manual follow‑up and updates tags/opportunities accordingly.
+
+-----
+
+### 1\. Trigger
+
+Trigger: Invitee Canceled (Calendly)
+
+  - Fires whenever a Calendly invitee cancels an event (scope = Organization).
+
+-----
+
+### 2\. Find or create the contact
+
+  - Find contact (by email)
+      
+      - Looks up a contact whose email matches {{calendly\_invitee\_canceled.invitee\_email}}.
+  - If contact is found →
+      
+      - Update contact field
+          
+          - Sets these custom fields on the existing contact:
+              
+              - Calendly Event Type = {{contact.calendly\_event\_type}}
+              - Calendly Host Email = {{calendly\_invitee\_canceled.host\_email}}
+              - Calendly Event URI = {{contact.calendly\_event\_uri}}
+              - Calendly Reschedule URL = {{custom\_values.calendly\_reschedule\_url}}
+      - Go to the main condition node (the “yes” if/else named Condition with tags).
+  - If contact is NOT found →
+      
+      - Create contact
+          
+          - Creates a new contact using:
+              
+              - First name = {{contact.first\_name}}
+              - Last name = {{contact.last\_name}}
+              - Email = {{contact.email}}
+              - Phone = {{contact.phone}}
+      - Update contact field
+          
+          - Same four Calendly-related custom fields as above.
+      - Then continues into the main condition node.
+
+-----
+
+### 3\. Split: existing/past client vs everyone else
+
+If/Else: “Condition” (tags check)
+
+  - Checks if the contact has ANY of these tags:
+      
+      - existing client
+      - client - completed
+      - past-client
+  - YES branch (has one of those tags):
+      
+      - Currently just a branch placeholder; no actions attached in the snippet you shared. (So effectively, nothing else happens on this path right now.)
+  - NO branch (does NOT have those tags):  
+    This is the main recovery sequence for non‑clients / not‑yet‑clients.
+
+-----
+
+### 4\. For non‑clients: move between workflows and send first email
+
+On the NO branch:
+
+  - Remove from Workflow
+      
+      - Removes the contact from two other workflows:
+          
+          - ad311428-84d7-4f58-ba84-9d6381e2b196
+          - 3678a6b4-158c-45f2-8af1-9c54f6b11a31  
+            (Likely other Calendly or recovery sequences to avoid overlap.)
+  - Add to Workflow
+      
+      - Adds the contact to another workflow:
+          
+          - f316b5bc-dcfb-49d7-87ee-fa2835f3c3c5  
+            (Probably a broader nurture or related sequence.)
+  - Email 1 — CANCELLED version
+      
+      - Subject: everything okay?
+      - From: location name & email.
+      - Content: a short, empathetic “you cancelled our call, everything okay?” style email from Sophie, with her signature and contact info.
+  - Update contact field (Calendly Reschedule URL)
+      
+      - Ensures the Calendly Reschedule URL custom field is set from {{custom\_values.calendly\_reschedule\_url}}.
+  - Remove Tag: calendly-appointment-booked
+      
+      - Clears the “appointment booked” tag since they canceled.
+
+-----
+
+### 5\. Clean up opportunity in pipeline (if it exists)
+
+  - Find opportunity
+      
+      - Looks for the latest opportunity in:
+          
+          - Pipeline ID: vbghucibzVL3RRatcaYG
+          - Stage ID: a780845a-a56d-4d2f-bbe9-179096b80879  
+            (This is likely the “booked call” stage.)
+  - If opportunity is found →
+      
+      - Remove opportunity (the previously found one).
+      - Go to the next Wait step (same place as the “not found” branch).
+  - If opportunity is NOT found →
+      
+      - Just continues to the Wait step.
+
+-----
+
+### 6\. Wait and check if they rebooked quickly
+
+  - Wait (30 minutes)
+      
+      - Pauses for 30 minutes after cancellation.
+  - If/Else: check tag calendly-appointment-booked
+      
+      - YES branch (tag present):
+          
+          - Remove Tag: recovery
+              
+              - If they rebooked quickly (tag got added again), remove the recovery tag and stop this recovery path.
+      - NO branch (tag NOT present):
+          
+          - Continue the longer recovery sequence.
+
+-----
+
+### 7\. Start the longer canceled‑recovery sequence
+
+On the NO branch after 30 minutes:
+
+  - Add Tag: calendly-canceled-recovery
+      
+      - Marks them as in the canceled recovery sequence.
+  - Remove Tags:
+      
+      - calendly-no-show-recovery
+      - calendly-recovery-completed
+      - Ensures they’re only in the correct recovery state.
+  - Email 2: “Remember why you’re doing this”
+      
+      - Subject: it's not too late
+      - Long, story‑driven email about Sophie’s own marriage crisis, empathy, and a Calendly link to rebook.
+  - Wait 1 Day
+  - If/Else: check tag booked
+      
+      - YES branch (booked):
+          
+          - Placeholder branch; no actions here (they’ve rebooked, so sequence effectively stops).
+      - NO branch (not booked):
+          
+          - Continue with more emails.
+
+-----
+
+### 8\. Email 3: case study, then more checks
+
+On the NO branch:
+
+  - Email 3: Case study
+      
+      - Subject: how Bill turned around his marriage
+      - Story of a client (Bill) who turned his life and marriage around, with a Calendly link.
+  - Wait 2 Days
+  - If/Else: check tag booked again
+      
+      - YES branch: placeholder, no further actions.
+      - NO branch: continue.
+
+-----
+
+### 9\. Email 4: urgency, then more checks
+
+On the NO branch:
+
+  - Email 4: Urgency
+      
+      - Subject: the stats behind separation
+      - Shares stats about separation/divorce, “negative sentiment override,” and emphasizes urgency to act, with a Calendly link.
+  - Wait 2 Days
+  - If/Else: check tag booked again
+      
+      - YES branch: placeholder, no further actions.
+      - NO branch: final “takeaway” and handoff.
+
+-----
+
+### 10\. Final email, then internal handoff if still not booked
+
+On the NO branch:
+
+  - Email 5: Take Away
+      
+      - Subject: Resources for {{contact.first\_name}}
+      - Tone: “Maybe this isn’t for you and that’s okay.”
+      - Offers YouTube resources and a P.S. inviting them to reply “yes” if they still want help.
+  - Task: Manual Follow-Up – Canceled Appointment
+      
+      - Creates a task assigned to the contact’s assigned user:
+          
+          - Title: “Manual Follow-Up - Canceled Appointment”
+          - Body: explains they completed the 14‑day canceled recovery sequence without rebooking and asks the team to manually follow up.
+          - Due: 1 day from now.
+  - Internal Notification (email to team)
+      
+      - Sends an internal email to the contact owner:
+          
+          - Subject: Manual Follow-Up Required: Canceled Appointment
+          - Includes contact name, email, phone, and notes that a manual follow-up task was created.
+  - Remove Tag: calendly-canceled-recovery
+      
+      - Clears the “in recovery” tag.
+  - Add Tag: calendly-recovery-completed
+      
+      - Marks that they finished the canceled recovery sequence.
+
+  
+  
+  
+  
+
+### 1\. What starts the workflow
+
+Trigger: Invitee No Show Created (Calendly)
+
+  - Fires when Calendly reports that someone no‑showed an event.
+  - Scope is set to Organization, so it listens to no‑shows across the whole Calendly org (not just a single user).
+
+-----
+
+### 2\. Make sure the contact exists and is enriched
+
+  - Find GHL Contact By Email
+      
+      - Looks up a contact in the platform using the invitee’s email from Calendly.
+  - If contact is found →
+      
+      - Update contact field
+          
+          - Saves Calendly data into custom fields on the contact:
+              
+              - Calendly Event Type
+              - Calendly Host Email
+              - Calendly Event URI
+              - Calendly Reschedule URL
+      - Go to the main logic node (the if/else that checks tags).
+  - If contact is NOT found →
+      
+      - Create contact
+          
+          - Creates a new contact using:
+              
+              - First name
+              - Last name
+              - Email
+              - Phone
+          - (All pulled from the incoming data.)
+      - Update contact field
+          
+          - Same Calendly custom fields as above are filled.
+      - Then it also goes into the main logic node.
+
+So at this point, you always have a contact in the system with Calendly details stored.
+
+-----
+
+### 3\. Branch based on whether they’re an existing/past client
+
+If/Else: “yes” (tag check)
+
+  - Checks if the contact has any of these tags:
+      
+      - existing client
+      - client - completed
+      - past-client
+  - If they DO have one of those tags → they go down the “Branch” path (currently empty in your JSON; likely used/filled on the canvas).
+  - If they do NOT have any of those tags → they go down the “None” path, which is the full no‑show recovery sequence below.
+
+The rest of the actions you see are on the “None” path (non‑clients / not tagged as existing/past clients).
+
+-----
+
+### 4\. Immediately add them to another workflow
+
+On the None branch:
+
+  - Add to Workflow
+      
+      - Enrolls the contact into another workflow (ID: 4d563bb1-c820-4c27-ab60-ee0c9eef35fe).
+      - That’s likely a broader nurture or another related sequence.
+  - Send Email 1 — NO-SHOW version
+      
+      - Subject: “everything okay?”
+      - Simple, short email acknowledging they missed the call and checking in.
+  - Update contact field
+      
+      - Updates the Calendly Reschedule URL custom field using a custom value ({{custom\_values.calendly\_reschedule\_url}}).
+      - This ensures the contact record has the correct reschedule link for later use.
+  - Remove Tag
+      
+      - Removes any of these tags if present:
+          
+          - calendly-appointment-booked
+          - calendly-canceled-recovery
+          - calendly-recovery-completed
+  - Add Tag
+      
+      - Adds: calendly-no-show-recovery
+      - This marks them as currently in the no‑show recovery sequence.
+
+-----
+
+### 5\. Check for an existing opportunity and clean it up
+
+  - Find opportunity
+      
+      - Looks for the latest opportunity in a specific pipeline and stage:
+          
+          - Pipeline ID: vbghucibzVL3RRatcaYG
+          - Stage ID: a780845a-a56d-4d2f-bbe9-179096b80879
+      - Has two branches:
+          
+          - Opportunity Found
+          - Opportunity Not Found
+  - If Opportunity Found →
+      
+      - Remove opportunity
+          
+          - Deletes that found opportunity (likely the old “booked call” opportunity that is now a no‑show).
+      - Go to the same node where the “Not Found” branch goes (so both paths converge).
+  - If Opportunity Not Found →
+      
+      - Goes directly to the next step.
+
+So either way, after this, they move into the email follow‑up sequence below, with any old opportunity removed if it existed.
+
+-----
+
+### 6\. Email 2 (30 minutes later) – emotional story & re‑invite
+
+  - Wait
+      
+      - Waits 30 minutes after the previous step.
+  - Email 2: Remember why you’re doing this
+      
+      - Subject: “it’s not too late”
+      - A longer, story‑driven email about Sophie’s own marriage crisis, ending with a Calendly link to rebook the “Relationship Reset Call”.
+  - Wait 1 Day
+      
+      - Waits 1 day before checking if they’ve booked.
+
+-----
+
+### 7\. Check if they booked (Tag: “booked”) – first time
+
+If/Else (tag “booked”)
+
+  - Checks if the contact has the tag booked.
+  - If tag is present → they go down the yes/Branch path (which is empty in the JSON; likely ends or does something minimal on the canvas).
+  - If tag is NOT present → they go down the None path and continue the recovery sequence.
+
+The rest of the visible steps are on the None path (they still haven’t rebooked).
+
+-----
+
+### 8\. Email 3 (Case study) + wait
+
+  - Email 3: Case study
+      
+      - Subject: “how Bill turned around his marriage”
+      - Shares a client story (Bill) who turned his life and marriage around, with another Calendly link to book.
+  - Wait 2 Days
+      
+      - Waits 2 days.
+  - If/Else (tag “booked”) – second check
+      
+      - Again checks if they now have the booked tag.
+      - If booked → yes/Branch path (empty in JSON).
+      - If not booked → None path continues.
+
+-----
+
+### 9\. Email 4 (Urgency) + wait
+
+On the None branch:
+
+  - Email 4: Urgency
+      
+      - Subject: “the stats behind separation”
+      - Shares statistics about separation/divorce and the concept of “negative sentiment override,” emphasizing urgency to act now.
+      - Includes another Calendly link.
+  - Wait 2 Days
+      
+      - Waits 2 more days.
+  - If/Else (tag “booked”) – third check
+      
+      - Checks again for the booked tag.
+      - If booked → yes/Branch path (empty in JSON).
+      - If not booked → None path continues.
+
+-----
+
+### 10\. Email 5 (Resources / soft exit)
+
+On the None branch:
+
+  - Email 5: Take Away
+      
+      - Subject: “Resources for {{contact.first\_name}}”
+      - A softer email:
+          
+          - Acknowledges this might not be for them.
+          - Offers YouTube channel and podcast as free resources.
+          - P.S. says they can still reply “yes” if they want more hands‑on help.
+
+So this is the “final nurture” email if they still haven’t rebooked.
+
+-----
+
+### 11\. Create internal follow‑up and close out tags
+
+  - Manual Task: Manual Follow-Up - No-Show
+      
+      - Creates a task:
+          
+          - Title: “Manual Follow-Up - No-Show for {{[contact.name](http://contact.name/)}}”
+          - Body: instructs the assigned user to follow up manually, understand why they no‑showed, and try to reschedule.
+          - Assigned to: the contact’s assigned user.
+          - Due: 1 day from now.
+  - Internal Notification: No-Show Sequence Complete
+      
+      - Sends an internal email to the contact owner:
+          
+          - Notifies that the contact completed the 14‑day no‑show recovery sequence without rebooking.
+          - Includes contact name, email, and phone.
+          - Mentions that a manual follow‑up task has been created.
+  - Remove Tag: calendly-no-show-recovery
+      
+      - Removes the calendly-no-show-recovery tag (they’re no longer in the active sequence).
+  - Add Tag: calendly-recovery-completed
+      
+      - Adds calendly-recovery-completed to mark that they finished the no‑show recovery journey.
+
+-----
+
+### 12\. Overall logic in plain English
+
+  - When Calendly says someone no‑showed, the workflow:
+      
+      - Ensures there is a contact and stores Calendly details.
+      - Splits clients/past clients vs non‑clients (you’re seeing the non‑client path).
+      - For non‑clients:
+          
+          - Adds them to another workflow.
+          - Sends a 5‑email sequence over about 14 days:
+              
+              - Email 1: gentle “everything okay?”
+              - Email 2: Sophie’s personal story + rebook link.
+              - Email 3: case study + rebook link.
+              - Email 4: urgency & stats + rebook link.
+              - Email 5: resources + soft exit, with option to reply “yes”.
+          - After key emails, it checks if they’ve booked (via the booked tag). If they do, they stop going further down the “None” path.
+          - It also cleans up any old opportunity, updates tags to reflect their status, and finally:
+              
+              - Creates a manual follow‑up task.
+              - Sends an internal notification.
+              - Updates tags to show the recovery sequence is completed.
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+It runs when a Calendly invitee is created for a specific event type, and its job is to:
+
+  - Find or create the contact
+  - Update Calendly-related fields
+  - Clean up “recovery” workflows/tags
+  - Make sure there’s a correct opportunity in your main pipeline
+  - Notify the closer/contact owner internally
+
+-----
+
+Trigger:
+
+  - Invitee Created:
+      
+      - Fires when Calendly sends an “invitee created” webhook.
+      - It’s limited to:
+          
+          - Scope: organization
+          - Event Type URI: https://api.calendly.com/event\_types/dd66b4aa-e292-42bb-965e-1551e5ed110b  
+            So this only runs for that specific Calendly event type.
+
+-----
+
+### 1\) Find or create the contact
+
+  - Find Contact by Calendly Email:
+      
+      - Looks up a contact whose email = {{calendly\_invitee\_created.email}}.
+      - There are two branches:
+  - A. Contact Found path
+      
+      - Contact Found (transition) → goes into a condition:
+      - yes (If/Else Condition):
+          
+          - Checks if the contact does NOT have the tag existing client.
+          - “Yes” branch = contact does *not* have existing client.
+          - “None” branch = everyone else (e.g., existing clients).
+  - A1. “Not existing client” branch
+      
+      - Branch (yes-branch): (no extra conditions; just the “not existing client” path)
+      - Update Calendly Event Fields:
+          
+          - Updates custom fields on the contact:
+              
+              - Calendly Event Type = {{contact.calendly\_event\_type}}
+              - Calendly Host Email = {{contact.calendly\_host\_email}}
+              - Calendly Event URI = {{contact.calendly\_event\_uri}}
+              - Calendly Reschedule URL = {{contact.calendly\_reschedule\_url}}
+      - Add calendly-appointment-booked Tag:
+          
+          - Adds tag: calendly-appointment-booked.
+      - Remove from CAL - Canceled Appointment Recovery Workflow:
+          
+          - Removes the contact from workflow ID 4e567b5b-c3a2-4673-913a-780c52a956cd  
+            (your “CAL - Canceled Appointment Recovery Workflow”).
+      - Remove from CAL - No-Show Recovery Workflow:
+          
+          - Removes the contact from workflow ID 0710d528-6a6e-4587-ae25-fa87917e1207  
+            (your “CAL - No-Show Recovery Workflow”).
+      - Remove Recovery and Stop Tags:
+          
+          - Removes these tags:
+              
+              - calendly-canceled-recovery
+              - calendly-no-show-recovery
+              - calendly-recovery-completed
+              - calendly-recovery-stop  
+                This effectively “exits” them from all recovery logic and clears stop flags.
+      - Find opportunity:
+          
+          - Looks for the latest opportunity in:
+              
+              - Pipeline ID: btsLj5TLJw9tTplSTGQq (your main sales pipeline)
+              - Stage ID: 52cef458-0f73-4d15-86ad-92e30f245013 (a specific stage)
+          - Two branches:
+      - 11a. Opportunity Found
+          
+          - Opportunity Found (transition)
+          - Remove opportunity:
+              
+              - Deletes/removes that found opportunity (so you don’t have a stale or duplicate one in that stage).
+      - 11b. Opportunity Not Found
+          
+          - Opportunity Not Found (transition)
+          - Create Opportunity in Main Sales Pipeline:
+              
+              - Creates a new opportunity in:
+                  
+                  - Pipeline: btsLj5TLJw9tTplSTGQq
+                  - Stage: 52cef458-0f73-4d15-86ad-92e30f245013
+              - Name: {{contact.name}}
+              - Source: {{contact.source}}
+              - Status: open.
+          - Assign to user:
+              
+              - Assigns the contact to a user based on {{opportunity.host\_email}} (custom user list).  
+                (You’re effectively routing the lead to the host/closer.)
+          - Add to Appointment Confirmation and Reminder Workflow:
+              
+              - Enrolls the contact into workflow ID e188e3a2-5e58-4310-a256-2db6521d97ad  
+                (your main “Appointment Confirmation and Reminder” workflow).
+          - Remove from Unbooked Lead Nurture Workflows:
+              
+              - Removes the contact from workflow ID fe92c588-6488-49ff-8df6-410be4f9c5e0  
+                (your “Unbooked Lead Nurture” or similar).
+          - Send Internal Notification to Closer or Contact Owner:
+              
+              - Sends an internal email notification:
+                  
+                  - From name: {{location.name}}
+                  - From email: {{location.email}}
+                  - To: assigned owner / closer (via “contact\_owner” assignment)
+                  - Subject: “Appointment Rebooked”
+                  - Body:  
+                    {{contact.first\_name}} {{contact.last\_name}} has booked a new Calendly appointment and has been removed from the appointment recovery sequences.
+  - A2. “None” branch (existing clients or others)
+      
+      - None (If/Else branch-no):
+          
+          - This is the “else” branch for contacts who do have the existing client tag or don’t match the “not existing client” condition.
+          - Currently, there are no actions attached to this branch, so those contacts effectively stop here.
+
+-----
+
+B. Contact Not Found path
+
+  - Contact Not Found (transition)
+  - Create contact:
+      
+      - Creates a new contact with:
+          
+          - First name = {{contact.first\_name}}
+          - Last name = {{contact.last\_name}}
+          - Email = {{contact.email}}
+          - Phone = {{contact.phone}}  
+            (These are presumably mapped from the Calendly payload into contact fields.)
+  - Update Calendly Event Fields:
+      
+      - Same as above: fills in the Calendly custom fields on the new contact.
+  - Go to:
+      
+      - Jumps directly to the “Add calendly-appointment-booked Tag” step (5b4a8bf6-77ed-410b-ae64-f236c62a6ac6).
+      - From there, the new contact follows the same path as a found contact who is not an existing client:
+          
+          - Tag as booked
+          - Remove from recovery workflows
+          - Clear recovery/stop tags
+          - Find/create opportunity
+          - Assign to user
+          - Add to confirmation/reminder workflow
+          - Remove from unbooked nurture
+          - Send internal notification
+
+-----
+
+### In summary
+
+For non-existing clients who book this specific Calendly event:
+
+  - Ensures there is a contact record (creates one if needed).
+  - Updates Calendly-related custom fields.
+  - Marks them as calendly-appointment-booked.
+  - Exits them from all recovery workflows (canceled/no-show) and clears related tags.
+  - Ensures they have a fresh opportunity in the correct pipeline/stage (removes old one or creates a new one).
+  - Assigns them to the appropriate user (based on host email).
+  - Enrolls them into your main appointment confirmation & reminder workflow.
+  - Notifies the closer/contact owner that the appointment has been rebooked and recovery sequences have been stopped.
+
+For existing clients (with the existing client tag), the workflow currently finds them but then does nothing further (they fall into the “None” branch with no actions).
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+# Client Exit - Leave All Lead Sequences  
+
+Overall purpose:  
+When a contact gets the tag "existing client", this workflow automatically pulls them out of a bunch of lead / prospect nurturing and recovery sequences so they stop getting “lead” messages once they’ve become a client.
+
+-----
+
+Trigger:
+
+  - Contact Tag Added: existing client:
+      
+      - Fires whenever the tag "existing client" is added to a contact.
+      - As soon as that tag is applied, the contact enters this workflow.
+
+-----
+
+Actions (in order):
+
+  - Remove from Zapier \> Form Abandonment Recovery:
+      
+      - Takes the contact out of your Form Abandonment Recovery workflow (the one connected via Zapier).
+      - This stops any remaining follow-up meant to recover people who started but didn’t finish a form.
+  - Remove from Zapier \> Form Abandonment Recovery \> SMS:
+      
+      - Removes the contact from the SMS version of your Form Abandonment Recovery workflow.
+      - Prevents them from getting any more “you didn’t finish your form” style SMS messages.
+  - Remove from CAL - Canceled Appointment Recovery:
+      
+      - Removes the contact from your Canceled Appointment Recovery workflow.
+      - So if they had a canceled appointment sequence running, it stops now.
+  - Remove from CAL - No-Show Recovery:
+      
+      - Removes the contact from your No-Show Recovery workflow.
+      - Stops any “you missed your appointment” follow-up.
+  - Remove from WF-VALUE Booked Call Email Sequence:
+      
+      - Pulls the contact out of your Booked Call Email Sequence (value/nurture emails around a booked call).
+      - They won’t keep getting pre-sales “value” emails once they’re tagged as an existing client.
+  - Remove from BOOKED CALL:
+      
+      - Removes the contact from your BOOKED CALL workflow.
+      - Ends any remaining pre-call or post-booking lead nurturing tied to that workflow.
+  - Remove from Call Booked Sequence \> SMS:
+      
+      - Removes the contact from the Call Booked SMS sequence.
+      - Stops any SMS reminders or nurturing tied to a booked call as a lead.
+  - Remove from Soap Opera Sequence:
+      
+      - Removes the contact from your Soap Opera Sequence (a classic multi-day story-based nurture).
+      - Ensures they don’t keep getting long-form “warm-up” emails once they’re already a client.
+
+  
+  
+
+# Client Owner Assignment (Krissy)  
+
+  
+
+Trigger:
+
+  - Existing Client Tag Added:
+      
+      - This fires when a contact gets the tag “existing client” added to them.
+      - As soon as that tag is applied, the workflow starts for that contact.
+
+Actions:
+
+  - Assign Contact to Krissy:
+      
+      - The contact is assigned to the user Krissy as their contact owner.
+      - It’s set to assign regardless of whether the contact already has an owner (since only\_unassigned\_contact is false).
+  - Update CSM Email Field to Krissy:
+      
+      - After assignment, the workflow updates a custom contact field titled csm\_email.
+      - It sets that field’s value to krissy@sophieorozco.com.
+      - This ensures the contact record clearly shows Krissy’s email as the CSM email.
+
+In plain language:  
+Whenever you tag someone as an existing client, this automation makes Krissy their assigned owner and stamps Krissy’s email into the contact’s csm\_email field.
+
+  
+  
+
+# Closer Assignment Alert: Internal Notification  
+
+Overall purpose:  
+Notify a “closer” (assigned user) immediately when a new lead is assigned to them — both inside the app and by email — so they can follow up quickly with context.
+
+-----
+
+Trigger:
+
+  - Assigned To Changed to Closer:
+      
+      - This fires when a contact’s Assigned User changes to one of several specific users (your closers).
+      - Technically, it checks contact.assignedTo against four specific user IDs. If the contact is assigned to any of those users, the workflow starts.
+
+-----
+
+Actions:
+
+  - Send in-app notification to assigned user
+      
+      - Type: Internal notification (in-app).
+      - Who gets it: The assigned contact owner (the closer the contact was just assigned to).
+      - Title:
+          
+          - New lead assigned to you: {{contact.name}}
+      - Body:
+          
+          - {{contact.first\_name}} {{contact.last\_name}} has been assigned to you.
+          - Phone: {{contact.phone}}
+          - Email: {{contact.email}}
+      - When they click it: It redirects them to the contact record in the platform.
+  - Effectively: As soon as a lead is assigned to a closer, they see an in-app alert with the lead’s name, phone, and email, and can jump straight to the contact.
+  - Send internal email notification to assigned user
+      
+      - Type: Internal notification via email to the same assigned user.
+      - From name: {{location.name}} (your account/location name).
+      - From email: {{location.email}} (your location’s email).
+      - Subject:
+          
+          - New lead assigned to you: {{contact.name}}
+      - Email body (simplified):
+          
+          - Greets the user by first name: Hi {{user.first\_name}},
+          - States that {{contact.first\_name}} {{contact.last\_name}} has just been assigned to them.
+          - Shows:
+              
+              - Phone: {{contact.phone}}
+              - Email: {{contact.email}}
+              - Source: {{contact.source}}
+          - Instructions:
+              
+              - Check Notes and latest conversation before reaching out.
+              - Then confirm the next step on the contact’s card in Main Sales Pipeline (New).
+          - Signature: “Sophie Orozco Coaching”.
+  - Effectively: The closer also gets an email with the lead’s details and clear instructions on what to do next.
+
+  
+  
+
+# Soap Opera Sequence (5-day welcome/re-engagemen  
+
+Overall idea
+
+  - When a contact enters this workflow, they get tagged as “soap opera.”
+  - They receive a 5‑email story‑driven sequence (1 email per day).
+  - On days 2–5, the workflow checks whether they’re an existing client (by tag) and, if so, pulls them out early and sends them to a long‑term nurture sequence instead of continuing the 5‑day series.
+  - At the end, non‑clients are also handed off to long‑term nurture.
+
+-----
+
+### Step‑by‑step flow
+
+  - Add Tag: Soap Opera
+      
+      - Immediately tags the contact with soap opera.
+      - This is usually for segmentation and tracking who went through this sequence.
+  - Email 1 of 5: Set the Stage
+      
+      - Sends the first email (“Chapter 1 of 5: Before I tell you what happened”).
+      - It introduces Sophie’s story and hints at what’s coming tomorrow.
+  - Wait – Day 2 (1 day)
+      
+      - Waits 1 day after Email 1.
+  - Condition: Existing Client? (Day 2)
+      
+      - Checks if the contact has the tag existing client.
+      - If YES (they are an existing client):  
+        4a. Hand off to long term nurture (tag) – Adds tag long term nurture.  
+        4b. Remove from Workflow – Immediately removes them from this 5‑day sequence.  
+        → They do NOT get Email 2–5; they go straight into your long‑term nurture system.
+      - If NO (they are not an existing client):  
+        4c. Email 2 of 5: High Drama, Backstory, The Wall – Sends the second email (“Chapter 2 of 5: The night I stopped chasing”).  
+        4d. Wait – Day 3 (1 day) – Waits 1 day.
+  - Condition: Existing Client? (Day 3)
+      
+      - Again checks for the existing client tag.
+      - If YES:  
+        5a. Hand off to long term nurture (tag) – Adds long term nurture.  
+        5b. Remove from Workflow – Pulls them out of the sequence.
+      - If NO:  
+        5c. Email 3 of 5: The Epiphany – Sends the third email (“Chapter 3 of 5: It only takes one”).  
+        5d. Wait – Day 4 (1 day) – Waits 1 day.
+  - Condition: Existing Client? (Day 4)
+      
+      - If YES:  
+        6a. Remove from Workflow – First removes them from this workflow.  
+        6b. Hand off to long term nurture (tag) – Then tags them long term nurture.  
+        (Same outcome as earlier checks, just reversed order.)
+      - If NO:  
+        6c. Email 4 of 5: Hidden Benefits – Sends the fourth email (“Chapter 4 of 5: The part I didn't expect”).  
+        6d. Wait – Day 5 (1 day) – Waits 1 day.
+  - Condition: Existing Client? (Day 5)
+      
+      - If YES:  
+        7a. Remove from Workflow – Removes them from this workflow.  
+        7b. Hand off to long term nurture (tag) – Tags them long term nurture.
+      - If NO:  
+        7c. Email 5 of 5: Urgency and CTA – Sends the final email (“Chapter 5 of 5: Why I'm telling you this now”) with a strong call to book a call.  
+        7d. Hand off to long term nurture (tag) – Adds long term nurture so they move into your ongoing nurture sequence after the 5‑day series.
+
+-----
+
+### In summary
+
+  - Everyone who starts:
+      
+      - Gets tagged soap opera.
+      - Ends up tagged long term nurture (either early if they’re an existing client, or after Email 5 if they’re not).
+  - Existing clients:
+      
+      - Are checked on days 2, 3, 4, and 5.
+      - As soon as they’re recognized as existing client, they are removed from this sequence and sent to long‑term nurture (no more sales‑style emails).
+  - Non‑clients:
+      
+      - Receive all 5 emails over 5 days.
+      - Then are tagged for long‑term nurture.
+
+  
+  
+
+# WF-VALUE Booked Call Email Sequence  
+
+  
+  
+  
+  
+  
+  
+
+### 1\. How contacts enter
+
+There are multiple Appointment triggers (13 of them). Any time an appointment is:
+
+  - Event type: normal
+  - Status: confirmed
+  - On one of several specific calendars (different “Relationship Reset Call” calendars, plus one “RR Call with Luann” and one “Closer - Steph Waring Calendly”)
+
+…then the contact is enrolled in this workflow.
+
+So: whenever someone books and confirms a Relationship Reset Call (or the related Calendly/closer calendars), they enter this sequence.
+
+-----
+
+### 2\. First actions after the appointment is confirmed
+
+  - Add Tag: calendly-appointment-booked
+      
+      - The contact gets the tag calendly-appointment-booked.
+  - Move to Appointment Booked Stage (Create Opportunity)
+      
+      - Creates/moves an opportunity for this contact into a specific pipeline and “Appointment Booked” stage.
+      - Opportunity name = contact’s name, source = contact’s source.
+  - Email 1 – “What happens on your call with us”
+      
+      - Sent immediately.
+      - Sets expectations for the call, explains what will be discussed, and includes a song link and Sophie’s sign‑off.
+
+-----
+
+### 3\. Branching logic (If/Else condition)
+
+After Email 1, there is an If/Else condition that checks whether the contact is currently in another workflow (ID 0571566b-2859-405b-95cb-599e96bc0c7b):
+
+  - YES branch (Branch):
+      
+      - Remove from Workflow: removes the contact from that other workflow.
+      - Go to: jumps them forward to a specific node (b67e634d-d8ec-4311-bb9c-930348faefe6), which is the first appointment-based wait (72 hours before appointment).
+      - Effectively: if they were already in that other workflow, they’re pulled out of it and dropped into the main timing sequence here.
+  - NONE branch (else):
+      
+      - If they are not in that other workflow, they simply continue into the same main sequence starting at Wait 72 Hours Before Appointment.
+
+So both paths converge into the same pre‑appointment email sequence; the YES branch just cleans up the other workflow first.
+
+-----
+
+### 4\. Main pre‑appointment email sequence (relative to appointment time)
+
+From here, everything is timed before the appointment start time using appointment-based waits. The pattern is:
+
+  - Wait until X hours before the appointment
+  - Send a specific email
+
+In order:
+
+  - Wait 72 Hours Before Appointment  
+    → Email 2 – “try this the next time a fight starts”
+      
+      - Coaching on conflict patterns and nervous system regulation, plus a YouTube link.
+  - Wait 60 Hours Before Appointment  
+    → Email 3 – “Three questions to ask before your call”
+      
+      - Three reflection questions (desire, abuse, love) and a video link.
+  - Wait 48 Hours Before Appointment  
+    → Email 4 – “If your spouse has moved out, start here”
+      
+      - Guidance for separation/distance, five practical steps, and a video link.
+  - Wait 36 Hours Before Appointment  
+    → Email 5 – “the investment (we won't dodge this)”
+      
+      - Frames the financial investment vs. cost of divorce/doing nothing, talks about payment structures.
+  - Wait 24 Hours Before Appointment  
+    → Email 6 – “Five habits that create distance without you realizing”
+      
+      - Lists five subtle patterns that create distance, with a video link.
+  - Wait 12 Hours Before Appointment  
+    → Email 7 – “Why you feel like roommates and how to change it”
+      
+      - Explains “roommate phase,” polarity, chase/withdraw, and small warm connection shifts.
+  - Wait 6 Hours Before Appointment  
+    → Email 8 – “Why ‘let me decide after Thursday’ usually costs more than deciding now”
+      
+      - Talks about stalling vs. real diligence, separation stats, Gottman research, kids & conflict, and urgency.
+  - Wait 3 Hours Before Appointment  
+    → Email 9 – “Why explaining your needs one more time isn't going to work”
+      
+      - Shares Sophie’s story, reframes how to ask for needs, and gives four practical steps.
+  - Wait 1 Hour Before Appointment  
+    → Email 10 – “If they've said ‘I love you, but I'm not in love with you anymore’”
+      
+      - Interprets that phrase, what to stop doing (chasing, debating, heavy talks), and what to focus on instead.
+  - Wait 30 Minutes Before Appointment  
+    → Email 11 – “Before we talk today”
+      
+      - Final pre‑call framing: no need to be polished, just honest; what to expect on the call; reassurance and encouragement.
+
+All the waits are set with appointmentCondition: "skip" — meaning if the timing window has already passed when they enter, that particular wait (and thus its email) will be skipped rather than holding them.
+
+-----
+
+### 5\. Overall purpose
+
+This workflow is a pre‑call nurture and preparation sequence for Relationship Reset Calls:
+
+  - Operational: tags the contact and creates an opportunity in the pipeline when the call is booked.
+  - Strategic: sends a structured series of 11 emails, each tied to a specific time before the appointment, to:
+      
+      - Regulate the contact emotionally,
+      - Educate them about patterns in their marriage,
+      - Set expectations for the call and the program,
+      - Address money/commitment objections,
+      - Increase show‑up rate and readiness to invest.
+
+  
+  
+
+# Zapier \> FORM Intake Router  
+
+Overall purpose:  
+When a contact gets the tag form - completed assessment, the workflow checks whether they already booked a Calendly appointment.
+
+  - If they HAVE booked: it marks their call status as “Booked Call”.
+  - If they have NOT booked: it creates a new opportunity in your pipeline and marks their call status as “Form Submitted - No Call Booked”.
+
+-----
+
+Trigger:
+
+  - Contact Tag:
+      
+      - Fires when a contact has the tag form - completed assessment added.
+      - This usually means they finished your assessment form (coming from Zapier, based on the workflow name).
+
+-----
+
+Actions in order:
+
+  - Wait for 2 minutes:
+      
+      - After the tag is added, the workflow pauses for 2 minutes before doing anything else.
+      - This small delay can help ensure all other tags/updates (like Calendly tags) have time to sync in.
+  - Remove Tag (form - partial):
+      
+      - Removes the tag form - partial from the contact.
+      - This cleans up any “partial form” status once the full assessment is completed.
+  - If/Else Condition – “Already booked?”
+      
+      - Checks if the contact has the tag calendly-appointment-booked.
+      - This is the decision point:
+  - YES branch (contact HAS the Calendly booked tag): 4. Update contact field – Call Status = “Booked Call”:
+      
+      - Sets the custom field Call Status (multiselect) to “Booked Call”.
+      - This marks them as someone who has already scheduled a call.
+  - NONE/ELSE branch (contact does NOT have the Calendly booked tag): 5. Create Opportunity – “New Lead”:
+      
+      - Creates a new opportunity in the pipeline with ID vbghucibzVL3RRatcaYG, stage f0427de5-328b-425c-a5b5-d0d7f9cec1b1.
+      - Opportunity name: {{contact.first\_name}} {{contact.last\_name}}.
+      - Source: {{contact.source}}.
+      - Status: open.
+      - This effectively drops them into your sales pipeline as a new lead who submitted the form but hasn’t booked yet.
+      - Update contact field – Call Status = “Form Submitted - No Call Booked”:
+          
+          - Sets Call Status to “Form Submitted - No Call Booked”.
+          - This clearly labels them as someone who finished the form but still needs to book a call.
+
+-----
+
+In summary:
+
+  - The workflow is a router that takes completed form submissions from Zapier and routes contacts into the right status:
+      
+      - Booked Call if they already scheduled via Calendly.
+      - Form Submitted - No Call Booked + New pipeline opportunity if they haven’t scheduled yet.
+  - It also cleans up the form - partial tag so your tagging stays accurate.
+
+  
+  
+
+# Zapier \> Form Abandonment Recovery  
+
+Overall purpose:  
+Recover people who started but did not finish a form (tagged as “form - partial”), and either:
+
+  - stop recovery if they later complete the form, or
+  - send them into a follow‑up workflow and an email invite to book a call.
+
+-----
+
+Trigger
+
+  - Contact Tag Added: form - partial
+      
+      - The workflow starts when a contact gets the tag form - partial.
+      - This usually means they began an assessment/form but didn’t complete it.
+
+-----
+
+Main flow
+
+  - Wait 1 Hour After Abandonment
+      
+      - After the tag is added, the workflow waits 1 hour before doing anything else.
+      - This gives the contact time to come back and finish on their own.
+  - If/Else Condition: Has Tag “form - completed assessment”
+      
+      - After 1 hour, the workflow checks whether the contact now has the tag form - completed assessment.
+      - This is your “did they end up finishing the form?” check.
+      - YES branch (they DID complete the assessment): 4. Remove Tag: form - partial
+          
+          - If the contact has completed the assessment, the workflow removes the form - partial tag.
+          - No further actions are taken in this workflow for them.
+          - Effectively: “They finished, so stop treating them as an abandoner.”
+      - NONE/NO branch (they did NOT complete the assessment): 5. Add to Workflow (another workflow)
+          
+          - The contact is added to another workflow (ID 7a69604c-8aa2-4b81-99e5-3294e339c84e).
+          - That other workflow likely handles a longer nurture or recovery sequence.
+          - Send Email: “You still with me {{contact.first\_name}}?”
+              
+              - Immediately after adding them to the other workflow, this workflow sends an email from {{location.name}} \<{{location.email}}\> with subject:  
+                You still with me {{contact.first\_name}}?
+              - The email body (from Sophie) does a few things:
+                  
+                  - Acknowledges they started but didn’t finish the form.
+                  - Shares a short personal story about relationship struggles.
+                  - Reframes the situation and offers hope.
+                  - Invites them to book a Relationship Reset Call via a Calendly link.
+              - It includes a full email signature and a quote at the bottom.
+          - Goal: Appointment Status = Confirmed on “Relationship Reset Call (Calendly)”
+              
+              - After the email, there is a Workflow Goal step.
+              - The goal is met when the contact has an appointment with status “confirmed” on the calendar:  
+                “Relationship Reset Call (Calendly)” (internal calendar ID tjMXnQUgdmWmbFsrp1h7).
+              - Action on goal: exit
+                  
+                  - When this goal is achieved (they book and confirm that call), the contact exits this workflow.
+                  - This prevents them from continuing down any further recovery steps here (if you add more later) once they’ve actually booked.
+
+-----
+
+In summary
+
+  - When someone abandons the form → they get tagged form - partial → this workflow starts.
+  - Wait 1 hour:
+      
+      - If they completed the form in that time → remove the partial tag and stop.
+      - If they did not complete:
+          
+          - Add them to another workflow for further follow‑up.
+          - Send a personal email inviting them to book a Relationship Reset Call.
+          - As soon as they book and confirm that specific call, they hit the goal and exit this workflow.
+
+  
+  
+
+# Long Term Email Workflows  
+
+### Triggers (how contacts enter this workflow)
+
+Your workflow has 2 triggers, both based on tags being added to a contact:
+
+  - Contact Tag – "closed-won":
+      
+      - Fires when the tag closed-won is added to a contact.
+      - As soon as that tag is applied, the contact is enrolled into this workflow.
+  - Became a client – "existing client":
+      
+      - Fires when the tag existing client is added to a contact.
+      - When that tag is applied, the contact is also enrolled into this same workflow.
+
+So: any contact who gets either closed-won or existing client will enter this workflow.
+
+-----
+
+### Actions (what happens after they enter)
+
+There are 2 actions, and both are the same type: Remove from Workflow.
+
+  - Remove from Workflow (first action):
+      
+      - Immediately after the trigger fires, this action runs.
+      - It is configured to remove the contact from another workflow whose ID is b601f4a5-3a2c-4632-a0e8-ce4d4447a4cc (this is some other workflow in your account, likely a nurture or prospecting sequence).
+      - In practical terms: as soon as someone becomes a client (via either tag), they are pulled out of that other workflow.
+  - Remove from Workflow (second action):
+      
+      - This runs right after the first one.
+      - It is configured exactly the same way, to remove the contact from that same workflow again.
+      - Functionally, this second step is redundant: once the contact is removed by the first action, the second one doesn’t change anything further.
+
+-----
+
+### Overall purpose
+
+In simple terms, this workflow is a “cleanup/exit” automation:
+
+  - When a lead becomes a client (tagged as closed-won or existing client),
+  - The system automatically removes them from a specific other workflow (likely a lead nurture or sales follow-up sequence),
+  - So they stop receiving prospecting/nurture messages that are no longer appropriate for clients.
+
+Right now, it does only that — no messages, no waits, no branching — just automatic removal from one other workflow when the client tags are applied.
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+Trigger & Overall Purpose
+
+  - The workflow starts when a contact gets the tag “long term nurture”.
+  - Its job is to send a long, structured email nurture sequence to non-clients, and to immediately pull existing clients out so they don’t get it.
+
+-----
+
+### 1\. Initial Client Filtering
+
+  - First condition – “Client check”
+      
+      - Checks if the contact has ANY of these tags:
+          
+          - existing client
+          - closed-won
+          - rmm current client
+      - If they have any of those, they go down the “Is client” branch.
+      - If they don’t, they go down the “None” branch (non-clients).
+  - If they ARE a client (“Is client” branch)
+      
+      - Currently that branch doesn’t have any actions attached in this workflow (it just leads into the next condition block), but the real logic for clients happens in the next condition.
+  - If they are NOT caught as a client (“None” branch)
+      
+      - They go to a second condition: “Already a client?”
+
+-----
+
+### 2\. Second Client Check & Early Exit
+
+  - Second condition – “Already a client?”
+      
+      - Checks again if the contact has the tag existing client.
+      - If YES → branch “Yes – client”.
+      - If NO → branch “None” (this is the main nurture path).
+  - Branch “Yes – client”
+      
+      - Action: “Client, remove”
+          
+          - Removes the contact from this workflow (ID referenced in the config).
+      - Action: “Done – tag completed”
+          
+          - Adds tag nurture - completed to mark them as finished.
+      - Net effect: if someone is (or becomes) an existing client at this point, they’re pulled out and marked as completed.
+  - Branch “None” (non-clients)
+      
+      - This is where the full email nurture sequence runs.
+
+-----
+
+### 3\. Main Nurture Sequence (Non‑Clients)
+
+From here, the contact goes through a series of emails with 1‑day waits between most of them. All emails are sent from {{location.name}} / {{location.email}} with tracking enabled.
+
+  - Email 01 – “Acceptance and Surrender”
+      
+      - Subject: “you need to let go”
+      - Theme: letting go of reassurance-seeking, desperation energy, and starting to self-regulate and reflect instead.
+      - CTA: apply for “90 Day Turnaround” via a link.
+  - Wait 1 Day
+  - Email 02 – “Big Relationship Killers”
+      
+      - Subject: “the 7 biggest relationship killers”
+      - Lists 7 major killers: criticism, contempt, complaining, stonewalling, defensiveness, control, disrespect.
+      - Encourages self-reflection on where *you* do these, not just your partner.
+      - CTA: apply for the 90 Day Turnaround.
+  - Wait 1 Day
+  - Email 03 – “Clearing Resentment”
+      
+      - Subject: “how to clear resentment”
+      - Explains resentment as old stories/beliefs from childhood carried into marriage.
+      - Shows how resentment shows up (defensiveness, no libido, anger, etc.).
+      - Offers a simple frame: take 100% responsibility for how you show up and question what you’re really angry about and what you’re seeking.
+      - CTA: apply for the 90 Day Turnaround.
+  - Wait 1 Day
+  - Email 04 – “How To Stop Over Monitoring”
+      
+      - Subject: “How to stop monitoring”
+      - Talks about over-monitoring partner’s mood, texts, etc. as a response to feeling unsafe.
+      - Shifts focus from “their mood” to “what am I feeling / do I need / am I regulated?”.
+      - Gives practical redirection tools (journaling, walking, music).
+      - CTA: apply for The 90 Day Turnaround.
+  - Wait 1 Day
+  - Email 05 – “How to Ground Yourself”
+      
+      - Subject: “The secret to grounding yourself”
+      - Clarifies grounding as not being swept away by emotions.
+      - Explains dysregulation signs and why regulation must come before resolution.
+      - Gives 3 tools: breathwork, cold exposure, movement.
+      - CTA: apply for The 90 Day Turnaround.
+  - Wait 1 Day
+  - Email 06 – “Cultivating presence”
+
+<!-- end list -->
+
+  - Subject: “why your partner is turning away”
+  - Focus: presence (emotional, physical, mental) as the key to connection.
+  - Introduces A.B.S. framework: Awareness, Breath, Sensing.
+  - CTA: apply for The 90 Day Turnaround.
+
+<!-- end list -->
+
+  - Wait 1 Day
+  - Email 07 – “Holding space”
+
+<!-- end list -->
+
+  - Subject: “are you holding space or holding your breath?”
+  - Distinguishes truly holding space vs anxiously monitoring/anticipating change.
+  - Talks about growth as non-linear and invites focusing on who you’re becoming.
+  - CTA: apply for The 90 Day Turnaround.
+
+<!-- end list -->
+
+  - Wait 1 Day
+  - Email 08 – “The art of listening”
+
+<!-- end list -->
+
+  - Subject: ““You’re not listening””
+  - Teaches real listening vs defending/fixing.
+  - Gives phrases like “Let me see if I hear what you’re saying” and “tell me more about that”.
+  - Emphasizes presence over problem-solving.
+  - CTA: apply for The 90 Day Turnaround.
+
+<!-- end list -->
+
+  - Wait 1 Day
+  - Email 09 – “Vulnerability”
+
+<!-- end list -->
+
+  - Subject: “the thing that makes you irresistible”
+  - Reframes vulnerability as strength and magnetism.
+  - Talks about honest emotional expression, boundaries + vulnerability, and dropping shame.
+  - CTA: apply for The 90 Day Turnaround.
+
+<!-- end list -->
+
+  - Wait 1 Day
+  - Email 10 – “Self Esteem”
+
+<!-- end list -->
+
+  - Subject: “5 fake ways people build self-esteem”
+  - Lists 5 false self-esteem strategies (performance, superiority, victimhood, being needed, control/perfectionism).
+  - Points to intrinsic worth and balanced self-esteem (between shame and grandiosity).
+  - CTA: apply now.
+
+<!-- end list -->
+
+  - Wait 1 Day
+  - Email 11 – “How to Apologize”
+
+<!-- end list -->
+
+  - Subject: “the apology most people get backward”
+  - Explains real vs transactional apologies.
+  - Shares a personal story about repairing with her sister before she passed.
+  - Gives a concrete method: pick 2–3 specific things, own them fully, no defense.
+  - CTA: start your application.
+
+<!-- end list -->
+
+  - Wait 1 Day
+  - Email 12 – “Energetic Alignment”
+
+<!-- end list -->
+
+  - Subject: “the biggest lie about relationships”
+  - Debunks “they’ll never change” using neuroplasticity.
+  - Explains patterns → pathways → personality, and how to rewire via awareness, interruption, new choices.
+  - Gives a “When I feel \_\_\_, I choose \_\_\_” exercise.
+  - CTA: begin your application.
+
+<!-- end list -->
+
+  - Wait 1 Day
+  - Email 13 – “How to repair”
+
+<!-- end list -->
+
+  - Subject: “the couples who make it and those who don't”
+  - Explains harmony → disharmony → repair cycle.
+  - Teaches good repair: regulate, take responsibility, clean apology, listen, reconnect.
+  - CTA: begin your application.
+
+<!-- end list -->
+
+  - Final Tag
+
+<!-- end list -->
+
+  - Add Tag: nurture - completed
+  - Marks that the contact has finished the long-term nurture sequence.
+
+-----

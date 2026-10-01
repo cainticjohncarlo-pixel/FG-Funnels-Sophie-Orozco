@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Onboarding SOP by Program — Sophie Orozco Coaching</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F7F4EE; --card:#FFFFFF; --ink:#1E1B16; --muted:#6B6459;
+    --terra:#A9502C; --terra-soft:#F3E3DA; --green:#1D4A33; --green-soft:#E4EEE7;
+    --gold:#B98A2F; --line:#E4DDD2; --warn-bg:#FBEFE7; --warn:#8C3D14;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--cream);color:var(--ink);font-family:'Inter',system-ui,sans-serif;line-height:1.65;font-size:16px}
+  .wrap{max-width:900px;margin:0 auto;padding:0 20px 90px}
+  header.hero{background:var(--ink);color:#F7F4EE;padding:48px 20px 40px;text-align:center}
+  .hero .brand{font-family:'Playfair Display',serif;font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#CDB68A;margin-bottom:12px}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,40px);font-weight:600;line-height:1.15;margin-bottom:12px}
+  .hero p{color:#BFB8AC;max-width:560px;margin:0 auto;font-size:15.5px}
+  section{margin-top:40px}
+  h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3.4vw,28px);font-weight:600;margin-bottom:12px}
+  .kicker{color:var(--terra);font-weight:700;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
+  /* steps */
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:16px}
+  .step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .step .n{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--terra);color:#fff;font-weight:700;font-size:13px;margin-bottom:8px}
+  .step b{display:block;margin-bottom:4px;font-size:15px}
+  .step p{font-size:13.5px;color:var(--muted)}
+  /* nav */
+  .navgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px;margin-top:16px}
+  .navgrid a{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 15px;text-decoration:none;color:var(--ink);transition:.15s;display:block}
+  .navgrid a:hover{border-color:var(--terra);background:var(--terra-soft)}
+  .nprog{display:block;font-weight:600;font-size:14.5px;margin-bottom:3px}
+  .ntag{display:block;font-family:ui-monospace,monospace;font-size:11.5px;color:var(--muted)}
+  /* workflow cards */
+  .wfcard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;margin-top:20px;scroll-margin-top:16px}
+  .wfhead{display:flex;gap:14px;align-items:flex-start;padding-bottom:16px;border-bottom:1px solid var(--line)}
+  .wfnum{flex:none;width:34px;height:34px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px}
+  .wfcard h3{font-family:'Playfair Display',serif;font-size:21px;font-weight:600;line-height:1.25}
+  .wfname{font-family:ui-monospace,monospace;font-size:12px;color:var(--muted);margin-top:3px}
+  .wfgrid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:18px}
+  @media(max-width:640px){.wfgrid{grid-template-columns:1fr}}
+  .lbl{font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:7px}
+  .small{font-size:14px;color:var(--muted)}
+  .tagbtn{display:inline-flex;align-items:center;gap:8px;background:#F4F1EA;border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-family:ui-monospace,monospace;font-size:13px;color:var(--ink);cursor:pointer;transition:.15s;text-align:left}
+  .tagbtn:hover{background:var(--terra-soft);border-color:var(--terra)}
+  .tagbtn.copied{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+  .tagbtn .ic{opacity:.5;font-size:11.5px}
+  /* email block */
+  .mail{margin-top:20px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .mailhead{background:var(--green);color:#EAF2EC;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:10px 16px}
+  .subj{background:#FBF9F5;padding:12px 16px;border-bottom:1px solid var(--line);font-weight:600;font-size:14.5px}
+  .subj span{color:var(--muted);font-weight:500;margin-right:6px}
+  .mailbody{padding:18px 16px;font-size:14.5px;max-height:420px;overflow-y:auto}
+  .mailbody p{margin-bottom:11px}
+  .mailbody h4{font-size:14.5px;font-weight:700;color:var(--terra);margin:16px 0 7px}
+  .mailbody a{color:var(--green);word-break:break-all}
+  .mf{background:var(--terra-soft);color:var(--terra);border-radius:4px;padding:1px 5px;font-family:ui-monospace,monospace;font-size:12.5px}
+  .warnbox{background:var(--warn-bg);border-left:4px solid var(--terra);border-radius:0 12px 12px 0;padding:15px 18px;margin-top:16px}
+  .warnbox b{color:var(--warn)}
+  .warnbox p{font-size:14px;color:var(--warn);margin-top:3px}
+  footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#F7F4EE;padding:11px 20px;border-radius:999px;font-size:14px;transition:.25s;pointer-events:none;opacity:0}
+  .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+  .top{position:fixed;right:20px;bottom:24px;background:var(--ink);color:#F7F4EE;border:none;border-radius:999px;padding:11px 18px;font-size:13px;cursor:pointer;opacity:0;transition:.2s;font-family:inherit}
+  .top.show{opacity:.92}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="brand">Sophie Orozco Coaching</div>
+  <h1>Onboarding SOP by Program</h1>
+  <p>Every program, its tag, and the exact onboarding email the client receives. Click any tag to copy it.</p>
+</header>
+
+<div class="wrap">
+
+
+<section class="wfcard" id="wf1">
+  <div class="wfhead">
+    <div class="wfnum">1</div>
+    <div>
+      <h3>Couples Coaching — men</h3>
+      <div class="wfname">Onboarding Email- (men) Couples</div>
+    </div>
+  </div>
+  <div class="wfgrid">
+    <div class="wfcell">
+      <div class="lbl">Tag the sales team applies</div>
+      <button class="tagbtn" data-tag="client - couples coaching men">client - couples coaching men <span class="ic">copy</span></button>
+      <div class="lbl" style="margin-top:16px">Plus, always</div>
+      <button class="tagbtn" data-tag="existing client">existing client <span class="ic">copy</span></button>
+    </div>
+    <div class="wfcell">
+      <div class="lbl">What happens</div>
+      <p class="small">Adding the tag starts <b>Onboarding Email- (men) Couples</b>, which sends the onboarding email below with the client's Circle invitation.</p>
+    </div>
+  </div>
+  <div class="mail">
+    <div class="mailhead">Onboarding email sent by this automation</div>
+    <div class="subj"><span>Subject:</span> Welcome to Couples Coaching with Krissy: Your Next Steps</div>
+    <div class="mailbody">
+      <p>Hi <span class="mf">{{contact.first_name}}</span>,</p>
+<p>We are so happy you&#x27;re here.</p>
+<p>Welcome to Couples Coaching.</p>
+<p>You&#x27;ve made a meaningful investment in your relationship, and we&#x27;re honored to support you both on this journey.</p>
+<p>Over the next 3 months, you&#x27;ll receive personalized coaching designed to help you strengthen communication, rebuild connection, create greater understanding, and move forward together with clarity and intention.</p>
+<p>Let&#x27;s get you set up.</p>
+<h4>Step 1: Download the Circle App</h4>
+<p>For the best experience, download the Circle app so you can easily access your resources and stay updated.</p>
+<p>Download the app here:</p>
+<p>🔗 Android:<a href="https://play.google.com/store/apps/details?id=so.circle.circle" target="_blank" rel="noopener">https://play.google.com/store/apps/details?id=so.circle.circle</a></p>
+<p>IOS: <a href="https://apps.apple.com/us/app/circle-communities/id1509651625" target="_blank" rel="noopener">https://apps.apple.com/us/app/circle-communities/id1509651625</a></p>
+<h4>Step 2: Join the Circle Community</h4>
+<p>Your coaching experience begins inside our private Circle community.</p>
+<p>Click the link below to create your account and join:</p>
+<p>🔗 <a href="https://sophie-orozco-coaching.circle.so/join?invitation_token=e034ff5634bd3f135c105022097c3db0b164d291-e1b559bc-b745-4031-aa9d-7bfacea7f79a" target="_blank" rel="noopener">https://sophie-orozco-coaching.circle.so/join?invitation_token=e034ff5634bd3f135c105022097c3db0b164d291-e1b559bc-b745-4031-aa9d-7bfacea7f79a</a></p>
+<p>Once you&#x27;ve joined, take a few minutes to explore the platform and introduce yourself inside the community.</p>
+<p>Please check the recorded video to navigate Circle: <a href="https://www.loom.com/share/d534e3f33ad547319a09cf7d9e834a3e" target="_blank" rel="noopener">https://www.loom.com/share/d534e3f33ad547319a09cf7d9e834a3e</a></p>
+<p><a href="https://www.loom.com/share/d534e3f33ad547319a09cf7d9e834a3e" target="_blank" rel="noopener">https://www.loom.com/share/d534e3f33ad547319a09cf7d9e834a3e</a></p>
+<p>Inside Circle, you&#x27;ll find:</p>
+<p>💌 Coaching resources and materials</p>
+<p>💌 Session recordings</p>
+<p>💌 Announcements and updates</p>
+<p>💌 Community support</p>
+<p>We encourage both partners to create their accounts and familiarize themselves with the platform.</p>
+<h4>Step 3: Schedule Your Coaching Sessions</h4>
+<p>Your Premium Couples Coaching package includes:</p>
+<p>💌 6 Private Couples Coaching Sessions</p>
+<p>💌 Session Recordings</p>
+<p>💌 3 Months of Personalized Support</p>
+<p>Please use the scheduling link below to book your sessions:</p>
+<p>📅 <a href="https://calendly.com/krissy-sophieorozco/new-meeting" target="_blank" rel="noopener">https://calendly.com/krissy-sophieorozco/new-meeting</a></p>
+<p>We recommend scheduling your sessions in advance to ensure consistency throughout the program.</p>
+<h4>What to Expect</h4>
+<p>These sessions are designed to help you:</p>
+<p>💌 Improve communication</p>
+<p>💌 Strengthen emotional connection</p>
+<p>💌 Navigate conflict more effectively</p>
+<p>💌 Build trust and understanding</p>
+<p>💌 Create a healthier and more fulfilling relationship</p>
+<p>This is a collaborative process.</p>
+<p>The greatest breakthroughs happen when both partners show up with openness, honesty, and a willingness to grow.</p>
+<h4>Session Recordings</h4>
+<p>All coaching sessions will be recorded and made available to you so you can revisit key insights, exercises, and breakthroughs between sessions.</p>
+<p>Details on how to access recordings will be provided inside Circle.</p>
+<h4>Support</h4>
+<p>If you have questions regarding your coaching sessions, scheduling, or program experience, please reach out through Circle.</p>
+<p>For technical support, login issues, or account access questions, please contact:</p>
+<p>📧 Hazel (Support Team)</p>
+<p>support@sophieorozco.com</p>
+<h4>Office Hours &amp; Team Support</h4>
+<p>Our team is available Monday through Friday from 9:00 AM to 5:00 PM EST.</p>
+<p>Please allow 24–72 business hours for responses.</p>
+<h4>One Final Reminder</h4>
+<p>Lasting change doesn&#x27;t happen from a single conversation.</p>
+<p>It happens through consistent effort, honest communication, and a commitment to growth.</p>
+<p>Show up fully.</p>
+<p>Stay curious.</p>
+<p>Trust the process.</p>
+<p>And remember that progress is built one conversation at a time.</p>
+<p>We&#x27;re excited to support both of you throughout this journey.</p>
+<p>With love,</p>
+<p>The RMM Team</p>
+    </div>
+  </div>
+</section>
+<section class="wfcard" id="wf2">
+  <div class="wfhead">
+    <div class="wfnum">2</div>
+    <div>
+      <h3>Couples Coaching — women</h3>
+      <div class="wfname">Onboarding Email- (women) Couples</div>
+    </div>
+  </div>
+  <div class="wfgrid">
+    <div class="wfcell">
+      <div class="lbl">Tag the sales team applies</div>
+      <button class="tagbtn" data-tag="client - couples coaching women">client - couples coaching women <span class="ic">copy</span></button>
+      <div class="lbl" style="margin-top:16px">Plus, always</div>
+      <button class="tagbtn" data-tag="existing client">existing client <span class="ic">copy</span></button>
+    </div>
+    <div class="wfcell">
+      <div class="lbl">What happens</div>
+      <p class="small">Adding the tag starts <b>Onboarding Email- (women) Couples</b>, which sends the onboarding email below with the client's Circle invitation.</p>
+    </div>
+  </div>
+  <div class="mail">
+    <div class="mailhead">Onboarding email sent by this automation</div>
+    <div class="subj"><span>Subject:</span> Welcome to Premium Couples Coaching: Let’s Get Started</div>
+    <div class="mailbody">
+      <p>Hi <span class="mf">{{contact.first_name}}</span>,</p>
+<p>We are so happy you&#x27;re here.</p>
+<p>Welcome to Couples Coaching.</p>
+<p>You&#x27;ve made a meaningful investment in your relationship, and we&#x27;re honored to support you both on this journey.</p>
+<p>Over the next 3 months, you&#x27;ll receive personalized coaching designed to help you strengthen communication, rebuild connection, create greater understanding, and move forward together with clarity and intention.</p>
+<p>Let&#x27;s get you set up.</p>
+<h4>Step 1: Download the Circle App</h4>
+<p>For the best experience, download the Circle app so you can easily access your resources and stay updated.</p>
+<p>Download the app here:</p>
+<p>🔗 Android:<a href="https://play.google.com/store/apps/details?id=so.circle.circle" target="_blank" rel="noopener">https://play.google.com/store/apps/details?id=so.circle.circle</a></p>
+<p>IOS: <a href="https://apps.apple.com/us/app/circle-communities/id1509651625" target="_blank" rel="noopener">https://apps.apple.com/us/app/circle-communities/id1509651625</a></p>
+<h4>Step 2: Join the Circle Community</h4>
+<p>Your coaching experience begins inside our private Circle community.</p>
+<p>Click the link below to create your account and join:</p>
+<p>🔗 <a href="https://sophie-orozco-coaching.circle.so/join?invitation_token=f2fab4dbae90fc2ffa3f74b8d93198f4d34c0c44-5d6fe916-063b-40ab-a1ab-9b1c5b0d22e1" target="_blank" rel="noopener">https://sophie-orozco-coaching.circle.so/join?invitation_token=f2fab4dbae90fc2ffa3f74b8d93198f4d34c0c44-5d6fe916-063b-40ab-a1ab-9b1c5b0d22e1</a></p>
+<p>Once you&#x27;ve joined, take a few minutes to explore the platform and introduce yourself inside the community.</p>
+<p>Please check the recorded video to navigate Circle: <a href="https://www.loom.com/share/d534e3f33ad547319a09cf7d9e834a3e" target="_blank" rel="noopener">https://www.loom.com/share/d534e3f33ad547319a09cf7d9e834a3e</a></p>
+<p><a href="https://www.loom.com/share/d534e3f33ad547319a09cf7d9e834a3e" target="_blank" rel="noopener">https://www.loom.com/share/d534e3f33ad547319a09cf7d9e834a3e</a></p>
+<p>Inside Circle, you&#x27;ll find:</p>
+<p>💌 Coaching resources and materials</p>
+<p>💌 Session recordings</p>
+<p>💌 Announcements and updates</p>
+<p>💌 Community support</p>
+<p>We encourage both partners to create their accounts and familiarize themselves with the platform.</p>
+<h4>Step 3: Schedule Your Coaching Sessions</h4>
+<p>Your Premium Couples Coaching package includes:</p>
+<p>💌 6 Private Couples Coaching Sessions</p>
+<p>💌 Session Recordings</p>
+<p>💌 3 Months of Personalized Support</p>
+<p>Please use the scheduling link below to book your sessions:</p>
+<p>📅 <a href="https://calendly.com/krissy-sophieorozco/new-meeting" target="_blank" rel="noopener">https://calendly.com/krissy-sophieorozco/new-meeting</a></p>
+<p>We recommend scheduling your sessions in advance to ensure consistency throughout the program.</p>
+<h4>What to Expect</h4>
+<p>These sessions are designed to help you:</p>
+<p>💌 Improve communication</p>
+<p>💌 Strengthen emotional connection</p>
+<p>💌 Navigate conflict more effectively</p>
+<p>💌 Build trust and understanding</p>
+<p>💌 Create a healthier and more fulfilling relationship</p>
+<p>This is a collaborative process.</p>
+<p>The greatest breakthroughs happen when both partners show up with openness, honesty, and a willingness to grow.</p>
+<h4>Session Recordings</h4>
+<p>All coaching sessions will be recorded and made available to you so you can revisit key insights, exercises, and breakthroughs between sessions.</p>
+<p>Details on how to access recordings will be provided inside Circle.</p>
+<h4>Support</h4>
+<p>If you have questions regarding your coaching sessions, scheduling, or program experience, please reach out through Circle.</p>
+<p>For technical support, login issues, or account access questions, please contact:</p>
+<p>📧 Hazel (Support Team)</p>
+<p>support@sophieorozco.com</p>
+<h4>Office Hours &amp; Team Support</h4>
+<p>Our team is available Monday through Friday from 9:00 AM to 5:00 PM EST.</p>
+<p>Please allow 24–72 business hours for responses.</p>
+<h4>One Final Reminder</h4>
+<p>Lasting change doesn&#x27;t happen from a single conversation.</p>
+<p>It happens through consistent effort, honest communication, and a commitment to growth.</p>
+<p>Show up fully.</p>
+<p>Stay curious.</p>
+<p>Trust the process.</p>
+<p>And remember that progress is built one conversation at a time.</p>
+<p>We&#x27;re excited to support both of you throughout this journey.</p>
+<p>With love,</p>
+<p>The RMM Team</p>
+    </div>
+  </div>
+</section>
+<section class="wfcard" id="wf3">
+  <div class="wfhead">
+    <div class="wfnum">3</div>
+    <div>
+      <h3>Couples Coaching VIP — men</h3>
+      <div class="wfname">Onboarding Email- Premium Men Couples</div>
+    </div>
+  </div>
+  <div class="wfgrid">
+    <div class="wfcell">
+      <div class="lbl">Tag the sales team applies</div>
+      <button class="tagbtn" data-tag="client - vip sophie men">client - vip sophie men <span class="ic">copy</span></button>
+      <div class="lbl" style="margin-top:16px">Plus, always</div>
+      <button class="tagbtn" data-tag="existing client">existing client <span class="ic">copy</span></button>
+    </div>
+    <div class="wfcell">
+      <div class="lbl">What happens</div>
+      <p class="small">Adding the tag starts <b>Onboarding Email- Premium Men Couples</b>, which sends the onboarding email below with the client's Circle invitation.</p>
+    </div>
+  </div>
+  <div class="mail">
+    <div class="mailhead">Onboarding email sent by this automation</div>
+    <div class="subj"><span>Subject:</span> Welcome to Premium Couples Coaching: Let’s Get Started</div>
+    <div class="mailbody">
+      <p>Hi <span class="mf">{{contact.first_name}}</span>,</p>
+<p>We are so happy you&#x27;re here.</p>
+<p>Welcome to Premium Couples Coaching.</p>
+<p>You&#x27;ve made a powerful investment in yourself, your growth, and the future you&#x27;re working to create. Over the next 12 weeks, you&#x27;ll receive everything included in the RMM program, along with additional personalized support to help you create meaningful and lasting transformation.</p>
+<p>Let&#x27;s get you set up.</p>
+<h4>Step 1: Download the Circle App</h4>
+<p>Circle is where you&#x27;ll access:</p>
+<p>💌 All course modules and lessons</p>
+<p>💌 Community discussions and support</p>
+<p>💌 Group coaching call details and replays</p>
+<p>💌 Announcements and program updates</p>
+<p>💌 Direct messaging support</p>
+<p>Download the app here:</p>
+<p>Android:<a href="https://play.google.com/store/apps/details?id=so.circle.circle" target="_blank" rel="noopener">https://play.google.com/store/apps/details?id=so.circle.circle</a></p>
+<p>IOS: <a href="https://apps.apple.com/us/app/circle-communities/id1509651625" target="_blank" rel="noopener">https://apps.apple.com/us/app/circle-communities/id1509651625</a></p>
+<p>We highly recommend downloading the app so you can easily stay connected throughout the program, you can also access Circle on your laptop computer too using the link below.</p>
+<h4>Step 2: Accept Your Circle Invitation</h4>
+<p>Click the link below and create your account:</p>
+<p>🔗Create Your Account Here</p>
+<p>Once you&#x27;ve joined, take a few minutes to explore the platform and introduce yourself inside the community.</p>
+<p>Please check the recorded video to navigate Circle:</p>
+<p>Watch The Men’s Onboarding Video Here</p>
+<h4>Step 3: Onboarding Call Schedule</h4>
+<p>Please make sure to join an onboarding call, the schedule for these can be found in the group call schedule on Circle.</p>
+<p>During this call, we&#x27;ll walk you through the program, answer your questions, and make sure you&#x27;re fully set up for success.</p>
+<p>If you have any questions in the meantime, please contact our support team at:</p>
+<p>📧 support@sophieorozco.com</p>
+<h4>Step 4: Your 12 Private Coaching Calls</h4>
+<p>Your Premium Couples Coaching package includes 12 private coaching calls</p>
+<p>These sessions are designed to help you gain clarity, receive personalized guidance, and stay accountable throughout your journey.</p>
+<p>Your call schedule and booking instructions will be sent to you directly from our Client Success Manager either via text or email.</p>
+<p>Direct Message Support</p>
+<p>One of the additional benefits of Premium Couples Coaching is access to direct message support inside Circle.</p>
+<p>If you need guidance, have questions, or want feedback between calls, you can reach out directly through Circle messaging.</p>
+<p>Please allow 24–72 business hours for responses, Monday through Friday.</p>
+<p>Group Coaching Calls</p>
+<p>These calls are where we go deeper, gain clarity, and build momentum together.</p>
+<p>We strongly encourage you to attend live whenever possible.</p>
+<p>If you can&#x27;t make a live session, don&#x27;t worry, replays will be available inside Circle.</p>
+<p>📅 Please check the Events section inside Circle for the most up-to-date group coaching call schedule.</p>
+<p>Your Premium Couples Coaching Guarantee</p>
+<p>As part of Premium Couples Coaching, you also have access to our program guarantee.</p>
+<p>Specific guarantee details can be found inside your onboarding materials and discussed during the onboarding call.</p>
+<h4>Office Hours &amp; Team Support</h4>
+<p>Our team is available Monday through Friday from 9:00 AM to 5:00 PM EST.</p>
+<p>We encourage you to fully engage in the program while also honoring your own pace and capacity as you move through the material.</p>
+<h4>One Final Reminder</h4>
+<p>The people who experience the greatest results are the ones who participate.</p>
+<p>Watch the lessons.</p>
+<p>Complete the exercises.</p>
+<p>Attend your coaching calls.</p>
+<p>Engage with the community.</p>
+<p>Ask questions.</p>
+<p>And most importantly, stay consistent.</p>
+<p>Small actions, repeated over time, create extraordinary change.</p>
+<p>We&#x27;re honored to support you on this journey and excited to have you as part of the RMM Accelerator community.</p>
+<p>With love,</p>
+<p>The RMM Team</p>
+    </div>
+  </div>
+</section>
+<section class="wfcard" id="wf4">
+  <div class="wfhead">
+    <div class="wfnum">4</div>
+    <div>
+      <h3>Couples Coaching VIP — women</h3>
+      <div class="wfname">Onboarding Email- Premium Women Couples</div>
+    </div>
+  </div>
+  <div class="wfgrid">
+    <div class="wfcell">
+      <div class="lbl">Tag the sales team applies</div>
+      <button class="tagbtn" data-tag="client - vip sophie women">client - vip sophie women <span class="ic">copy</span></button>
+      <div class="lbl" style="margin-top:16px">Plus, always</div>
+      <button class="tagbtn" data-tag="existing client">existing client <span class="ic">copy</span></button>
+    </div>
+    <div class="wfcell">
+      <div class="lbl">What happens</div>
+      <p class="small">Adding the tag starts <b>Onboarding Email- Premium Women Couples</b>, which sends the onboarding email below with the client's Circle invitation.</p>
+    </div>
+  </div>
+  <div class="mail">
+    <div class="mailhead">Onboarding email sent by this automation</div>
+    <div class="subj"><span>Subject:</span> Welcome to Premium Couples Coaching: Let’s Get Started</div>
+    <div class="mailbody">
+      <p>Hi <span class="mf">{{contact.first_name}}</span>,</p>
+<p>We are so happy you&#x27;re here.</p>
+<p>Welcome to Premium Couples Coaching.</p>
+<p>You&#x27;ve made a powerful investment in yourself, your growth, and the future you&#x27;re working to create. Over the next 12 weeks, you&#x27;ll receive everything included in the RMM program, along with additional personalized support to help you create meaningful and lasting transformation.</p>
+<p>Let&#x27;s get you set up.</p>
+<h4>Step 1: Download the Circle App</h4>
+<p>Circle is where you&#x27;ll access:</p>
+<p>💌 All course modules and lessons</p>
+<p>💌 Community discussions and support</p>
+<p>💌 Group coaching call details and replays</p>
+<p>💌 Announcements and program updates</p>
+<p>💌 Direct messaging support</p>
+<p>Download the app here:</p>
+<p>Android:<a href="https://play.google.com/store/apps/details?id=so.circle.circle" target="_blank" rel="noopener">https://play.google.com/store/apps/details?id=so.circle.circle</a></p>
+<p>IOS: <a href="https://apps.apple.com/us/app/circle-communities/id1509651625" target="_blank" rel="noopener">https://apps.apple.com/us/app/circle-communities/id1509651625</a></p>
+<p>We highly recommend downloading the app so you can easily stay connected throughout the program, you can also access Circle on your laptop computer too using the link below.</p>
+<h4>Step 2: Accept Your Circle Invitation</h4>
+<p>Click the link below and create your account:</p>
+<p>🔗Create Your Account Here</p>
+<p>Once you&#x27;ve joined, take a few minutes to explore the platform and introduce yourself inside the community.</p>
+<p>Please check the recorded video to navigate Circle:</p>
+<p>Watch The Women’s Onboarding Video Here</p>
+<h4>Step 3: Onboarding Call Schedule</h4>
+<p>Please make sure to join an onboarding call, the schedule for these can be found in the group call schedule on Circle.</p>
+<p>During this call, we&#x27;ll walk you through the program, answer your questions, and make sure you&#x27;re fully set up for success.</p>
+<p>If you have any questions in the meantime, please contact our support team at:</p>
+<p>📧 support@sophieorozco.com</p>
+<h4>Step 4: Your 12 Private Coaching Calls</h4>
+<p>Your Premium Couples Coaching package includes 12 private coaching calls</p>
+<p>These sessions are designed to help you gain clarity, receive personalized guidance, and stay accountable throughout your journey.</p>
+<p>Your call schedule and booking instructions will be sent to you directly from our Client Success Manager either via text or email.</p>
+<p>Direct Message Support</p>
+<p>One of the additional benefits of Premium Couples Coaching is access to direct message support inside Circle.</p>
+<p>If you need guidance, have questions, or want feedback between calls, you can reach out directly through Circle messaging.</p>
+<p>Please allow 24–72 business hours for responses, Monday through Friday.</p>
+<p>Group Coaching Calls</p>
+<p>These calls are where we go deeper, gain clarity, and build momentum together.</p>
+<p>We strongly encourage you to attend live whenever possible.</p>
+<p>If you can&#x27;t make a live session, don&#x27;t worry, replays will be available inside Circle.</p>
+<p>📅 Please check the Events section inside Circle for the most up-to-date group coaching call schedule.</p>
+<p>Your Premium Couples Coaching Guarantee</p>
+<p>As part of Premium Couples Coaching, you also have access to our program guarantee.</p>
+<p>Specific guarantee details can be found inside your onboarding materials and discussed during the onboarding call.</p>
+<h4>Office Hours &amp; Team Support</h4>
+<p>Our team is available Monday through Friday from 9:00 AM to 5:00 PM EST.</p>
+<p>We encourage you to fully engage in the program while also honoring your own pace and capacity as you move through the material.</p>
+<h4>One Final Reminder</h4>
+<p>The people who experience the greatest results are the ones who participate.</p>
+<p>Watch the lessons.</p>
+<p>Complete the exercises.</p>
+<p>Attend your coaching calls.</p>
+<p>Engage with the community.</p>
+<p>Ask questions.</p>
+<p>And most importantly, stay consistent.</p>
+<p>Small actions, repeated over time, create extraordinary change.</p>
+<p>We&#x27;re honored to support you on this journey and excited to have you as part of the RMM Accelerator community.</p>
+<p>With love,</p>
+<p>The RMM Team</p>
+    </div>
+  </div>
+</section>
+<section class="wfcard" id="wf5">
+  <div class="wfhead">
+    <div class="wfnum">5</div>
+    <div>
+      <h3>RMM Accelerator — men</h3>
+      <div class="wfname">Onboarding Email- RMM Accelerator (men)</div>
+    </div>
+  </div>
+  <div class="wfgrid">
+    <div class="wfcell">
+      <div class="lbl">Tag the sales team applies</div>
+      <button class="tagbtn" data-tag="client - rmm accelerator men">client - rmm accelerator men <span class="ic">copy</span></button>
+      <div class="lbl" style="margin-top:16px">Plus, always</div>
+      <button class="tagbtn" data-tag="existing client">existing client <span class="ic">copy</span></button>
+    </div>
+    <div class="wfcell">
+      <div class="lbl">What happens</div>
+      <p class="small">Adding the tag starts <b>Onboarding Email- RMM Accelerator (men)</b>, which sends the onboarding email below with the client's Circle invitation.</p>
+    </div>
+  </div>
+  <div class="mail">
+    <div class="mailhead">Onboarding email sent by this automation</div>
+    <div class="subj"><span>Subject:</span> Welcome to RMM Accelerator Men’s Program: Your Next Steps</div>
+    <div class="mailbody">
+      <p>Hi <span class="mf">{{contact.first_name}}</span>,</p>
+<p>We are so happy you&#x27;re here.</p>
+<p>Welcome to RMM Accelerator Men’s Course.</p>
+<p>You&#x27;ve made a powerful investment in yourself, your growth, and the future you&#x27;re working to create. Over the next 12 weeks, you&#x27;ll receive everything included in the RMM program, along with additional personalized support to help you create meaningful and lasting transformation.</p>
+<p>Let&#x27;s get you set up.</p>
+<h4>Step 1: Download the Circle App</h4>
+<p>Circle is where you&#x27;ll access:</p>
+<p>💌 All course modules and lessons</p>
+<p>💌 Community discussions and support</p>
+<p>💌 Group coaching call details and replays</p>
+<p>💌 Announcements and program updates</p>
+<p>💌 Direct messaging support</p>
+<p>Download the app here:</p>
+<p>Android:<a href="https://play.google.com/store/apps/details?id=so.circle.circle" target="_blank" rel="noopener">https://play.google.com/store/apps/details?id=so.circle.circle</a></p>
+<p>IOS: <a href="https://apps.apple.com/us/app/circle-communities/id1509651625" target="_blank" rel="noopener">https://apps.apple.com/us/app/circle-communities/id1509651625</a></p>
+<p>We highly recommend downloading the app so you can easily stay connected throughout the program, you can also access Circle on your laptop computer too using the link below.</p>
+<h4>Step 2: Accept Your Circle Invitation</h4>
+<p>Click the link below and create your account:</p>
+<p>🔗Create Your Account Here</p>
+<p>Once you&#x27;ve joined, take a few minutes to explore the platform and introduce yourself inside the community.</p>
+<p>Please check the recorded video to navigate Circle:</p>
+<p>Watch The Men’s Onboarding Video Here</p>
+<h4>Step 3: Onboarding Call Schedule</h4>
+<p>Please make sure to join an onboarding call, the schedule for these can be found in the group call schedule on Circle.</p>
+<p>During this call, we&#x27;ll walk you through the program, answer your questions, and make sure you&#x27;re fully set up for success.</p>
+<p>If you have any questions in the meantime, please contact our support team at:</p>
+<p>📧 support@sophieorozco.com</p>
+<h4>Step 4: Your 6 Private Coaching Calls</h4>
+<p>Your Accelerator package includes 6 private coaching calls</p>
+<p>These sessions are designed to help you gain clarity, receive personalized guidance, and stay accountable throughout your journey.</p>
+<p>Your call schedule and booking instructions will be sent to you directly from our Client Success Manager either via text or email.</p>
+<p>Direct Message Support</p>
+<p>One of the additional benefits of Accelerator is access to direct message support inside Circle.</p>
+<p>If you need guidance, have questions, or want feedback between calls, you can reach out directly through Circle messaging.</p>
+<p>Please allow 24–72 business hours for responses, Monday through Friday.</p>
+<p>Group Coaching Calls</p>
+<p>These calls are where we go deeper, gain clarity, and build momentum together.</p>
+<p>We strongly encourage you to attend live whenever possible.</p>
+<p>If you can&#x27;t make a live session, don&#x27;t worry, replays will be available inside Circle.</p>
+<p>📅 Please check the Events section inside Circle for the most up-to-date group coaching call schedule.</p>
+<p>Your Accelerator Guarantee</p>
+<p>As part of RMM Accelerator, you also have access to our program guarantee.</p>
+<p>Specific guarantee details can be found inside your onboarding materials and discussed during the onboarding call.</p>
+<h4>Office Hours &amp; Team Support</h4>
+<p>Our team is available Monday through Friday from 9:00 AM to 5:00 PM EST.</p>
+<p>We encourage you to fully engage in the program while also honoring your own pace and capacity as you move through the material.</p>
+<h4>One Final Reminder</h4>
+<p>The people who experience the greatest results are the ones who participate.</p>
+<p>Watch the lessons.</p>
+<p>Complete the exercises.</p>
+<p>Attend your coaching calls.</p>
+<p>Engage with the community.</p>
+<p>Ask questions.</p>
+<p>And most importantly, stay consistent.</p>
+<p>Small actions, repeated over time, create extraordinary change.</p>
+<p>We&#x27;re honored to support you on this journey and excited to have you as part of the RMM Accelerator community.</p>
+<p>With love,</p>
+<p>The RMM Team</p>
+    </div>
+  </div>
+</section>
+<section class="wfcard" id="wf6">
+  <div class="wfhead">
+    <div class="wfnum">6</div>
+    <div>
+      <h3>RMM Accelerator — women</h3>
+      <div class="wfname">Onboarding Email- RMM Accelerator (women)</div>
+    </div>
+  </div>
+  <div class="wfgrid">
+    <div class="wfcell">
+      <div class="lbl">Tag the sales team applies</div>
+      <button class="tagbtn" data-tag="client - rmm accelerator women">client - rmm accelerator women <span class="ic">copy</span></button>
+      <div class="lbl" style="margin-top:16px">Plus, always</div>
+      <button class="tagbtn" data-tag="existing client">existing client <span class="ic">copy</span></button>
+    </div>
+    <div class="wfcell">
+      <div class="lbl">What happens</div>
+      <p class="small">Adding the tag starts <b>Onboarding Email- RMM Accelerator (women)</b>, which sends the onboarding email below with the client's Circle invitation.</p>
+    </div>
+  </div>
+  <div class="mail">
+    <div class="mailhead">Onboarding email sent by this automation</div>
+    <div class="subj"><span>Subject:</span> Welcome to RMM Accelerator Women’s Program: Your Next Steps</div>
+    <div class="mailbody">
+      <p>Hi <span class="mf">{{contact.first_name}}</span>,</p>
+<p>We are so happy you&#x27;re here.</p>
+<p>Welcome to RMM Accelerator Women&#x27;s Program.</p>
+<p>You&#x27;ve made a powerful investment in yourself, your growth, and the future you&#x27;re working to create. Over the next 12 weeks, you&#x27;ll receive everything included in the RMM program, along with additional personalized support to help you create meaningful and lasting transformation.</p>
+<p>Let&#x27;s get you set up.</p>
+<h4>Step 1: Download the Circle App</h4>
+<p>Circle is where you&#x27;ll access:</p>
+<p>💌 All course modules and lessons</p>
+<p>💌 Community discussions and support</p>
+<p>💌 Group coaching call details and replays</p>
+<p>💌 Announcements and program updates</p>
+<p>💌 Direct messaging support</p>
+<p>Download the app here:</p>
+<p>Android:<a href="https://play.google.com/store/apps/details?id=so.circle.circle" target="_blank" rel="noopener">https://play.google.com/store/apps/details?id=so.circle.circle</a></p>
+<p>IOS: <a href="https://apps.apple.com/us/app/circle-communities/id1509651625" target="_blank" rel="noopener">https://apps.apple.com/us/app/circle-communities/id1509651625</a></p>
+<p>We highly recommend downloading the app so you can easily stay connected throughout the program, you can also access Circle on your laptop computer too using the link below.</p>
+<h4>Step 2: Accept Your Circle Invitation</h4>
+<p>Click the link below and create your account:</p>
+<p>🔗Create Your Account Here</p>
+<p>Once you&#x27;ve joined, take a few minutes to explore the platform and introduce yourself inside the community.</p>
+<p>Please check the recorded video to navigate Circle:</p>
+<p>Watch The Women&#x27;s Onboarding Video Here</p>
+<h4>Step 3: Onboarding Call Schedule</h4>
+<p>Please make sure to join an onboarding call, the schedule for these can be found in the group call schedule on Circle.</p>
+<p>During this call, we&#x27;ll walk you through the program, answer your questions, and make sure you&#x27;re fully set up for success.</p>
+<p>If you have any questions in the meantime, please contact our support team at:</p>
+<p>📧 support@sophieorozco.com</p>
+<h4>Step 4: Your 6 Private Coaching Calls</h4>
+<p>Your Accelerator package includes 6 private coaching calls</p>
+<p>These sessions are designed to help you gain clarity, receive personalized guidance, and stay accountable throughout your journey.</p>
+<p>Your call schedule and booking instructions will be sent to you directly from our Client Success Manager either via text or email.</p>
+<p>Direct Message Support</p>
+<p>One of the additional benefits of Accelerator is access to direct message support inside Circle.</p>
+<p>If you need guidance, have questions, or want feedback between calls, you can reach out directly through Circle messaging to your coach once you receive your assigned coach’s name.</p>
+<p>Please allow 24–72 business hours for responses, Monday through Friday.</p>
+<p>Group Coaching Calls</p>
+<p>These calls are where we go deeper, gain clarity, and build momentum together.</p>
+<p>We strongly encourage you to attend live whenever possible.</p>
+<p>If you can&#x27;t make a live session, don&#x27;t worry, replays will be available inside Circle.</p>
+<p>📅 Please check the Events section inside Circle for the most up-to-date group coaching call schedule.</p>
+<p>Your Accelerator Guarantee</p>
+<p>As part of RMM Accelerator, you also have access to our program guarantee.</p>
+<p>Specific guarantee details can be found inside your onboarding materials and discussed during the onboarding call.</p>
+<h4>Office Hours &amp; Team Support</h4>
+<p>Our team is available Monday through Friday from 9:00 AM to 5:00 PM EST.</p>
+<p>We encourage you to fully engage in the program while also honoring your own pace and capacity as you move through the material.</p>
+<h4>One Final Reminder</h4>
+<p>The people who experience the greatest results are the ones who participate.</p>
+<p>Watch the lessons.</p>
+<p>Complete the exercises.</p>
+<p>Attend your coaching calls.</p>
+<p>Engage with the community.</p>
+<p>Ask questions.</p>
+<p>And most importantly, stay consistent.</p>
+<p>Small actions, repeated over time, create extraordinary change.</p>
+<p>We&#x27;re honored to support you on this journey and excited to have you as part of the RMM Accelerator community.</p>
+<p>With love,</p>
+<p>The RMM Team</p>
+    </div>
+  </div>
+</section>
+<section class="wfcard" id="wf7">
+  <div class="wfhead">
+    <div class="wfnum">7</div>
+    <div>
+      <h3>RMM standard — men</h3>
+      <div class="wfname">Onboarding Email- RMM Men</div>
+    </div>
+  </div>
+  <div class="wfgrid">
+    <div class="wfcell">
+      <div class="lbl">Tag the sales team applies</div>
+      <button class="tagbtn" data-tag="client - rmm men">client - rmm men <span class="ic">copy</span></button>
+      <div class="lbl" style="margin-top:16px">Plus, always</div>
+      <button class="tagbtn" data-tag="existing client">existing client <span class="ic">copy</span></button>
+    </div>
+    <div class="wfcell">
+      <div class="lbl">What happens</div>
+      <p class="small">Adding the tag starts <b>Onboarding Email- RMM Men</b>, which sends the onboarding email below with the client's Circle invitation.</p>
+    </div>
+  </div>
+  <div class="mail">
+    <div class="mailhead">Onboarding email sent by this automation</div>
+    <div class="subj"><span>Subject:</span> Welcome to RMM Men’s Course: Let’s Get You Set Up</div>
+    <div class="mailbody">
+      <p>Hi <span class="mf">{{contact.first_name}}</span>,</p>
+<p>We are so happy you&#x27;re here.</p>
+<p>Welcome to RMM Men’s Course.</p>
+<p>You&#x27;ve made a powerful investment in yourself, your growth, and the future you&#x27;re working to create. Over the next 12 weeks, you&#x27;ll receive everything included in the RMM program, along with additional personalized support to help you create meaningful and lasting transformation.</p>
+<p>Let&#x27;s get you set up.</p>
+<h4>Step 1: Download the Circle App</h4>
+<p>Circle is where you&#x27;ll access:</p>
+<p>💌 All course modules and lessons</p>
+<p>💌 Community discussions and support</p>
+<p>💌 Group coaching call details and replays</p>
+<p>💌 Announcements and program updates</p>
+<p>💌 Direct messaging support</p>
+<p>Download the app here:</p>
+<p>Android:<a href="https://play.google.com/store/apps/details?id=so.circle.circle" target="_blank" rel="noopener">https://play.google.com/store/apps/details?id=so.circle.circle</a></p>
+<p>IOS: <a href="https://apps.apple.com/us/app/circle-communities/id1509651625" target="_blank" rel="noopener">https://apps.apple.com/us/app/circle-communities/id1509651625</a></p>
+<p>We highly recommend downloading the app so you can easily stay connected throughout the program, you can also access Circle on your laptop computer too using the link below.</p>
+<h4>Step 2: Accept Your Circle Invitation</h4>
+<p>Click the link below and create your account:</p>
+<p>🔗Create Your Account Here</p>
+<p>Once you&#x27;ve joined, take a few minutes to explore the platform and introduce yourself inside the community.</p>
+<p>Please check the recorded video to navigate Circle:</p>
+<p>Watch The Men’s Onboarding Video Here</p>
+<h4>Step 3: Onboarding Call Schedule</h4>
+<p>Please make sure to join an onboarding call, the schedule for these can be found in the group call schedule on Circle.</p>
+<p>During this call, we&#x27;ll walk you through the program, answer your questions, and make sure you&#x27;re fully set up for success.</p>
+<p>If you have any questions in the meantime, please contact our support team at:</p>
+<p>📧 support@sophieorozco.com</p>
+<h4>Step 4: Group Coaching Calls Schedule</h4>
+<p>Group Coaching Calls</p>
+<p>These calls are where we go deeper, gain clarity, and build momentum together.</p>
+<p>We strongly encourage you to attend live whenever possible.</p>
+<p>If you can&#x27;t make a live session, don&#x27;t worry, replays will be available inside Circle.</p>
+<p>📅 Please check the Events section inside Circle for the most up-to-date group coaching call schedule.</p>
+<h4>Office Hours &amp; Team Support</h4>
+<p>Our team is available Monday through Friday from 9:00 AM to 5:00 PM EST.</p>
+<p>We encourage you to fully engage in the program while also honoring your own pace and capacity as you move through the material.</p>
+<h4>One Final Reminder</h4>
+<p>The people who experience the greatest results are the ones who participate.</p>
+<p>Watch the lessons.</p>
+<p>Complete the exercises.</p>
+<p>Attend your coaching calls.</p>
+<p>Engage with the community.</p>
+<p>Ask questions.</p>
+<p>And most importantly, stay consistent.</p>
+<p>Small actions, repeated over time, create extraordinary change.</p>
+<p>We&#x27;re honored to support you on this journey and excited to have you as part of the RMM Accelerator community.</p>
+<p>With love,</p>
+<p>The RMM Team</p>
+    </div>
+  </div>
+</section>
+<section class="wfcard" id="wf8">
+  <div class="wfhead">
+    <div class="wfnum">8</div>
+    <div>
+      <h3>RMM standard — women</h3>
+      <div class="wfname">Onboarding Email- RMM Women</div>
+    </div>
+  </div>
+  <div class="wfgrid">
+    <div class="wfcell">
+      <div class="lbl">Tag the sales team applies</div>
+      <button class="tagbtn" data-tag="client - rmm women">client - rmm women <span class="ic">copy</span></button>
+      <div class="lbl" style="margin-top:16px">Plus, always</div>
+      <button class="tagbtn" data-tag="existing client">existing client <span class="ic">copy</span></button>
+    </div>
+    <div class="wfcell">
+      <div class="lbl">What happens</div>
+      <p class="small">Adding the tag starts <b>Onboarding Email- RMM Women</b>, which sends the onboarding email below with the client's Circle invitation.</p>
+    </div>
+  </div>
+  <div class="mail">
+    <div class="mailhead">Onboarding email sent by this automation</div>
+    <div class="subj"><span>Subject:</span> Welcome to RMM Women’s Course: Let’s Get You Set Up</div>
+    <div class="mailbody">
+      <p>Hi <span class="mf">{{contact.first_name}}</span>,</p>
+<p>We are so happy you&#x27;re here.</p>
+<p>Welcome to RMM Women’s Course.</p>
+<p>You&#x27;ve made a powerful investment in yourself, your growth, and the future you&#x27;re working to create. Over the next 12 weeks, you&#x27;ll receive everything included in the RMM program, along with additional personalized support to help you create meaningful and lasting transformation.</p>
+<p>Let&#x27;s get you set up.</p>
+<h4>Step 1: Download the Circle App</h4>
+<p>Circle is where you&#x27;ll access:</p>
+<p>💌 All course modules and lessons</p>
+<p>💌 Community discussions and support</p>
+<p>💌 Group coaching call details and replays</p>
+<p>💌 Announcements and program updates</p>
+<p>💌 Direct messaging support</p>
+<p>Download the app here:</p>
+<p>Android:<a href="https://play.google.com/store/apps/details?id=so.circle.circle" target="_blank" rel="noopener">https://play.google.com/store/apps/details?id=so.circle.circle</a></p>
+<p>IOS: <a href="https://apps.apple.com/us/app/circle-communities/id1509651625" target="_blank" rel="noopener">https://apps.apple.com/us/app/circle-communities/id1509651625</a></p>
+<p>We highly recommend downloading the app so you can easily stay connected throughout the program, you can also access Circle on your laptop computer too using the link below.</p>
+<h4>Step 2: Accept Your Circle Invitation</h4>
+<p>Click the link below and create your account:</p>
+<p>🔗Create Your Account Here</p>
+<p>Once you&#x27;ve joined, take a few minutes to explore the platform and introduce yourself inside the community.</p>
+<p>Please check the recorded video to navigate Circle:</p>
+<p>Watch The Women’’s Onboarding Video Here</p>
+<h4>Step 3: Onboarding Call Schedule</h4>
+<p>Please make sure to join an onboarding call, the schedule for these can be found in the group call schedule on Circle.</p>
+<p>During this call, we&#x27;ll walk you through the program, answer your questions, and make sure you&#x27;re fully set up for success.</p>
+<p>If you have any questions in the meantime, please contact our support team at:</p>
+<p>📧 support@sophieorozco.com</p>
+<h4>Step 4: Group Coaching Calls Schedule</h4>
+<p>Group Coaching Calls</p>
+<p>These calls are where we go deeper, gain clarity, and build momentum together.</p>
+<p>We strongly encourage you to attend live whenever possible.</p>
+<p>If you can&#x27;t make a live session, don&#x27;t worry, replays will be available inside Circle.</p>
+<p>📅 Please check the Events section inside Circle for the most up-to-date group coaching call schedule.</p>
+<h4>Office Hours &amp; Team Support</h4>
+<p>Our team is available Monday through Friday from 9:00 AM to 5:00 PM EST.</p>
+<p>We encourage you to fully engage in the program while also honoring your own pace and capacity as you move through the material.</p>
+<h4>One Final Reminder</h4>
+<p>The people who experience the greatest results are the ones who participate.</p>
+<p>Watch the lessons.</p>
+<p>Complete the exercises.</p>
+<p>Attend your coaching calls.</p>
+<p>Engage with the community.</p>
+<p>Ask questions.</p>
+<p>And most importantly, stay consistent.</p>
+<p>Small actions, repeated over time, create extraordinary change.</p>
+<p>We&#x27;re honored to support you on this journey and excited to have you as part of the RMM Accelerator community.</p>
+<p>With love,</p>
+<p>The RMM Team</p>
+    </div>
+  </div>
+</section>
+<section class="wfcard" id="wf9">
+  <div class="wfhead">
+    <div class="wfnum">9</div>
+    <div>
+      <h3>RMM Group Only — men</h3>
+      <div class="wfname">Onboarding Email- RMM Group Only (men)</div>
+    </div>
+  </div>
+  <div class="wfgrid">
+    <div class="wfcell">
+      <div class="lbl">Tag the sales team applies</div>
+      <button class="tagbtn" data-tag="client - group only men">client - group only men <span class="ic">copy</span></button>
+      <div class="lbl" style="margin-top:16px">Plus, always</div>
+      <button class="tagbtn" data-tag="existing client">existing client <span class="ic">copy</span></button>
+    </div>
+    <div class="wfcell">
+      <div class="lbl">What happens</div>
+      <p class="small">Adding the tag starts <b>Onboarding Email- RMM Group Only (men)</b>, which sends the onboarding email below with the client's Circle invitation.</p>
+    </div>
+  </div>
+  <div class="mail">
+    <div class="mailhead">Onboarding email sent by this automation</div>
+    <div class="subj"><span>Subject:</span> You&#x27;re In! Here&#x27;s How to Access Your Course</div>
+    <div class="mailbody">
+      <p>Hi <span class="mf">{{contact.first_name}}</span>,</p>
+<p>We are so happy you&#x27;re here.</p>
+<p>By joining RMM, you&#x27;ve made a powerful investment in yourself, your growth, and the future you&#x27;re working to create.</p>
+<p>Over the next 12 weeks, you&#x27;ll have access to the tools, resources, and community designed to support meaningful and lasting change.</p>
+<p>Let&#x27;s get you set up.</p>
+<h4>Step 1: Download the Circle App</h4>
+<p>Circle is where you&#x27;ll access:</p>
+<p>💌 All course modules and lessons</p>
+<p>💌 Community discussions and support</p>
+<p>💌 Group coaching call details and replays</p>
+<p>💌 Announcements and program updates</p>
+<p>Download the app here: <a href="https://community.circle.so/home" target="_blank" rel="noopener">https://community.circle.so/home</a></p>
+<p>We highly recommend downloading the app so you can easily stay connected throughout the program.</p>
+<h4>Step 2: Accept Your Circle Invitation</h4>
+<p>Click the link and create an account:</p>
+<p>🔗<a href="https://sophie-orozco-coaching.circle.so/join?invitation_token=e034ff5634bd3f135c105022097c3db0b164d291-e1b559bc-b745-4031-aa9d-7bfacea7f79a" target="_blank" rel="noopener">https://sophie-orozco-coaching.circle.so/join?invitation_token=e034ff5634bd3f135c105022097c3db0b164d291-e1b559bc-b745-4031-aa9d-7bfacea7f79a</a></p>
+<p>Please check the recorded video to navigate Circle: <a href="https://www.loom.com/share/e78b21eae571458182505bbe66b6632a" target="_blank" rel="noopener">https://www.loom.com/share/e78b21eae571458182505bbe66b6632a</a></p>
+<h4>Step 3: Community Guidelines &amp; Support</h4>
+<p>If you&#x27;d like to ask a question, please tag Luann directly inside the community.</p>
+<p>This allows everyone to benefit from the conversation and keeps valuable insights available to the entire group.</p>
+<p>Please allow 24–72 business hours for responses, Monday through Friday.</p>
+<p>For technical support, login issues, or account access questions, please contact:</p>
+<p>📧 Hazel (Support Team) support@sophieorozco.com</p>
+<p>For program-related questions, our team will be happy to guide you in the appropriate direction.</p>
+<p>Group Coaching Calls</p>
+<p>These calls are where we go deeper, gain clarity, and build momentum together.</p>
+<p>We strongly encourage you to attend live whenever possible.</p>
+<p>If you can&#x27;t make a live session, don&#x27;t worry—replays will be available inside Circle.</p>
+<p>📅 Please check the Events section inside Circle for the most up-to-date group coaching call schedule.</p>
+<h4>Office Hours &amp; Team Support</h4>
+<p>Our team is available Monday through Friday from 9:00 AM to 5:00 PM EST.</p>
+<p>We encourage you to fully engage in the program while also honoring your own pace and capacity as you move through the material.</p>
+<h4>One Final Reminder</h4>
+<p>The people who experience the greatest results are the ones who participate.</p>
+<p>Watch the lessons.</p>
+<p>Complete the exercises.</p>
+<p>Engage with the community.</p>
+<p>Ask questions.</p>
+<p>And most importantly, stay consistent.</p>
+<p>Small actions, repeated over time, create extraordinary change.</p>
+<p>We&#x27;re honored to support you on this journey and excited to have you as part of the RMM community.</p>
+<p>With love,</p>
+<p>The RMM Team</p>
+    </div>
+  </div>
+</section>
+<section class="wfcard" id="wf10">
+  <div class="wfhead">
+    <div class="wfnum">10</div>
+    <div>
+      <h3>RMM Group Only — women</h3>
+      <div class="wfname">Onboarding Email- RMM Group Only (women)</div>
+    </div>
+  </div>
+  <div class="wfgrid">
+    <div class="wfcell">
+      <div class="lbl">Tag the sales team applies</div>
+      <button class="tagbtn" data-tag="client - group only women">client - group only women <span class="ic">copy</span></button>
+      <div class="lbl" style="margin-top:16px">Plus, always</div>
+      <button class="tagbtn" data-tag="existing client">existing client <span class="ic">copy</span></button>
+    </div>
+    <div class="wfcell">
+      <div class="lbl">What happens</div>
+      <p class="small">Adding the tag starts <b>Onboarding Email- RMM Group Only (women)</b>, which sends the onboarding email below with the client's Circle invitation.</p>
+    </div>
+  </div>
+  <div class="mail">
+    <div class="mailhead">Onboarding email sent by this automation</div>
+    <div class="subj"><span>Subject:</span> You&#x27;re In! Here&#x27;s How to Access Your Course</div>
+    <div class="mailbody">
+      <p>Hi <span class="mf">{{contact.first_name}}</span>,</p>
+<p>We are so happy you&#x27;re here.</p>
+<p>By joining RMM, you&#x27;ve made a powerful investment in yourself, your growth, and the future you&#x27;re working to create.</p>
+<p>Over the next 12 weeks, you&#x27;ll have access to the tools, resources, and community designed to support meaningful and lasting change.</p>
+<p>Let&#x27;s get you set up.</p>
+<h4>Step 1: Download the Circle App</h4>
+<p>Circle is where you&#x27;ll access:</p>
+<p>💌 All course modules and lessons</p>
+<p>💌 Community discussions and support</p>
+<p>💌 Group coaching call details and replays</p>
+<p>💌 Announcements and program updates</p>
+<p>Download the app here: <a href="https://community.circle.so/home" target="_blank" rel="noopener">https://community.circle.so/home</a></p>
+<p>We highly recommend downloading the app so you can easily stay connected throughout the program.</p>
+<h4>Step 2: Accept Your Circle Invitation</h4>
+<p>Click the link and create an account:</p>
+<p>🔗<a href="https://sophie-orozco-coaching.circle.so/join?invitation_token=e034ff5634bd3f135c105022097c3db0b164d291-e1b559bc-b745-4031-aa9d-7bfacea7f79a" target="_blank" rel="noopener">https://sophie-orozco-coaching.circle.so/join?invitation_token=e034ff5634bd3f135c105022097c3db0b164d291-e1b559bc-b745-4031-aa9d-7bfacea7f79a</a></p>
+<p>Please check the recorded video to navigate Circle: <a href="https://www.loom.com/share/e78b21eae571458182505bbe66b6632a" target="_blank" rel="noopener">https://www.loom.com/share/e78b21eae571458182505bbe66b6632a</a></p>
+<h4>Step 3: Community Guidelines &amp; Support</h4>
+<p>If you&#x27;d like to ask a question, please tag Luann directly inside the community.</p>
+<p>This allows everyone to benefit from the conversation and keeps valuable insights available to the entire group.</p>
+<p>Please allow 24–72 business hours for responses, Monday through Friday.</p>
+<p>For technical support, login issues, or account access questions, please contact:</p>
+<p>📧 Hazel (Support Team) support@sophieorozco.com</p>
+<p>For program-related questions, our team will be happy to guide you in the appropriate direction.</p>
+<p>Group Coaching Calls</p>
+<p>These calls are where we go deeper, gain clarity, and build momentum together.</p>
+<p>We strongly encourage you to attend live whenever possible.</p>
+<p>If you can&#x27;t make a live session, don&#x27;t worry—replays will be available inside Circle.</p>
+<p>📅 Please check the Events section inside Circle for the most up-to-date group coaching call schedule.</p>
+<h4>Office Hours &amp; Team Support</h4>
+<p>Our team is available Monday through Friday from 9:00 AM to 5:00 PM EST.</p>
+<p>We encourage you to fully engage in the program while also honoring your own pace and capacity as you move through the material.</p>
+<h4>One Final Reminder</h4>
+<p>The people who experience the greatest results are the ones who participate.</p>
+<p>Watch the lessons.</p>
+<p>Complete the exercises.</p>
+<p>Engage with the community.</p>
+<p>Ask questions.</p>
+<p>And most importantly, stay consistent.</p>
+<p>Small actions, repeated over time, create extraordinary change.</p>
+<p>We&#x27;re honored to support you on this journey and excited to have you as part of the RMM community.</p>
+<p>With love,</p>
+<p>The RMM Team</p>
+    </div>
+  </div>
+</section>
+<section class="wfcard" id="wf11">
+  <div class="wfhead">
+    <div class="wfnum">11</div>
+    <div>
+      <h3>RMM Course Only — men</h3>
+      <div class="wfname">Onboarding Email- RMM Course only Men</div>
+    </div>
+  </div>
+  <div class="wfgrid">
+    <div class="wfcell">
+      <div class="lbl">Tag the sales team applies</div>
+      <button class="tagbtn" data-tag="client - rmm course only men">client - rmm course only men <span class="ic">copy</span></button>
+      <div class="lbl" style="margin-top:16px">Plus, always</div>
+      <button class="tagbtn" data-tag="existing client">existing client <span class="ic">copy</span></button>
+    </div>
+    <div class="wfcell">
+      <div class="lbl">What happens</div>
+      <p class="small">Adding the tag starts <b>Onboarding Email- RMM Course only Men</b>, which sends the onboarding email below with the client's Circle invitation.</p>
+    </div>
+  </div>
+  <div class="mail">
+    <div class="mailhead">Onboarding email sent by this automation</div>
+    <div class="subj"><span>Subject:</span> Welcome! Let&#x27;s get you started.</div>
+    <div class="mailbody">
+      <p>Hi <span class="mf">{{contact.first_name}}</span>,</p>
+<p>We are so happy you&#x27;re here.</p>
+<p>By joining RMM, you&#x27;ve made a powerful investment in yourself, your growth, and the future you&#x27;re working to create.</p>
+<p>Over the next 12 weeks, you&#x27;ll have access to the tools, resources, and community designed to support meaningful and lasting change.</p>
+<p>Let&#x27;s get you set up.</p>
+<h4>Step 1: Download the Circle App</h4>
+<p>Circle is where you&#x27;ll access:</p>
+<p>💌 All course modules and lessons</p>
+<p>💌 Community discussions and support</p>
+<p>💌 Group coaching call details and replays</p>
+<p>💌 Announcements and program updates</p>
+<p>Download the app here: <a href="https://community.circle.so/home" target="_blank" rel="noopener">https://community.circle.so/home</a></p>
+<p>We highly recommend downloading the app so you can easily stay connected throughout the program.</p>
+<h4>Step 2: Accept Your Circle Invitation</h4>
+<p>Click the link and create an account:</p>
+<p>🔗<a href="https://sophie-orozco-coaching.circle.so/join?invitation_token=e034ff5634bd3f135c105022097c3db0b164d291-e1b559bc-b745-4031-aa9d-7bfacea7f79a" target="_blank" rel="noopener">https://sophie-orozco-coaching.circle.so/join?invitation_token=e034ff5634bd3f135c105022097c3db0b164d291-e1b559bc-b745-4031-aa9d-7bfacea7f79a</a></p>
+<p>Please check the recorded video to navigate Circle: <a href="https://www.loom.com/share/e78b21eae571458182505bbe66b6632a" target="_blank" rel="noopener">https://www.loom.com/share/e78b21eae571458182505bbe66b6632a</a></p>
+<h4>Step 3: Community Guidelines &amp; Support</h4>
+<p>If you&#x27;d like to ask a question, please tag Luann directly inside the community.</p>
+<p>This allows everyone to benefit from the conversation and keeps valuable insights available to the entire group.</p>
+<p>Please allow 24–72 business hours for responses, Monday through Friday.</p>
+<p>For technical support, login issues, or account access questions, please contact:</p>
+<p>📧 Hazel (Support Team) support@sophieorozco.com</p>
+<p>For program-related questions, our team will be happy to guide you in the appropriate direction.</p>
+<p>Group Coaching Calls</p>
+<p>These calls are where we go deeper, gain clarity, and build momentum together.</p>
+<p>We strongly encourage you to attend live whenever possible.</p>
+<p>If you can&#x27;t make a live session, don&#x27;t worry—replays will be available inside Circle.</p>
+<p>📅 Please check the Events section inside Circle for the most up-to-date group coaching call schedule.</p>
+<h4>Office Hours &amp; Team Support</h4>
+<p>Our team is available Monday through Friday from 9:00 AM to 5:00 PM EST.</p>
+<p>We encourage you to fully engage in the program while also honoring your own pace and capacity as you move through the material.</p>
+<h4>One Final Reminder</h4>
+<p>The people who experience the greatest results are the ones who participate.</p>
+<p>Watch the lessons.</p>
+<p>Complete the exercises.</p>
+<p>Engage with the community.</p>
+<p>Ask questions.</p>
+<p>And most importantly, stay consistent.</p>
+<p>Small actions, repeated over time, create extraordinary change.</p>
+<p>We&#x27;re honored to support you on this journey and excited to have you as part of the RMM community.</p>
+<p>With love,</p>
+<p>The RMM Team</p>
+    </div>
+  </div>
+</section>
+<section class="wfcard" id="wf12">
+  <div class="wfhead">
+    <div class="wfnum">12</div>
+    <div>
+      <h3>RMM Course Only — women</h3>
+      <div class="wfname">Onboarding Email- RMM Course only Women</div>
+    </div>
+  </div>
+  <div class="wfgrid">
+    <div class="wfcell">
+      <div class="lbl">Tag the sales team applies</div>
+      <button class="tagbtn" data-tag="client - rmm course only women">client - rmm course only women <span class="ic">copy</span></button>
+      <div class="lbl" style="margin-top:16px">Plus, always</div>
+      <button class="tagbtn" data-tag="existing client">existing client <span class="ic">copy</span></button>
+    </div>
+    <div class="wfcell">
+      <div class="lbl">What happens</div>
+      <p class="small">Adding the tag starts <b>Onboarding Email- RMM Course only Women</b>, which sends the onboarding email below with the client's Circle invitation.</p>
+    </div>
+  </div>
+  <div class="mail">
+    <div class="mailhead">Onboarding email sent by this automation</div>
+    <div class="subj"><span>Subject:</span> Welcome! Let&#x27;s get you started.</div>
+    <div class="mailbody">
+      <p>Hi <span class="mf">{{contact.first_name}}</span>,</p>
+<p>We are so happy you&#x27;re here.</p>
+<p>By joining RMM, you&#x27;ve made a powerful investment in yourself, your growth, and the future you&#x27;re working to create.</p>
+<p>Over the next 12 weeks, you&#x27;ll have access to the tools, resources, and community designed to support meaningful and lasting change.</p>
+<p>Let&#x27;s get you set up.</p>
+<h4>Step 1: Download the Circle App</h4>
+<p>Circle is where you&#x27;ll access:</p>
+<p>💌 All course modules and lessons</p>
+<p>💌 Community discussions and support</p>
+<p>💌 Group coaching call details and replays</p>
+<p>💌 Announcements and program updates</p>
+<p>Download the app here: <a href="https://community.circle.so/home" target="_blank" rel="noopener">https://community.circle.so/home</a></p>
+<p>We highly recommend downloading the app so you can easily stay connected throughout the program.</p>
+<h4>Step 2: Accept Your Circle Invitation</h4>
+<p>Click the link and create an account:</p>
+<p>🔗<a href="https://sophie-orozco-coaching.circle.so/join?invitation_token=e034ff5634bd3f135c105022097c3db0b164d291-e1b559bc-b745-4031-aa9d-7bfacea7f79a" target="_blank" rel="noopener">https://sophie-orozco-coaching.circle.so/join?invitation_token=e034ff5634bd3f135c105022097c3db0b164d291-e1b559bc-b745-4031-aa9d-7bfacea7f79a</a></p>
+<p>Please check the recorded video to navigate Circle: <a href="https://www.loom.com/share/e78b21eae571458182505bbe66b6632a" target="_blank" rel="noopener">https://www.loom.com/share/e78b21eae571458182505bbe66b6632a</a></p>
+<h4>Step 3: Community Guidelines &amp; Support</h4>
+<p>If you&#x27;d like to ask a question, please tag Luann directly inside the community.</p>
+<p>This allows everyone to benefit from the conversation and keeps valuable insights available to the entire group.</p>
+<p>Please allow 24–72 business hours for responses, Monday through Friday.</p>
+<p>For technical support, login issues, or account access questions, please contact:</p>
+<p>📧 Hazel (Support Team) support@sophieorozco.com</p>
+<p>For program-related questions, our team will be happy to guide you in the appropriate direction.</p>
+<p>Group Coaching Calls</p>
+<p>These calls are where we go deeper, gain clarity, and build momentum together.</p>
+<p>We strongly encourage you to attend live whenever possible.</p>
+<p>If you can&#x27;t make a live session, don&#x27;t worry—replays will be available inside Circle.</p>
+<p>📅 Please check the Events section inside Circle for the most up-to-date group coaching call schedule.</p>
+<h4>Office Hours &amp; Team Support</h4>
+<p>Our team is available Monday through Friday from 9:00 AM to 5:00 PM EST.</p>
+<p>We encourage you to fully engage in the program while also honoring your own pace and capacity as you move through the material.</p>
+<h4>One Final Reminder</h4>
+<p>The people who experience the greatest results are the ones who participate.</p>
+<p>Watch the lessons.</p>
+<p>Complete the exercises.</p>
+<p>Engage with the community.</p>
+<p>Ask questions.</p>
+<p>And most importantly, stay consistent.</p>
+<p>Small actions, repeated over time, create extraordinary change.</p>
+<p>We&#x27;re honored to support you on this journey and excited to have you as part of the RMM community.</p>
+<p>With love,</p>
+<p>The RMM Team</p>
+    </div>
+  </div>
+</section>
+<section class="wfcard" id="wf13">
+  <div class="wfhead">
+    <div class="wfnum">13</div>
+    <div>
+      <h3>Self-Paced — men</h3>
+      <div class="wfname">Onboarding Email- RMM- SELF PACED (Men)</div>
+    </div>
+  </div>
+  <div class="wfgrid">
+    <div class="wfcell">
+      <div class="lbl">Tag the sales team applies</div>
+      <button class="tagbtn" data-tag="client - rmm self paced men">client - rmm self paced men <span class="ic">copy</span></button>
+      <div class="lbl" style="margin-top:16px">Plus, always</div>
+      <button class="tagbtn" data-tag="existing client">existing client <span class="ic">copy</span></button>
+    </div>
+    <div class="wfcell">
+      <div class="lbl">What happens</div>
+      <p class="small">Adding the tag starts <b>Onboarding Email- RMM- SELF PACED (Men)</b>, which sends the onboarding email below with the client's Circle invitation.</p>
+    </div>
+  </div>
+  <div class="mail">
+    <div class="mailhead">Onboarding email sent by this automation</div>
+    <div class="subj"><span>Subject:</span> Welcome! Your Self-Paced Course Access Is Ready  🎉</div>
+    <div class="mailbody">
+      <p>Hi <span class="mf">{{contact.first_name}}</span>,</p>
+<p>We’re so happy you’re here.</p>
+<p>Welcome to your Self-Paced Program with Sophie Orozco Coaching.</p>
+<p>You’ve made an important investment in yourself and your relationship, and we’re excited for you to begin.</p>
+<p>This is a self-paced course experience, which means you can work through the lessons and materials on your own schedule.</p>
+<p>Let’s get you set up.</p>
+<h4>Step 1: Download the Circle App</h4>
+<p>For the easiest experience, we recommend downloading the Circle app so you can access your course from your phone or tablet.</p>
+<p>Android:</p>
+<p><a href="https://play.google.com/store/apps/details?id=so.circle.circle" target="_blank" rel="noopener">https://play.google.com/store/apps/details?id=so.circle.circle</a></p>
+<p>iOS:</p>
+<p><a href="https://apps.apple.com/us/app/circle-communities/id1509651625" target="_blank" rel="noopener">https://apps.apple.com/us/app/circle-communities/id1509651625</a></p>
+<p>You can also access Circle directly from your web browser on a computer.</p>
+<h4>Step 2: Create Your Circle Account</h4>
+<p>Click the link below to access your course:</p>
+<p>🔗</p>
+<p>Access Your Course Here:</p>
+<p><a href="https://sophie-orozco-coaching.circle.so/join?invitation_token=0281dab4b060006460f83b270eb74b2cea539036-7f6f84b2-840b-459b-82a7-1ffca57c26c5" target="_blank" rel="noopener">https://sophie-orozco-coaching.circle.so/join?invitation_token=0281dab4b060006460f83b270eb74b2cea539036-7f6f84b2-840b-459b-82a7-1ffca57c26c5</a></p>
+<p>If this is your first time using Circle:</p>
+<p>1. Click the course access link above.<br>2. Follow the prompts to create your Circle account.<br>3. Use the same email address you used when purchasing the program.<br>4. Create your password and complete your account setup.<br>5. Once your account is created, you’ll be taken inside Sophie Orozco Coaching’s Circle platform.</p>
+<p>If you already have a Circle account with us, simply log in using your existing email address and password.</p>
+<h4>Step 3: Find Your Course</h4>
+<p>Once you’re logged into Circle:</p>
+<p>1. Open the Sophie Orozco Coaching community.<br>2. Look for your Self-Paced Course in the spaces available to you.<br>3. Click on the course to open the curriculum.<br>4. Begin with the first lesson or module and work through the material in order.<br>5. Continue through each lesson at your own pace.</p>
+<p>You will only see the course and materials included with your purchase. Private coaching, group coaching calls, and other community spaces are not included with Self-Paced access.</p>
+<h4>Step 4: Work Through the Program</h4>
+<p>There is no need to rush through the material.</p>
+<p>We encourage you to:</p>
+<p>💌  Watch each lesson in order<br>💌  Complete the exercises and worksheets provided<br>💌  Take time to reflect on what you’re learning<br>💌  Apply the tools in your relationship as you go<br>💌  Revisit previous lessons whenever you need a refresher</p>
+<p>The goal isn’t simply to finish the course. The real value comes from consistently putting what you learn into practice.</p>
+<h4>Having Trouble Accessing Your Course?</h4>
+<p>First, make sure you are logging into Circle using the same email address associated with your purchase.</p>
+<p>If you still cannot access your course, have trouble logging in, or experience another technical issue, please contact:</p>
+<p>📧</p>
+<p>Hazel | Support Team</p>
+<p>support@sophieorozco.com</p>
+<p>When contacting support, please include the name and email address used for your purchase so we can locate your account more quickly.</p>
+<h4>Office Hours &amp; Team Support</h4>
+<p>Our team is available Monday through Friday from 9:00 AM to 5:00 PM EST.</p>
+<p>Please allow 24–72 business hours for a response.</p>
+<h4>One Final Reminder</h4>
+<p>Watching the lessons is only the beginning.</p>
+<p>The transformation happens when you take what you learn and begin practicing it in your relationship.</p>
+<p>Take your time. Stay consistent. Be willing to look at your own patterns and make the small shifts that can create a very different relationship experience.</p>
+<p>We’re excited to have you here and can’t wait for you to get started.</p>
+<p>With love,</p>
+<p>The RMM Team</p>
+    </div>
+  </div>
+</section>
+<section class="wfcard" id="wf14">
+  <div class="wfhead">
+    <div class="wfnum">14</div>
+    <div>
+      <h3>Self-Paced — women</h3>
+      <div class="wfname">Onboarding Email- RMM- SELF PACED (Women)</div>
+    </div>
+  </div>
+  <div class="wfgrid">
+    <div class="wfcell">
+      <div class="lbl">Tag the sales team applies</div>
+      <button class="tagbtn" data-tag="client - rmm self paced women">client - rmm self paced women <span class="ic">copy</span></button>
+      <div class="lbl" style="margin-top:16px">Plus, always</div>
+      <button class="tagbtn" data-tag="existing client">existing client <span class="ic">copy</span></button>
+    </div>
+    <div class="wfcell">
+      <div class="lbl">What happens</div>
+      <p class="small">Adding the tag starts <b>Onboarding Email- RMM- SELF PACED (Women)</b>, which sends the onboarding email below with the client's Circle invitation.</p>
+    </div>
+  </div>
+  <div class="mail">
+    <div class="mailhead">Onboarding email sent by this automation</div>
+    <div class="subj"><span>Subject:</span> Welcome! Your Self-Paced Course Access Is Ready  🎉</div>
+    <div class="mailbody">
+      <p>Hi <span class="mf">{{contact.first_name}}</span>,</p>
+<p>We’re so happy you’re here.</p>
+<p>Welcome to your Self-Paced Program with Sophie Orozco Coaching.</p>
+<p>You’ve made an important investment in yourself and your relationship, and we’re excited for you to begin.</p>
+<p>This is a self-paced course experience, which means you can work through the lessons and materials on your own schedule.</p>
+<p>Let’s get you set up.</p>
+<h4>Step 1: Download the Circle App</h4>
+<p>For the easiest experience, we recommend downloading the Circle app so you can access your course from your phone or tablet.</p>
+<p>Android:</p>
+<p><a href="https://play.google.com/store/apps/details?id=so.circle.circle" target="_blank" rel="noopener">https://play.google.com/store/apps/details?id=so.circle.circle</a></p>
+<p>iOS:</p>
+<p><a href="https://apps.apple.com/us/app/circle-communities/id1509651625" target="_blank" rel="noopener">https://apps.apple.com/us/app/circle-communities/id1509651625</a></p>
+<p>You can also access Circle directly from your web browser on a computer.</p>
+<h4>Step 2: Create Your Circle Account</h4>
+<p>Click the link below to access your course:</p>
+<p>🔗</p>
+<p>Access Your Course Here:</p>
+<p><a href="https://sophie-orozco-coaching.circle.so/join?invitation_token=3312b40f0352ddac1d1160ab9255d4090d6fcf13-3ef4b49b-2575-4fef-8aad-1edc954b9878" target="_blank" rel="noopener">https://sophie-orozco-coaching.circle.so/join?invitation_token=3312b40f0352ddac1d1160ab9255d4090d6fcf13-3ef4b49b-2575-4fef-8aad-1edc954b9878</a></p>
+<p>If this is your first time using Circle:</p>
+<p>1. Click the course access link above.<br>2. Follow the prompts to create your Circle account.<br>3. Use the same email address you used when purchasing the program.<br>4. Create your password and complete your account setup.<br>5. Once your account is created, you’ll be taken inside Sophie Orozco Coaching’s Circle platform.</p>
+<p>If you already have a Circle account with us, simply log in using your existing email address and password.</p>
+<h4>Step 3: Find Your Course</h4>
+<p>Once you’re logged into Circle:</p>
+<p>1. Open the Sophie Orozco Coaching community.<br>2. Look for your Self-Paced Course in the spaces available to you.<br>3. Click on the course to open the curriculum.<br>4. Begin with the first lesson or module and work through the material in order.<br>5. Continue through each lesson at your own pace.</p>
+<p>You will only see the course and materials included with your purchase. Private coaching, group coaching calls, and other community spaces are not included with Self-Paced access.</p>
+<h4>Step 4: Work Through the Program</h4>
+<p>There is no need to rush through the material.</p>
+<p>We encourage you to:</p>
+<p>💌  Watch each lesson in order<br>💌  Complete the exercises and worksheets provided<br>💌  Take time to reflect on what you’re learning<br>💌  Apply the tools in your relationship as you go<br>💌  Revisit previous lessons whenever you need a refresher</p>
+<p>The goal isn’t simply to finish the course. The real value comes from consistently putting what you learn into practice.</p>
+<h4>Having Trouble Accessing Your Course?</h4>
+<p>First, make sure you are logging into Circle using the same email address associated with your purchase.</p>
+<p>If you still cannot access your course, have trouble logging in, or experience another technical issue, please contact:</p>
+<p>📧</p>
+<p>Hazel | Support Team</p>
+<p>support@sophieorozco.com</p>
+<p>When contacting support, please include the name and email address used for your purchase so we can locate your account more quickly.</p>
+<h4>Office Hours &amp; Team Support</h4>
+<p>Our team is available Monday through Friday from 9:00 AM to 5:00 PM EST.</p>
+<p>Please allow 24–72 business hours for a response.</p>
+<h4>One Final Reminder</h4>
+<p>Watching the lessons is only the beginning.</p>
+<p>The transformation happens when you take what you learn and begin practicing it in your relationship.</p>
+<p>Take your time. Stay consistent. Be willing to look at your own patterns and make the small shifts that can create a very different relationship experience.</p>
+<p>We’re excited to have you here and can’t wait for you to get started.</p>
+<p>With love,</p>
+<p>The RMM Team</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>Onboarding SOP by Program · Sophie Orozco Coaching</span>
+  <span>Maintained by John Carlo Caintic</span>
+</footer>
+
+</div>
+
+<div class="toast" id="toast">Copied</div>
+<button class="top" id="top">↑ Top</button>
+
+<script>
+  const toast = document.getElementById('toast');
+  document.querySelectorAll('.tagbtn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const tag = btn.dataset.tag;
+      try { await navigator.clipboard.writeText(tag); }
+      catch (e) {
+        const ta = document.createElement('textarea');
+        ta.value = tag; document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); } catch (err) {}
+        document.body.removeChild(ta);
+      }
+      btn.classList.add('copied');
+      const ic = btn.querySelector('.ic'); const old = ic.textContent; ic.textContent = 'copied ✓';
+      toast.textContent = 'Copied: ' + tag; toast.classList.add('show');
+      setTimeout(() => { btn.classList.remove('copied'); ic.textContent = old; toast.classList.remove('show'); }, 1600);
+    });
+  });
+  const topBtn = document.getElementById('top');
+  topBtn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+  window.addEventListener('scroll', () => topBtn.classList.toggle('show', window.scrollY > 700));
+</script>
+</body>
+</html>

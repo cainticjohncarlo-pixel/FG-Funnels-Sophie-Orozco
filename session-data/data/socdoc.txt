@@ -1,0 +1,1543 @@
+﻿Tab 1
+# SOC STAFF HUB: COMPLETE FG FUNNELS BUILD-OUT
+
+
+One document, the whole thing: architecture, build steps, access testing, every written page, the full Loom recording list, and the admin checklists. Hand this to John Carlo and start recording.
+
+
+**The one-line architecture:** the Staff Hub is built in FG Funnels Memberships (Sites → Memberships → Courses) as staff-only course products, granted per role through offers. It shares nothing with the client experience. A client would need to be explicitly granted a staff offer to see anything, so security is by architecture, not by settings.
+
+
+---
+
+
+# PART 1: ARCHITECTURE AND ACCESS MODEL
+
+
+## The pieces
+
+
+- **Products (courses):** each item below is one course product in FGF.
+  - `00 - Start Here` (everyone)
+  - `Setter Onboarding`
+  - `Closer Onboarding`
+  - `Coach Onboarding`
+  - `CSM Onboarding`
+  - `VA / Tech Ops Onboarding`
+  - `SOP Library` (everyone; built as a course whose "modules" are platforms: GHL, Circle, ThriveCart/Stripe, Calendly, Slack, Sheets)
+- **Offers (the access unit):** one offer per role, bundling exactly what that role gets.
+  - `STAFF - Setter` = Start Here + Setter Onboarding + SOP Library
+  - `STAFF - Closer` = Start Here + Closer Onboarding + SOP Library
+  - `STAFF - Coach` = Start Here + Coach Onboarding + SOP Library
+  - `STAFF - CSM` = Start Here + CSM Onboarding + SOP Library
+  - `STAFF - VA` = Start Here + VA Onboarding + SOP Library
+  - `STAFF - Admin` = everything (Chris, John Carlo)
+- **Admin checklists (provisioning, offboarding, access log):** NOT in the portal. They live in a restricted Google Sheet shared only with Chris and John Carlo (Part 6 has the templates). Staff never see them, and they don't belong in a course product.
+
+
+## Access rules (non-negotiable)
+
+
+1. Staff get **membership portal logins only**. No FGF sub-account access, no CRM user seats, unless the role specifically requires it (currently: John Carlo, and closers/setters only to whatever pipeline views they already use). The hub must never become a back door into client data.
+2. Staff offers are **granted manually or by a staff-only workflow**. They are never attached to any funnel, checkout, form, or client-facing automation.
+3. All staff tags are namespaced `staff-` (e.g. `staff-setter`) and no client-facing automation is ever allowed to apply a `staff-` tag.
+4. Every grant and revoke is recorded in the access log the same day.
+
+
+---
+
+
+# PART 2: BUILD STEPS (for John Carlo)
+
+
+## Step 2.1: Portal setup
+
+
+1. Go to Sites → Memberships → Settings. Configure the portal:
+   - **Domain:** use the default membership domain to start; optionally add `team.sophieorozco.com` later. Do not reuse any client-facing domain path.
+   - **Branding:** SOC logo, Seashell Peach background (#FCF6EF), My Pink accent (#D6938A), Montserrat/Livvic type where the theme allows. Keep it clean; this is internal.
+   - **Portal name:** "SOC Staff Hub".
+2. Customize the membership email templates (welcome / magic link). Welcome email draft:
+
+
+   > Subject: Welcome to the SOC team, here's your Staff Hub login
+   >
+   > Hey {{contact.first_name}},
+   >
+   > Welcome aboard. Your onboarding lives in our Staff Hub, and this email is your key. Click below to set your password and log in.
+   >
+   > Start with the course called "00 - Start Here" and work top to bottom. Your role course unlocks alongside it. Plan to complete Start Here in your first two days.
+   >
+   > Questions while you go? Post them in Slack and tag us. See you inside.
+   >
+   > Chris & Sophie
+
+
+3. Confirm portal registration is grant-only: no public signup path to the membership portal should exist. If a signup/login page template exposes "create account", disable it.
+
+
+## Step 2.2: Build the course products
+
+
+For each product listed in Part 1:
+
+
+1. Memberships → Products → Create. Name it exactly as listed (the `00 -` prefix keeps Start Here sorted first).
+2. Build **categories = modules** and **posts = lessons** exactly per the lesson map in Part 4/Part 5. Each lesson is: Loom embed on top (paste the Loom share link or embed code), written content below (from Part 4), and where marked, a checklist.
+3. Set every lesson to **published** but leave DRIP OFF (all content available at once). Onboarding shouldn't be time-gated; the checklist and Day 7 review create the pacing.
+4. Final lesson of every course = that role's completion checklist (from Part 4/6), with instructions to mark complete and post "done" in Slack.
+5. Leave every product OUT of any catalog/library view that could be publicly listed. Products should be reachable only through granted offers.
+
+
+## Step 2.3: Create the offers
+
+
+1. Memberships → Offers → Create one offer per role per the Part 1 table. Price: free / $0.
+2. **Never create or share a public checkout link for a staff offer.** If FGF generates a checkout URL for the offer, it does not get published on any page, funnel, or link anywhere. Verify each staff offer is referenced by zero funnels and zero websites.
+3. Naming discipline: all staff offers start with `STAFF - ` so they are unmistakable in every dropdown and can never be confused with a client offer.
+
+
+## Step 2.4: Granting access
+
+
+Two supported paths, both logged:
+
+
+- **Manual (default):** open the contact record → Memberships/Offers → grant the role's `STAFF - ` offer. The welcome email fires.
+- **Workflow (optional, build after testing):** trigger = tag `staff-setter` (etc.) added → action = Membership: Grant Offer (matching offer) → action = internal Slack notification to Chris confirming the grant. The ONLY trigger is the manual tag. Audit existing workflows to confirm nothing else applies `staff-` tags.
+
+
+New-hire contact hygiene: create staff as fresh contacts with their work email, tagged `staff` + `staff-{role}`, and add a "STAFF" note so they're never accidentally swept into client campaigns. **Exclude the `staff` tag from every client email/SMS campaign audience.**
+
+
+## Step 2.5: Progress tracking
+
+
+- Progress per member is visible in Memberships analytics/course reporting. John Carlo checks each new hire's progress at Day 3 and Day 7 and posts a one-liner to Chris in Slack.
+- The Day 7 check-in (provisioning checklist, Part 6) reviews completion before the hire is considered onboarded.
+
+
+---
+
+
+# PART 3: ACCESS TESTING AND GOVERNANCE
+
+
+Separation by architecture makes this short, but run it anyway. Never trust, always verify.
+
+
+## Test accounts
+
+
+- **TEST-STAFF:** fresh email, created as a contact, granted `STAFF - Setter` only.
+- **TEST-CLIENT:** fresh email, run through your real client-facing flows (lead magnet opt-in, and if any client offer exists in FGF, grant that). This account should hold exactly what a real lead/client holds.
+
+
+## The test battery
+
+
+1. **TEST-STAFF portal check:** log in (incognito). Sees exactly three products: Start Here, Setter Onboarding, SOP Library. Cannot see Closer/Coach/CSM/VA courses. Check on desktop and the mobile app experience.
+2. **TEST-STAFF privilege check:** confirm the account is a portal member only: no agency/sub-account login works with that email, no CRM access.
+3. **TEST-CLIENT portal check:** attempt to log in to the staff portal with the client test email. Expected: no account / no access, or a portal showing only client-granted products with zero staff products visible.
+4. **Offer exposure check:** for every `STAFF - ` offer, confirm no public checkout URL is live (try the raw checkout link logged out; it should be unpublished/disabled) and no funnel/page references it.
+5. **Campaign bleed check:** confirm TEST-STAFF (tagged `staff`) is excluded from client campaigns by checking audience filters on active campaigns, and confirm TEST-CLIENT cannot receive a `staff-` tag from any active workflow (search workflow actions for `staff-` tags; only the grant workflows may contain them).
+6. **Revoke check:** remove the offer from TEST-STAFF, confirm the login shows nothing / access is gone. This proves offboarding works before you ever need it.
+
+
+All six pass → load content and go live. Log the test date in the access log.
+
+
+## Governance
+
+
+1. New course or lesson added → confirm it's inside an existing staff product, not a new public-facing product. New products get added to the role offers deliberately.
+2. Quarterly: open each `STAFF - ` offer and review its member list against the current roster. Anyone who shouldn't be there is a same-day fix and an incident to understand.
+3. Offboarding: revoke the offer(s), remove `staff-` tags, verify the login is dead (test 6 procedure), rotate any shared credentials, log it. Same day, every time.
+4. The hub holds process, never client data, never credentials. Credentials live in the password manager only.
+
+
+---
+# PART 4: WRITTEN CONTENT (paste into the FGF lessons)
+
+
+Every written page, drafted and ready to paste under the matching Loom in each lesson. Items marked [CONFIRM] need a decision or detail from Chris/Sophie before publishing; resolve them in one pass before John Carlo starts pasting. Written to be read by a brand-new contractor on day one.
+
+
+---
+
+
+## COURSE: 00 - START HERE
+
+
+## Our Mission and Approach (written summary under Sophie's welcome video)
+
+
+Sophie Orozco Coaching exists to save marriages that everyone else has given up on. Most of our clients come to us after therapy has already failed them. Many are fighting for their marriage alone, with a spouse who wants out or has already checked out.
+
+
+Our approach is built on one core belief: a struggling marriage is not two broken people. It is two adapted selves stuck in a cycle of learned reactions, running on dysregulated nervous systems. Each spouse has started mistaking the cycle for the person they married. Nobody actually wants the version of the marriage they are in.
+
+
+The work we do is helping one person return to their true self and become grounded. When that happens, the reactive cycle cannot survive. As Sophie puts it, darkness cannot survive in the presence of light. This is why our program works with just one willing spouse, even when the other wants nothing to do with coaching.
+
+
+We have helped turn around more than 500 marriages. You will hear the phrase "true self" constantly here. Learn what it means, because it governs how we coach, how we sell, and how we talk to every single lead and client.
+
+
+## Who Our Clients Are
+
+
+Our clients are people fighting to save a marriage, usually when the other spouse is pulling away or wants out. The most common profiles you will see:
+
+
+- **Walkaway situations.** A husband whose wife has left or is leaving, often blindsided, often willing to do anything.
+- **Divorce-on-the-table situations.** A wife whose husband has said he wants a divorce or has emotionally checked out.
+- **Pursuers.** The spouse doing all the chasing, initiating every hard conversation, exhausted and resentful.
+- **Roommate marriages.** No fighting, no connection. Living parallel lives, staying for the kids, feeling like a paycheck or a housekeeper.
+
+
+Demographics skew 32 to 55, and a large share of our paid traffic is men, though we serve both husbands and wives. What unites them: they are the one willing spouse, they have usually tried therapy or self-help already, and they are scared it is too late.
+
+
+One rule that applies to everyone on this team: numbness, hopelessness, and "I don't feel anything anymore" are the adapted self talking. They are never a verdict on the marriage and never a reason to write someone off.
+
+
+## Client Results and Proof to Know
+
+
+You should personally consume these before your first week is over. We use them with leads and clients constantly.
+
+
+- **The testimonials page:** go.sophieorozco.com/testimonials. Know Bill's video at the top (walkaway wife story) and Samantha's (UK, husband wanted divorce).
+- **Chris and Sophie's own story:** the 3-part podcast series where Chris tells the story of their marriage, the drift after kids, feeling like a paycheck, and the affair that almost ended it. This is the origin story of the business. Listen to all three parts.
+- **CJ's story:** a former client who filed for divorce and moved out. By the time her husband Steve brought back the signed papers, he had become a different man through the program, and she called it off. She now documents her story publicly and sends us a large share of our clients.
+- **The track record:** 500+ marriages turned around. Clients who commit and do the work do not regret it, and many return for additional coaching after their first program.
+
+
+## Pricing, Payment Plans, and Refund Policy
+
+
+- Programs run on a 12-week cycle. Current pricing ranges from $4,500 to $12,000 depending on tier (group, main 1:1 program, VIP). [CONFIRM current ladder and tier names before publishing]
+- Payment options: pay in full, in-house split pay (up to 3 payments), or financing through ThrivePay Installments (up to 12 months, interest free to the client). BNPL options like Klarna and Affirm are also available at checkout.
+- **We do not offer refunds or cancellations.** The client services agreement is explicit on this. Do not imply otherwise to any lead or client, ever. If a client raises a refund request, that escalates immediately (see your role's escalation page).
+- Investment conversations happen on sales calls only. Nobody quotes prices in DMs.
+
+
+## The Client Journey (one-page map)
+
+
+1. **Lead finds us** through Sophie's content, CJ and affiliates, or paid ads.
+2. **DM conversation with a setter** (in Sophie's voice). Real discovery, a proof resource (podcast episode or testimonial), then an invitation.
+3. **Application + booking.** The Relationship Reset Assessment qualifies fit and finances before a call gets booked.
+4. **Pre-call warm-up.** Confirmation page with videos, FAQ, and client interviews. Personal confirmation touch. This is why our show rate is north of 85 percent.
+5. **Sales call with a closer.** 45 to 60 minutes. Deep discovery, then the invitation to join.
+6. **Close and handoff.** Contract signed, payment processed, closer hands off to the CSM.
+7. **Client onboarding.** CSM sends welcome, grants Circle access, gets them scheduled and started.
+8. **The 12-week program.** 1:1 calls with their coach, group calls, Circle community, CSM check-ins.
+9. **Completion.** Celebrate the win, capture the testimonial where appropriate, and offer the right next step. Continuing clients are a big part of our business.
+
+
+## Team Structure and Who Handles What
+
+
+[CONFIRM names before publishing; roster current as of Sept 2026]
+
+
+- **Sophie Orozco.** Founder and head coach. The face and voice of the brand. Final word on coaching methodology and client experience.
+- **Chris Orozco.** Co-owner, operations and sales. Runs the DM operation, funnels, hiring, systems, and payments. Final word on ops, contracts, and money.
+- **Coaches** (Sadaf, Francine, Michaela): deliver 1:1 and group coaching.
+- **Closers** (Luann, Koral, Kelsey, Ivey, Steph): take consultation calls and enroll new clients.
+- **Setters** (Ashton, Lindsey): run DM conversations in Sophie's voice and move qualified leads to booked calls.
+- **Client Success Manager:** owns the client experience between coaching calls. [CONFIRM: role currently being filled]
+- **VAs** (John Carlo: backend tech ops; Hazel): keep the platforms, automations, and content operations running.
+
+
+Simple routing rule: coaching and client-experience questions go to Sophie, everything operational, technical, or financial goes to Chris.
+
+
+## Slack Norms
+
+
+- Slack is our office. If it is not in Slack, it did not happen.
+- Default to channels over DMs so context is visible to whoever needs it. Use DMs for genuinely private matters only.
+- Expected response time during your working hours: within [CONFIRM: e.g. 2 hours]. Same day at the outside.
+- Key channels: #general, #wins (client wins get posted here, read it daily, it is fuel), #payments (private, alerts only), [CONFIRM full channel list and purposes]
+- Client information stays inside private channels. Never screenshot or share client conversations outside our workspace.
+
+
+## Meeting Cadence and Availability
+
+
+- [CONFIRM: weekly team call day/time, sales team call, coach sync]
+- You are an independent contractor and you set your own schedule, but roles have coverage expectations (setters and closers especially). Your specific expectations are in your role's onboarding and your IC agreement.
+- Going to be unavailable? Post it in advance in [CONFIRM channel]. No-notice disappearances create client-facing problems, and client-facing problems are the one thing we do not tolerate.
+
+
+## Contractor Basics: How Working With Us Works
+
+
+- Everyone on the team is a 1099 independent contractor under Relationship Revive LLC. Your IC agreement is the governing document for your engagement.
+- You will complete a W-9 before your first payment.
+- Invoicing and pay: [CONFIRM: invoice submission process, pay schedule, and method per role. Commission roles: commission is paid on cash as it is collected, including installment payments from prior months' sales, not on contract value up front.]
+- You are responsible for your own taxes, equipment, and workspace.
+
+
+## Confidentiality and Client Privacy
+
+
+Our clients tell us the most painful, private details of their lives: affairs, finances, their fears about their marriage and their kids. Treat every word of it as sacred.
+
+
+- Never share client names, stories, screenshots, or details outside SOC systems. Not with your spouse, not with your friends, not "anonymized" on your own social media.
+- Testimonials and client stories are only used publicly with explicit permission, and only through our official channels.
+- Everything you learn about our business (frameworks, scripts, numbers, systems) is confidential and covered by your IC agreement.
+- When in doubt, ask Chris before sharing anything, anywhere.
+
+
+## Conduct and Brand Voice
+
+
+Sophie's brand is warm, hopeful, serene, and grounded. Every client and lead touchpoint should feel that way, regardless of who is typing.
+
+
+- We are warm first. Redirects, boundaries, and hard news get delivered with kindness, never bluntness for its own sake.
+- We are hopeful and certain. People come to us in the worst season of their marriage. They should leave every interaction feeling like they came to exactly the right place.
+- We never shame a client or lead for their situation, their spouse, their money, or their doubts.
+- We are professional with each other. Disagreement is welcome, drama is not.
+- Anything romantic, flirtatious, or inappropriate with a lead or client is an immediate termination issue. Married leads are treated with total respect for their marriage. That is literally the business.
+
+
+## Offboarding and Access Policy
+
+
+Access to our systems is granted per role and revoked the same day an engagement ends. This is not personal, it is policy, and it protects clients and the business. Do not share logins, do not use company systems for outside projects, and expect that access is logged.
+
+
+## Where SOPs Live and How to Ask for Help
+
+
+- Your role's onboarding course is your first two weeks. The **SOP Library** space is your reference forever after, organized by platform.
+- Can't find an SOP? Ask in [CONFIRM channel] and tag John Carlo. If it does not exist, we will record it, because if you hit the question, the next hire will too.
+- "Done" on a lesson means you watched or read it fully and can act on it, not that you clicked complete. Your course progress is visible to us in the hub, and your Day 3 and Day 7 check-ins review it.
+
+
+---
+
+
+## COURSE: COACH ONBOARDING
+
+
+## Coach Responsibilities and Scope
+
+
+As an SOC coach you own the transformation inside the container:
+
+
+- Deliver 1:1 coaching calls with your assigned clients (most programs include six 1:1 calls; some clients purchase upgrades with more).
+- Lead or support group coaching calls as assigned.
+- Show up in the Circle community: welcome new clients, respond to posts, keep the space alive.
+- Keep session notes current so the CSM and Sophie can see where every client stands.
+- Flag concerns early. You are the closest set of eyes on each client.
+
+
+You do not handle: pricing, payments, refund conversations, contract questions, or program extensions. All of that routes to the CSM or Chris. If a client raises money or contract topics on a call, acknowledge warmly and route it: "Let me connect you with our team on that so you get an exact answer."
+
+
+## Coaching Standards (written companion to the standards video)
+
+
+- Every client is coached through the True Self lens: separate the person from the cycle, reveal the dysfunction without blaming either spouse, and open the possibility that anything is possible.
+- One willing spouse is enough. We never treat an uninvolved or resistant spouse as a reason a client cannot succeed.
+- A client's account of themselves is data. A client's account of their spouse is one side of a story. Hold both with care, and apply that standard evenly to husbands and wives.
+- Numbness, hopelessness, and "I feel nothing" are the adapted self talking. Meet them with warmth and confidence, never alarm.
+- We discover, we don't lecture. Guide clients to their own realizations through questions with insight woven in. Abrupt corrections don't serve discovery, even when a client voices a harmful self-belief.
+
+
+## Boundaries: What Coaches Do and Don't Advise On
+
+
+We are coaches, not therapists, lawyers, or financial advisors.
+
+
+- No clinical diagnosis, no medication advice, no treatment recommendations. If a client is working with a therapist or doctor, we complement that care, we never countermand it.
+- No legal advice on divorce, custody, or separation agreements. "That's a question for an attorney" is a complete sentence, delivered kindly.
+- No financial planning advice.
+- Faith and personal values: meet clients where they are. Never impose, never dismiss.
+
+
+## Group Call Formats
+
+
+[CONFIRM current call lineup. Known as of Sept 2026: the Somatic + Manifestation group call, run by Francine.]
+
+
+For each call type, the written page should cover: purpose, typical structure, length, how clients submit questions or volunteer for hot seats, and recording/upload expectations. Coaches attend their assigned calls and arrive early enough to start on time.
+
+
+## Where Clients Are in the Journey
+
+
+Clients arrive in week one scared, hopeful, and often skeptical from failed therapy. Your job shifts across the 12 weeks:
+
+
+- **Weeks 1 to 3:** stabilize and ground. Establish safety, teach the framework, get an early win.
+- **Weeks 4 to 8:** the real work. Patterns surface, resistance shows up, spouses react to the change. This is where clients wobble; this is where your steadiness matters most.
+- **Weeks 9 to 12:** consolidate and launch. Lock in the identity shift, prepare them for life after the container, and surface the right next step for continuing clients.
+
+
+Check the CSM's progress tracker before every session so you never walk into a call blind.
+
+
+## Communication Channels and Response Standards
+
+
+- Client communication happens in official SOC channels only (Circle, scheduled calls, and any channel the CSM sets up). Never move a client to your personal phone, email, or social media.
+- Respond to client posts and messages directed at you within [CONFIRM: 24 hours] on working days.
+- Between-session support questions belong to the CSM; coaching questions belong to you. When in doubt, coordinate in Slack rather than leaving a client waiting.
+
+
+## Circle Community Responsibilities (written companion)
+
+
+- Welcome every new client assigned to you within 24 hours of their intro post.
+- Engage meaningfully in the community on a regular rhythm: [CONFIRM: e.g. daily check, minimum X substantive replies per week].
+- Celebrate wins loudly, in the community and by flagging them for #wins in Slack. Wins fuel the whole company, including the sales team's belief in what they sell.
+
+
+## Scheduling, Reschedules, and No-Shows (written companion)
+
+
+- Clients may reschedule a coaching call twice with at least 48 hours notice, per the client agreement. Track reschedules in your session notes.
+- Client no-shows: wait [CONFIRM: 10 minutes], post the no-show in the tracker, and the CSM follows up. The call may count as used per the agreement; do not promise a free redo, route the question to the CSM.
+- You cancelling on a client should be rare and always rescheduled within the same week.
+
+
+## Escalating Client Concerns
+
+
+Escalate early. A flag that turns out to be nothing costs five minutes. A flag we miss can cost a client their progress or worse.
+
+
+- **Coaching concerns** (client stuck, disengaging, resisting the work): raise with Sophie in [CONFIRM channel].
+- **Logistics, billing, scheduling, contract:** route to the CSM, who escalates to Chris as needed.
+- **Refund requests or threats:** never discuss on the call. Acknowledge warmly, then escalate to Chris immediately, same day.
+
+
+## Red Flags Requiring Immediate Escalation
+
+
+Stop normal coaching and escalate the same day, before your next session, if a client:
+
+
+- Expresses suicidal intent, a plan, or means, or you believe they may harm themselves.
+- Says they are afraid of their spouse, or describes physical violence in the home.
+- Discloses that a child is being harmed or is unsafe. Child safety overrides everything: make sure the child is safe now, and escalate immediately.
+
+
+In these moments you are a human first and a coach second. Stay with them, be direct and kind, encourage appropriate professional or emergency help, and notify Sophie and Chris immediately after (or during, if you can). Note: volatility, jealousy, accusations, and walking-on-eggshells dynamics are painful but they are what we coach. They are not automatic crises. The list above is about safety.
+
+
+---
+
+
+## COURSE: CSM ONBOARDING
+
+
+## The CSM Role and What Success Looks Like
+
+
+The CSM owns the client experience between coaching calls. Coaches deliver transformation on calls; you make sure nothing falls through the cracks around them.
+
+
+Success looks like: every client onboarded within 24 hours of purchase, no client going quiet without a documented outreach, progress visible to the whole team in one place, issues resolved or escalated same day, and clients finishing week 12 so well served that continuing with us feels obvious.
+
+
+Core metrics: onboarding turnaround time, client engagement (call attendance, Circle activity), issues resolved without escalation, and completion/continuation rates. [CONFIRM specific targets]
+
+
+## The Client Journey and Where the CSM Owns It
+
+
+Read the full journey map in Start Here. You own steps 6 through 9: the moment a closer marks a deal closed, the client is yours. You are their consistent human from purchase through completion, across every coach and call they touch.
+
+
+## Post-Sale Handoff from Closer to CSM (written companion)
+
+
+When a deal closes you should receive, same day: the signed agreement, payment confirmation and plan type, the closer's call notes (situation, spouse dynamic, what they bought and why), and any special terms or amendments. Special terms live in the contract, not in someone's memory: if a client says "the closer told me X" and it is not in writing, escalate to Chris before honoring it.
+
+
+Your clock starts at close: welcome touch within 24 hours, every time.
+
+
+## Check-In Cadence and Follow-Up
+
+
+[CONFIRM cadence; suggested starting point:]
+
+
+- **Week 1:** onboarding sequence plus a personal check-in after their first coaching call.
+- **Weeks 2 to 11:** a check-in every [CONFIRM: week / two weeks], plus a same-day touch after any missed call or two-plus weeks of Circle silence.
+- **Week 12:** completion call or message, celebrate the journey, capture the testimonial where appropriate, and surface the next-step conversation.
+
+
+Every check-in gets logged in the tracker. The standard for a check-in message: warm, personal, references something real about their journey, never a copy-paste blast that reads like one.
+
+
+## Spotting Disengagement Early
+
+
+Watch for: missed or repeatedly rescheduled calls, gone quiet in Circle, one-word replies to check-ins, or a coach flagging low energy. Any one of these gets a personal outreach within 24 hours. Two together get flagged to the coach and Sophie.
+
+
+Re-engagement plays: reference their original "why" from the closer's notes, share a relevant client story or podcast episode, make re-entry small (one call, one post, one exercise), and coordinate with their coach so the next session meets them where they actually are. The True Self rule applies to clients too: withdrawal is the adapted self protecting itself, not proof the program is not working, and never a reason to quietly let someone disappear.
+
+
+## Handling Common Client Questions
+
+
+Build and maintain a living FAQ as you go. Starting set:
+
+
+- **Scheduling and reschedules:** two reschedules per coaching engagement with 48 hours notice, per the agreement.
+- **"Can I get more 1:1 calls?"** Yes, upgrades exist (for example 3-call upsells and VIP Sophie call upgrades). Route to Chris for pricing and paperwork; upgrades get papered as contract amendments.
+- **"My spouse won't participate."** Reassure from the philosophy: the program is built for one willing spouse. Loop in their coach.
+- **"Is this working?"** Empathize, point to their own documented wins, and coordinate with their coach. Never promise outcomes or timelines.
+- **Refunds:** never negotiate, never imply flexibility. Acknowledge warmly and escalate to Chris same day.
+
+
+## Payment Issues and Failed Rebills (written companion)
+
+
+- Failed recurring/installment payments alert in the private #payments Slack channel. Initial checkout failures are usually user error and are not your queue.
+- On a failed rebill: warm, no-shame outreach to the client within 24 hours ("payments fail for boring reasons all the time, let's get it sorted"), help them update their card, confirm the retry went through, and log it.
+- ThrivePay/Splitit installment questions have their own SOP (Loom): what we can fix on our end vs what routes to ThriveCart support. Note: ThrivePay cannot take American Express, and in-house plans max out at 3 payments.
+- A client going unresponsive about a failed payment escalates to Chris by day [CONFIRM: 3].
+
+
+## Escalation Procedures
+
+
+- **To Chris:** anything involving money, contracts, refunds, access, legal threats, or a client relationship at risk.
+- **To Sophie:** coaching methodology concerns, a client in emotional crisis (after any safety escalation), sensitive client-experience judgment calls.
+- **Safety red flags** (suicidal intent, fear of spouse, violence in the home, a child at risk): same standard as coaches, same day, no exceptions. See the red-flags page in Coach Onboarding; it applies to you too.
+
+
+---
+
+
+## COURSE: CLOSER ONBOARDING
+
+
+## Offers and Pricing (written companion)
+
+
+- The core offer is a 12-week relationship turnaround program, delivered through 1:1 coaching calls, group calls, and the Circle community. Tiers range from group-focused to VIP 1:1. Current pricing runs $4,500 to $12,000. [CONFIRM exact ladder, tier names, and current inclusions per tier before publishing]
+- Payment paths you can offer on a call: pay in full, in-house split pay up to 3 payments, ThrivePay Installments up to 12 months interest free (no Amex, US-focused), and BNPL at checkout via Stripe.
+- No refunds, no cancellations. The agreement says it, and you say it plainly and without apology before payment. Surprised clients become problem clients; informed clients become committed ones.
+- Upsells and upgrades exist (extra 1:1 calls, VIP Sophie calls, couples add-ons). Learn them, because the right upgrade at close is a service, not a squeeze.
+
+
+## Who the Program Is For, and Who It Is Not For
+
+
+**For:** the one willing spouse fighting for a marriage the other spouse is drifting from or leaving. Walkaways, divorce-on-the-table, exhausted pursuers, roommate marriages. People who have usually already tried therapy and are terrified it is too late. They need belief, a proven path, and a push past paralysis.
+
+
+**Not for:** people in active safety crises (fear of their spouse, violence in the home, suicidal intent). Those conversations stop being sales calls immediately: be a human, point them to appropriate help, escalate to Chris and Sophie, never pitch.
+
+
+Two things that are NOT disqualifiers: a resistant spouse (the program is built for one willing spouse) and hopeless language ("I don't even know if I want this anymore"). That is the adapted self talking, and it is exactly who we help.
+
+
+Money deserves a straight word here: 9 out of 10 financial objections are really value-clarity problems. Financing exists. If the value and the outcome are clear, people find a way. Your job is not to pressure, it is to help someone in a paralyzed, fear-soaked season make the smartest decision they can, and sometimes that takes a confident push. No client who committed and did the work has regretted it.
+
+
+## Client Results and Proof to Use on Calls
+
+
+Master the same proof set as everyone (testimonials page with Bill and Samantha, the 3-part Chris and Sophie story, CJ and Steve's turnaround, 500+ marriages). For calls specifically: tell client stories, don't narrate frameworks. A lead in pain does not need the methodology explained, they need to hear about the person exactly like them who made it out. Match the story to the profile: Bill for walkaway men, Samantha for wives whose husbands want out, CJ for burned-out pursuers.
+
+
+## Qualification: Fit, Finances, Readiness (written companion)
+
+
+By the time a lead reaches you they have usually passed the application (which gates finances) and consumed proof content. Verify anyway:
+
+
+- **Fit:** married or committed partnership they want to save, willing spouse is on the call or is the caller. Confirm the situation matches what the notes say.
+- **Finances:** confirm they understand this is a financial investment and who the decision-maker is. Decision-maker gaps that survive discovery come back as objections at close, so surface the spouse/money question in discovery, not at the pitch.
+- **Readiness:** the strongest predictor of a close is the lead articulating the value of the program in their own words before you ever pitch. If they cannot, you are still in discovery. Slow down.
+
+
+## Common Objections (written companion to the objection-handling videos)
+
+
+The recurring set, and the posture for each:
+
+
+- **"I need to talk to my spouse."** Should have surfaced in discovery. Clarify: is this a permission issue, a money issue, or fear dressed up as logistics?
+- **"I can't afford it."** Value clarity first, then financing paths. Never lead with the payment plan; lead with the cost of the marriage staying where it is.
+- **"I've tried everything already."** Agree, and differentiate: everything they tried required their spouse to participate. This doesn't.
+- **"My spouse won't do it."** The program is built for one willing spouse. This objection is our home turf.
+- **"Is it too far gone?"** Bill. Samantha. CJ filed and moved out. Too far gone is where our best stories start.
+- **"Isn't this just therapy?"** Most of our clients come to us after therapy failed them. Different mechanism: nervous system and identity, not talk-it-out.
+
+
+## CRM and Pipeline Updates (written companion)
+
+
+Non-negotiable, same day as the call:
+
+
+- Update the lead's stage in the pipeline tracker, every call, no exceptions.
+- Non-closes get a logged status AND a reason. This is sales data the whole business runs on, not admin busywork.
+- Log next steps and follow-up dates. Fathom records calls; your notes still need to capture the human details a recording doesn't surface.
+
+
+## Sales Follow-Up for Non-Closes
+
+
+A no on the call is often a "not yet." Qualified non-closes are worked, personally:
+
+
+- Same-day recap message: warm, references their words, no pressure.
+- Follow-up cadence: [CONFIRM: e.g. day 2, day 5, day 10, then handoff to the long-term nurture]
+- Coordinate with the setter team in Slack so a lead never gets doubled up on.
+- When a non-close re-engages, the closer who took the call owns them unless reassigned.
+
+
+## Handoff to CSM After a Close
+
+
+Same day as the close, deliver to the CSM: signed agreement, payment confirmation and plan type, your call notes (their situation, spouse dynamic, their "why" in their own words), and any special terms, which must be papered in the contract or an amendment, never verbal. The quality of your notes determines the quality of their first week. Close it like the marriage depends on it, hand it off like the client experience depends on it, because both do.
+
+
+---
+
+
+## COURSE: SETTER ONBOARDING
+
+
+## What Setting Is at SOC and What Success Looks Like
+
+
+You are Sophie in the DMs. Every message you send is written in first person as her, and it has to read like she typed it herself. Leads are coming to Sophie in the worst season of their marriage; the trust they extend to her name is the entire asset. Protect it.
+
+
+Success is not maximum bookings. Success is qualified, pre-sold leads arriving at calls already believing this is the answer, having consumed our proof content, and having said in their own words why they want it. One great conversation that books ready is worth five rushed ones that no-show or arrive cold.
+
+
+## Lead Sources
+
+
+Conversations come from: Sophie's organic content (Instagram is the dominant channel, plus TikTok and Facebook), paid Meta messaging ads, and CJ/affiliate audiences arriving warm. Ad leads generally run colder than organic and CJ leads: expect to do more discovery and belief-building, not less.
+
+
+## The SOC DM Framework (required reading)
+
+
+The full framework document is attached to this lesson and is the operating manual for your role. The essentials it covers:
+
+
+- **The conversation arc.** Every thread runs the full arc: open, real discovery, the cost of the situation, a matched proof resource, then an invitation. No shortcutting to the pitch, ever. We slow down on discovery and pull out the pain, the urgency, and the cost before we ever talk about a call.
+- **We discover, we don't diagnose.** No confident "reads" on a lead who hasn't given us anything real yet. On a bare opener: a plain human beat and one discovery question. Insight-carrying reflections are earned by what the lead has actually shared.
+- **The True Self lens.** Numbness, resentment, and "I don't feel anything" are the adapted self talking, never a disqualification. We separate the person from the cycle and open the possibility that anything is possible.
+- **Resource before pitch.** Every lead gets a matched proof resource (testimonial or podcast episode, always the actual link) and engages with it before any invitation. "Listen and tell me what lands."
+- **The invitation.** We reflect the lead's own words back and ask permission before pitching. The best sign a lead is ready: they articulate what the program would do for them in their own words.
+
+
+## Conversation Guidelines: Tone and Discipline
+
+
+- Warm, optimistic, hopeful. The lead should feel they came to exactly the right place. Confidence comes through short, certain lines, never long empathetic recaps.
+- Short messages, 3 to 4 sentences max. One question per message. Contractions always. First name sparingly. No em dashes or en dashes, ever.
+- No AI tells: no listing their words back, no stacked reflections, no polished formula. Brief human acknowledgment, then one clear question.
+- Never chase. No double-texting when they stall, no over-explaining. We are in demand; the lead leans in.
+- Lead things softer. Never open with a blunt refusal or negation, and never use hard-push phrasing like "so tell me straight." Warmth first, then the redirect.
+- Never romantic, never flirtatious, with anyone. Married leads get total respect for their marriage.
+- A lead's account of themselves is data. Their account of their spouse is one side of a story. Hold it that way for men and women alike.
+
+
+## Lead Qualification and the Green/Yellow/Red Lens
+
+
+- **Green:** acute crisis (spouse just left, divorce papers moving). Pre-sold pain, move with pace and care.
+- **Yellow:** chronic disconnection (roommate marriage, slow drift). Real fit, but urgency has to be surfaced through discovery before an invitation lands.
+- **Red:** not a fit right now (no committed relationship to save, free-therapy seeking with no ownership, or a safety situation, which follows the crisis protocol instead).
+
+
+Two rules that govern all scoring: hopeless language is never a red light, and a vague or resigned answer ("I've kind of accepted it") is not a decision to leave their marriage. That is exhaustion talking. Keep discovering: ask what the resignation is about and what they'd want if it cleared. Only route someone toward an exit once they have genuinely told us they want out.
+
+
+Money: no price anchoring in DMs, and no heavy financial pre-frames (they read as bracing for impact). The application gates finances. Your job is light vetting through natural discovery, surfacing whether they are the decision-maker and whether investing in the marriage is on the table for them.
+
+
+## Booking Flow (written companion)
+
+
+[CONFIRM current flow before publishing; as of the V7 framework:]
+
+
+- The destination is the application (the Relationship Reset Assessment) plus booking, sent only after the full arc: discovery done, proof resource consumed and discussed, and the lead has articulated fit in their own words.
+- No early links, no shortcuts. A link sent before belief is built is a booking that cancels or no-shows.
+- After the link: no chasing. If no booking within 24 to 48 hours, one warm check-in, then the Walkaway Sequence.
+- Emphasize confirming the call. Our 85+ percent show rate comes from leads who arrive committed, and it starts with how you frame the call.
+
+
+## Non-Fit Exits
+
+
+We never tell a lead the program isn't right for them. If someone isn't a fit right now: give one genuinely useful insight, point them to a resource with the actual link (the podcast, or the $47 Communication Reset at sophieorozco.thrivecart.com/the-communication-reset/), and leave it open-ended so they self-select. Doors stay open; people's situations change.
+
+
+## Crisis Protocol
+
+
+Stop the normal sequence immediately, no gates, no pitch, if a lead:
+
+
+- States suicidal intent, a plan, or means.
+- Says they are afraid of their spouse.
+- Discloses that a child is being harmed or is unsafe. Child safety overrides everything: make sure the child is safe now, gently learn what's happening, and steer toward appropriate help.
+
+
+Be a human first: one genuine, caring beat, encourage the right kind of help, and flag the thread to Chris immediately. Raw grief (a death, a miscarriage, just-discovered infidelity) also gets met as a person first, one genuine human beat, before any framework step. But note the threshold: volatility, jealousy, accusations, and eggshells language are painful marriage dynamics we coach, not crises. Don't over-read two words into a psychological event, and don't go to alert posture for hyperbolic frustration.
+
+
+## When to Pass to a Closer vs Keep Nurturing
+
+
+- **Book it** when the arc is complete: discovery done, cost surfaced, resource consumed and discussed, fit articulated in their own words, finances not an obvious wall.
+- **Keep nurturing** when belief isn't built yet: they haven't engaged the resource, can't say what they want, or the urgency isn't real to them yet. A booked lead who isn't ready is a wasted closer call and a burned lead.
+- **Flag to Chris** anything ambiguous, any crisis-protocol thread, and any lead asking questions you can't answer in Sophie's voice. Chris is the conductor and can override how any thread is handled.
+
+
+## Follow-Up: Walkaway Sequence and Lost Leads
+
+
+- Threads that stall after real engagement enter the **Walkaway Sequence**: spaced, warm, no-pressure touches that leave the door open without chasing. The sequence document is attached to this lesson.
+- Older dead threads are worked through the **Lost Lead Follow-Up System**. Situations change fast in struggling marriages, and a lead who ghosted in March may be in crisis in June. Re-opens start with genuine warmth and a real question, never "just following up."
+- Log every thread's status in the tracker so follow-ups are never doubled and no lead falls through.
+
+
+---
+
+
+## COURSE: VA / TECH OPS ONBOARDING
+
+
+## Platform Map: Every Tool We Run
+
+
+- **FG Funnels / GHL:** CRM, pipelines, automations, some payment links, and the Staff Hub membership portal. The operational hub.
+- **Circle:** the client community and client course content.
+- **ThriveCart (+ ThrivePay Installments):** main cart and financing. Settles to Stripe, except ThrivePay which deposits directly.
+- **Stripe:** payment processing under the main account plus ThriveCart's linked account; BNPL at checkout; Slack alerts to #payments.
+- **Calendly:** booking calendars for sales calls, integrated toward GHL.
+- **Instapage:** landing pages.
+- **Typeform:** the Relationship Reset Assessment application, piped to Slack and GHL via Zapier.
+- **ManyChat:** comment keyword automations on social.
+- **Google Sheets:** the lead pipeline and sales tracker. Treat it as production data.
+- **Slack:** all internal communication; Stripe and Typeform alerts land here.
+- **Kajabi:** hosts a legacy program component and email nurture sequence.
+- **Voomly / Wistia / YouTube:** video hosting for funnel assets.
+- **Loom:** SOP recording.
+
+
+## Payments Plumbing Overview (written companion)
+
+
+- ThriveCart is the main cart; GHL is used for quick one-off links and occasional payment plans. Both settle into Stripe. ThrivePay Installments is the exception: it deposits directly to the bank, minus its platform fee.
+- In-house payment plans go up to 3-pay only. Longer plans (up to 12 months) run through ThrivePay. ThrivePay cannot process American Express.
+- Failed-payment Slack alerts are configured for recurring/installment rebills only, not initial checkout failures.
+- You do not issue refunds. Any refund action is Chris only.
+
+
+## Access Management and the Access Log
+
+
+- You are the gatekeeper. Access is granted per role from the provisioning checklist, and every grant is recorded in the access log: person, platform, permission level, date.
+- Offboarding is same-day: run the offboarding checklist top to bottom, rotate any shared credentials the person touched, and date the log. No exceptions, no "next week."
+- Never share admin credentials in Slack or email. Use the password manager. [CONFIRM which password manager, or stand one up as an early project]
+
+
+---
+
+
+## Publishing Checklist (before any lesson goes live)
+
+
+
+
+1. Resolve every [CONFIRM] with Chris or Sophie.
+2. Verify pricing, tier names, and inclusions against the current contract and ThriveCart products.
+3. Confirm the team roster and remove or add names.
+4. Confirm the setter booking flow reflects how booking actually runs today.
+5. Have one person from each role read their course and flag anything that doesn't match reality.
+
+
+---
+
+
+# PART 5: THE COMPLETE LOOM RECORDING LIST
+
+
+Rules for every Loom: one task or topic per video, 3 to 8 minutes (curriculum walkthroughs may run longer), record in one take and don't polish, re-record when a process changes rather than annotating. Name every video exactly as listed so the library stays searchable: `[ROLE]-[##] Title`.
+
+
+**Owner key:** S = Sophie, C = Chris, JC = John Carlo (screen-recorded tech SOPs), Coach = a current coach.
+
+
+## Wave 1: Record first (Start Here + CSM, since that hire is in motion)
+
+
+| # | Video | Owner | Notes |
+|---|-------|-------|-------|
+| SH-01 | Welcome from Sophie & Chris | S + C | 3 to 5 min, warm, face to camera |
+| SH-02 | Our mission and the True Self approach | S | The philosophy in Sophie's own words |
+| SH-03 | Slack setup and how we communicate | C or JC | Screen share, join channels, norms |
+| SH-04 | Circle: navigating the client community | JC | What it is, where things live |
+| SH-05 | Google Workspace and shared drive tour | JC | Screen share |
+| SH-06 | Staff Hub tour: where SOPs live, how to complete lessons | JC | Record inside the finished portal |
+| CSM-01 | Post-sale handoff: what you receive and what you do | C | |
+| CSM-02 | Contract, payment confirmation, and onboarding form flow | C or JC | Screen share the real flow |
+| CSM-03 | Granting Circle access to a new client | JC | Screen share |
+| CSM-04 | The kickoff touchpoint | S or C | What great looks like |
+| CSM-05 | Tracking client progress: the tracker walkthrough | C | Screen share |
+| CSM-06 | Failed rebills: the full fix-it process | C or JC | ThrivePay vs in-house vs Stripe |
+| CSM-07 | CRM processes for the CSM: pipeline, tags, notes | JC | Screen share |
+| CSM-08 | Circle admin tasks the CSM owns | JC | Screen share |
+
+
+## Wave 2: Sales side
+
+
+| # | Video | Owner | Notes |
+|---|-------|-------|-------|
+| CL-01 | Offers and pricing walkthrough | C | Current ladder, plans, ThrivePay |
+| CL-02 | The SOC sales call, start to finish | C or S | Use a real (permissioned) recording or role-play |
+| CL-03 | Qualification: fit, finances, decision-maker | C | |
+| CL-04 | Discovery depth: pulling out pain, urgency, cost | S or C | The heart of the call |
+| CL-05 | The pitch and the invitation | C | |
+| CL-06 | Objection handling: the core set | C | Pair with a best-call clip |
+| CL-07 | Spouse and partner objections in our niche | S or C | |
+| CL-08 | Taking payment live on the call | C or JC | Screen share every path |
+| CL-09 | Contracts: sending and tracking signatures | JC | Screen share |
+| CL-10 | CRM and pipeline updates after every call | C | Screen share, show the standard |
+| ST-01 | Discovery over diagnosis: how we actually converse | C | Use real (anonymized) thread examples |
+| ST-02 | The booking flow end to end | C | Arc complete → application → link → hold |
+| ST-03 | CRM updates and lead tracking for setters | C or JC | Screen share |
+
+
+## Wave 3: Coaching side
+
+
+| # | Video | Owner | Notes |
+|---|-------|-------|-------|
+| CO-01 | Coaching standards: what a great SOC session looks like | S | |
+| CO-02 | RMM curriculum walkthrough | S | May be 2 to 3 videos; keep each under 15 min |
+| CO-03 | Group call formats and how each one runs | S + Coach | Francine can cover Somatic + Manifestation |
+| CO-04 | Session notes and documentation | Coach or C | Screen share |
+| CO-05 | Scheduling, reschedules, and no-shows | C or JC | Screen share |
+| CO-06 | Recording and uploading your calls | JC | Screen share |
+
+
+## Wave 4: Tech ops + SOP Library backfill
+
+
+| # | Video | Owner | Notes |
+|---|-------|-------|-------|
+| VA-01 | GHL/FG Funnels admin essentials | JC | Split into task-sized Looms |
+| VA-02 | Circle admin essentials | JC | |
+| VA-03 | ThriveCart, Stripe, and the payments plumbing | C + JC | |
+| SOP-xx | Ongoing: every recurring task gets a Loom as it comes up | All | The library grows forever; if a question gets asked twice, it becomes a Loom |
+
+
+**Embed workflow:** record in the SOC Loom workspace (not personal accounts), paste the share link into the matching FGF lesson, and log the video ID in the lesson so re-records swap cleanly.
+
+
+---
+
+
+# PART 6: ADMIN CHECKLISTS (restricted Google Sheet, Chris + John Carlo only)
+
+
+Build one Sheet with three tabs. Duplicate a row per person/event.
+
+
+## Tab 1: New Hire Provisioning (one row per hire, columns as checkboxes)
+
+
+1. IC agreement sent and signed
+2. W-9 collected
+3. Payment/invoicing details set up
+4. Contact created in FGF with work email, tagged `staff` + `staff-{role}`, STAFF note added
+5. `STAFF - {role}` offer granted, welcome email confirmed received
+6. Slack invite sent + added to role channels
+7. Circle client-community access (only if the role needs it: coaches, CSM)
+8. Tool access granted per role and ONLY per role (pipeline sheet, Calendly, etc.)
+9. Every grant recorded in the access log (Tab 3)
+10. Intro posted in team Slack
+11. Day 3: course progress checked (JC)
+12. Day 7: progress reviewed with Chris; onboarding marked complete
+
+
+## Tab 2: Offboarding (one row per departure; every item same day)
+
+
+1. All `STAFF - ` offers revoked; portal login verified dead
+2. `staff-` tags removed from contact
+3. Removed from Slack
+4. Removed from Circle (if applicable)
+5. All platform access revoked per the access log
+6. Shared credentials they touched rotated
+7. Final invoice settled
+8. Pipeline/clients/leads reassigned
+9. Access log updated with revoke dates
+
+
+## Tab 3: Access Log (running record)
+
+
+Columns: Person | Platform | Access level | Granted date | Granted by | Revoked date | Revoked by | Notes
+
+
+---
+
+
+# PART 7: BUILD ORDER
+
+
+1. **Day 1 (JC):** portal setup (2.1), create all 7 course products as empty shells with categories per the lesson maps, create the 6 offers (2.3), build the admin Sheet (Part 6).
+2. **Day 1 to 2 (JC):** run the full test battery (Part 3) with both test accounts. Fix anything, retest, log the pass.
+3. **Day 2 to 3 (JC):** paste all written content (Part 4) into the lessons. Chris resolves the [CONFIRM] items in a single pass first.
+4. **Week 1 (S + C):** record Wave 1 Looms; JC embeds as they land.
+5. **Week 2 (S + C + JC):** Waves 2 and 3. First real hire (the incoming CSM) onboards through the hub as the pilot, and their confusion points become edits.
+6. **Ongoing:** Wave 4 and the SOP Library backfill; every twice-asked question becomes a Loom; quarterly access review per Part 3 governance.
+
+
+
+
+Tab 2
+# SOC Staff Hub: All Written Content (FG Funnels lessons)
+
+
+Every written page, drafted and ready to paste under the matching Loom in each lesson. Items marked [CONFIRM] need a decision or detail from Chris/Sophie before publishing; resolve them in one pass before John Carlo starts pasting. Written to be read by a brand-new contractor on day one.
+
+
+---
+
+
+## COURSE: 00 - START HERE
+
+
+## Our Mission and Approach (written summary under Sophie's welcome video)
+
+
+Sophie Orozco Coaching exists to save marriages that everyone else has given up on. Most of our clients come to us after therapy has already failed them. Many are fighting for their marriage alone, with a spouse who wants out or has already checked out.
+
+
+Our approach is built on one core belief: a struggling marriage is not two broken people. It is two adapted selves stuck in a cycle of learned reactions, running on dysregulated nervous systems. Each spouse has started mistaking the cycle for the person they married. Nobody actually wants the version of the marriage they are in.
+
+
+The work we do is helping one person return to their true self and become grounded. When that happens, the reactive cycle cannot survive. As Sophie puts it, darkness cannot survive in the presence of light. This is why our program works with just one willing spouse, even when the other wants nothing to do with coaching.
+
+
+We have helped turn around more than 500 marriages. You will hear the phrase "true self" constantly here. Learn what it means, because it governs how we coach, how we sell, and how we talk to every single lead and client.
+
+
+## Who Our Clients Are
+
+
+Our clients are people fighting to save a marriage, usually when the other spouse is pulling away or wants out. The most common profiles you will see:
+
+
+- **Walkaway situations.** A husband whose wife has left or is leaving, often blindsided, often willing to do anything.
+- **Divorce-on-the-table situations.** A wife whose husband has said he wants a divorce or has emotionally checked out.
+- **Pursuers.** The spouse doing all the chasing, initiating every hard conversation, exhausted and resentful.
+- **Roommate marriages.** No fighting, no connection. Living parallel lives, staying for the kids, feeling like a paycheck or a housekeeper.
+
+
+Demographics skew 32 to 55, and a large share of our paid traffic is men, though we serve both husbands and wives. What unites them: they are the one willing spouse, they have usually tried therapy or self-help already, and they are scared it is too late.
+
+
+One rule that applies to everyone on this team: numbness, hopelessness, and "I don't feel anything anymore" are the adapted self talking. They are never a verdict on the marriage and never a reason to write someone off.
+
+
+## Client Results and Proof to Know
+
+
+You should personally consume these before your first week is over. We use them with leads and clients constantly.
+
+
+- **The testimonials page:** go.sophieorozco.com/testimonials. Know Bill's video at the top (walkaway wife story) and Samantha's (UK, husband wanted divorce).
+- **Chris and Sophie's own story:** the 3-part podcast series where Chris tells the story of their marriage, the drift after kids, feeling like a paycheck, and the affair that almost ended it. This is the origin story of the business. Listen to all three parts.
+- **CJ's story:** a former client who filed for divorce and moved out. By the time her husband Steve brought back the signed papers, he had become a different man through the program, and she called it off. She now documents her story publicly and sends us a large share of our clients.
+- **The track record:** 500+ marriages turned around. Clients who commit and do the work do not regret it, and many return for additional coaching after their first program.
+
+
+## Pricing, Payment Plans, and Refund Policy
+
+
+- Programs run on a 12-week cycle. Current pricing ranges from $4,500 to $12,000 depending on tier (group, main 1:1 program, VIP). [CONFIRM current ladder and tier names before publishing]
+- Payment options: pay in full, in-house split pay (up to 3 payments), or financing through ThrivePay Installments (up to 12 months, interest free to the client). BNPL options like Klarna and Affirm are also available at checkout.
+- **We do not offer refunds or cancellations.** The client services agreement is explicit on this. Do not imply otherwise to any lead or client, ever. If a client raises a refund request, that escalates immediately (see your role's escalation page).
+- Investment conversations happen on sales calls only. Nobody quotes prices in DMs.
+
+
+## The Client Journey (one-page map)
+
+
+1. **Lead finds us** through Sophie's content, CJ and affiliates, or paid ads.
+2. **DM conversation with a setter** (in Sophie's voice). Real discovery, a proof resource (podcast episode or testimonial), then an invitation.
+3. **Application + booking.** The Relationship Reset Assessment qualifies fit and finances before a call gets booked.
+4. **Pre-call warm-up.** Confirmation page with videos, FAQ, and client interviews. Personal confirmation touch. This is why our show rate is north of 85 percent.
+5. **Sales call with a closer.** 45 to 60 minutes. Deep discovery, then the invitation to join.
+6. **Close and handoff.** Contract signed, payment processed, closer hands off to the CSM.
+7. **Client onboarding.** CSM sends welcome, grants Circle access, gets them scheduled and started.
+8. **The 12-week program.** 1:1 calls with their coach, group calls, Circle community, CSM check-ins.
+9. **Completion.** Celebrate the win, capture the testimonial where appropriate, and offer the right next step. Continuing clients are a big part of our business.
+
+
+## Team Structure and Who Handles What
+
+
+[CONFIRM names before publishing; roster current as of Sept 2026]
+
+
+- **Sophie Orozco.** Founder and head coach. The face and voice of the brand. Final word on coaching methodology and client experience.
+- **Chris Orozco.** Co-owner, operations and sales. Runs the DM operation, funnels, hiring, systems, and payments. Final word on ops, contracts, and money.
+- **Coaches** (Sadaf, Francine, Michaela): deliver 1:1 and group coaching.
+- **Closers** (Luann, Koral, Kelsey, Ivey, Steph): take consultation calls and enroll new clients.
+- **Setters** (Ashton, Lindsey): run DM conversations in Sophie's voice and move qualified leads to booked calls.
+- **Client Success Manager:** owns the client experience between coaching calls. [CONFIRM: role currently being filled]
+- **VAs** (John Carlo: backend tech ops; Hazel): keep the platforms, automations, and content operations running.
+
+
+Simple routing rule: coaching and client-experience questions go to Sophie, everything operational, technical, or financial goes to Chris.
+
+
+—-----------------------------
+
+
+## Slack Norms
+
+
+- Slack is our office. If it is not in Slack, it did not happen.
+- Default to channels over DMs so context is visible to whoever needs it. Use DMs for genuinely private matters only.
+- Expected response time during your working hours: within [CONFIRM: e.g. 2 hours]. Same day at the outside.
+- Key channels: #general, #wins (client wins get posted here, read it daily, it is fuel), #payments (private, alerts only), [CONFIRM full channel list and purposes]
+- Client information stays inside private channels. Never screenshot or share client conversations outside our workspace.
+
+
+## Meeting Cadence and Availability
+
+
+- [CONFIRM: weekly team call day/time, sales team call, coach sync]
+- You are an independent contractor and you set your own schedule, but roles have coverage expectations (setters and closers especially). Your specific expectations are in your role's onboarding and your IC agreement.
+- Going to be unavailable? Post it in advance in [CONFIRM channel]. No-notice disappearances create client-facing problems, and client-facing problems are the one thing we do not tolerate.
+
+
+## Contractor Basics: How Working With Us Works
+
+
+- Everyone on the team is a 1099 independent contractor under Relationship Revive LLC. Your IC agreement is the governing document for your engagement.
+- You will complete a W-9 before your first payment.
+- Invoicing and pay: [CONFIRM: invoice submission process, pay schedule, and method per role. Commission roles: commission is paid on cash as it is collected, including installment payments from prior months' sales, not on contract value up front.]
+- You are responsible for your own taxes, equipment, and workspace.
+
+
+## Confidentiality and Client Privacy
+
+
+Our clients tell us the most painful, private details of their lives: affairs, finances, their fears about their marriage and their kids. Treat every word of it as sacred.
+
+
+- Never share client names, stories, screenshots, or details outside SOC systems. Not with your spouse, not with your friends, not "anonymized" on your own social media.
+- Testimonials and client stories are only used publicly with explicit permission, and only through our official channels.
+- Everything you learn about our business (frameworks, scripts, numbers, systems) is confidential and covered by your IC agreement.
+- When in doubt, ask Chris before sharing anything, anywhere.
+
+
+## Conduct and Brand Voice
+
+
+Sophie's brand is warm, hopeful, serene, and grounded. Every client and lead touchpoint should feel that way, regardless of who is typing.
+
+
+- We are warm first. Redirects, boundaries, and hard news get delivered with kindness, never bluntness for its own sake.
+- We are hopeful and certain. People come to us in the worst season of their marriage. They should leave every interaction feeling like they came to exactly the right place.
+- We never shame a client or lead for their situation, their spouse, their money, or their doubts.
+- We are professional with each other. Disagreement is welcome, drama is not.
+- Anything romantic, flirtatious, or inappropriate with a lead or client is an immediate termination issue. Married leads are treated with total respect for their marriage. That is literally the business.
+
+
+## Offboarding and Access Policy
+
+
+Access to our systems is granted per role and revoked the same day an engagement ends. This is not personal, it is policy, and it protects clients and the business. Do not share logins, do not use company systems for outside projects, and expect that access is logged.
+
+
+## Where SOPs Live and How to Ask for Help
+
+
+- Your role's onboarding course is your first two weeks. The **SOP Library** space is your reference forever after, organized by platform.
+- Can't find an SOP? Ask in [CONFIRM channel] and tag John Carlo. If it does not exist, we will record it, because if you hit the question, the next hire will too.
+- "Done" on a lesson means you watched or read it fully and can act on it, not that you clicked complete. Your course progress is visible to us in the hub, and your Day 3 and Day 7 check-ins review it.
+
+
+---
+
+
+## COURSE: COACH ONBOARDING
+
+
+## Coach Responsibilities and Scope
+
+
+As an SOC coach you own the transformation inside the container:
+
+
+- Deliver 1:1 coaching calls with your assigned clients (most programs include six 1:1 calls; some clients purchase upgrades with more).
+- Lead or support group coaching calls as assigned.
+- Show up in the Circle community: welcome new clients, respond to posts, keep the space alive.
+- Keep session notes current so the CSM and Sophie can see where every client stands.
+- Flag concerns early. You are the closest set of eyes on each client.
+
+
+You do not handle: pricing, payments, refund conversations, contract questions, or program extensions. All of that routes to the CSM or Chris. If a client raises money or contract topics on a call, acknowledge warmly and route it: "Let me connect you with our team on that so you get an exact answer."
+
+
+## Coaching Standards (written companion to the standards video)
+
+
+- Every client is coached through the True Self lens: separate the person from the cycle, reveal the dysfunction without blaming either spouse, and open the possibility that anything is possible.
+- One willing spouse is enough. We never treat an uninvolved or resistant spouse as a reason a client cannot succeed.
+- A client's account of themselves is data. A client's account of their spouse is one side of a story. Hold both with care, and apply that standard evenly to husbands and wives.
+- Numbness, hopelessness, and "I feel nothing" are the adapted self talking. Meet them with warmth and confidence, never alarm.
+- We discover, we don't lecture. Guide clients to their own realizations through questions with insight woven in. Abrupt corrections don't serve discovery, even when a client voices a harmful self-belief.
+
+
+## Boundaries: What Coaches Do and Don't Advise On
+
+
+We are coaches, not therapists, lawyers, or financial advisors.
+
+
+- No clinical diagnosis, no medication advice, no treatment recommendations. If a client is working with a therapist or doctor, we complement that care, we never countermand it.
+- No legal advice on divorce, custody, or separation agreements. "That's a question for an attorney" is a complete sentence, delivered kindly.
+- No financial planning advice.
+- Faith and personal values: meet clients where they are. Never impose, never dismiss.
+
+
+## Group Call Formats
+
+
+[CONFIRM current call lineup. Known as of Sept 2026: the Somatic + Manifestation group call, run by Francine.]
+
+
+For each call type, the written page should cover: purpose, typical structure, length, how clients submit questions or volunteer for hot seats, and recording/upload expectations. Coaches attend their assigned calls and arrive early enough to start on time.
+
+
+## Where Clients Are in the Journey
+
+
+Clients arrive in week one scared, hopeful, and often skeptical from failed therapy. Your job shifts across the 12 weeks:
+
+
+- **Weeks 1 to 3:** stabilize and ground. Establish safety, teach the framework, get an early win.
+- **Weeks 4 to 8:** the real work. Patterns surface, resistance shows up, spouses react to the change. This is where clients wobble; this is where your steadiness matters most.
+- **Weeks 9 to 12:** consolidate and launch. Lock in the identity shift, prepare them for life after the container, and surface the right next step for continuing clients.
+
+
+Check the CSM's progress tracker before every session so you never walk into a call blind.
+
+
+## Communication Channels and Response Standards
+
+
+- Client communication happens in official SOC channels only (Circle, scheduled calls, and any channel the CSM sets up). Never move a client to your personal phone, email, or social media.
+- Respond to client posts and messages directed at you within [CONFIRM: 24 hours] on working days.
+- Between-session support questions belong to the CSM; coaching questions belong to you. When in doubt, coordinate in Slack rather than leaving a client waiting.
+
+
+## Circle Community Responsibilities (written companion)
+
+
+- Welcome every new client assigned to you within 24 hours of their intro post.
+- Engage meaningfully in the community on a regular rhythm: [CONFIRM: e.g. daily check, minimum X substantive replies per week].
+- Celebrate wins loudly, in the community and by flagging them for #wins in Slack. Wins fuel the whole company, including the sales team's belief in what they sell.
+
+
+## Scheduling, Reschedules, and No-Shows (written companion)
+
+
+- Clients may reschedule a coaching call twice with at least 48 hours notice, per the client agreement. Track reschedules in your session notes.
+- Client no-shows: wait [CONFIRM: 10 minutes], post the no-show in the tracker, and the CSM follows up. The call may count as used per the agreement; do not promise a free redo, route the question to the CSM.
+- You cancelling on a client should be rare and always rescheduled within the same week.
+
+
+## Escalating Client Concerns
+
+
+Escalate early. A flag that turns out to be nothing costs five minutes. A flag we miss can cost a client their progress or worse.
+
+
+- **Coaching concerns** (client stuck, disengaging, resisting the work): raise with Sophie in [CONFIRM channel].
+- **Logistics, billing, scheduling, contract:** route to the CSM, who escalates to Chris as needed.
+- **Refund requests or threats:** never discuss on the call. Acknowledge warmly, then escalate to Chris immediately, same day.
+
+
+## Red Flags Requiring Immediate Escalation
+
+
+Stop normal coaching and escalate the same day, before your next session, if a client:
+
+
+- Expresses suicidal intent, a plan, or means, or you believe they may harm themselves.
+- Says they are afraid of their spouse, or describes physical violence in the home.
+- Discloses that a child is being harmed or is unsafe. Child safety overrides everything: make sure the child is safe now, and escalate immediately.
+
+
+In these moments you are a human first and a coach second. Stay with them, be direct and kind, encourage appropriate professional or emergency help, and notify Sophie and Chris immediately after (or during, if you can). Note: volatility, jealousy, accusations, and walking-on-eggshells dynamics are painful but they are what we coach. They are not automatic crises. The list above is about safety.
+
+
+---
+
+
+## COURSE: CSM ONBOARDING
+
+
+## The CSM Role and What Success Looks Like
+
+
+The CSM owns the client experience between coaching calls. Coaches deliver transformation on calls; you make sure nothing falls through the cracks around them.
+
+
+Success looks like: every client onboarded within 24 hours of purchase, no client going quiet without a documented outreach, progress visible to the whole team in one place, issues resolved or escalated same day, and clients finishing week 12 so well served that continuing with us feels obvious.
+
+
+Core metrics: onboarding turnaround time, client engagement (call attendance, Circle activity), issues resolved without escalation, and completion/continuation rates. [CONFIRM specific targets]
+
+
+## The Client Journey and Where the CSM Owns It
+
+
+Read the full journey map in Start Here. You own steps 6 through 9: the moment a closer marks a deal closed, the client is yours. You are their consistent human from purchase through completion, across every coach and call they touch.
+
+
+## Post-Sale Handoff from Closer to CSM (written companion)
+
+
+When a deal closes you should receive, same day: the signed agreement, payment confirmation and plan type, the closer's call notes (situation, spouse dynamic, what they bought and why), and any special terms or amendments. Special terms live in the contract, not in someone's memory: if a client says "the closer told me X" and it is not in writing, escalate to Chris before honoring it.
+
+
+Your clock starts at close: welcome touch within 24 hours, every time.
+
+
+## Check-In Cadence and Follow-Up
+
+
+[CONFIRM cadence; suggested starting point:]
+
+
+- **Week 1:** onboarding sequence plus a personal check-in after their first coaching call.
+- **Weeks 2 to 11:** a check-in every [CONFIRM: week / two weeks], plus a same-day touch after any missed call or two-plus weeks of Circle silence.
+- **Week 12:** completion call or message, celebrate the journey, capture the testimonial where appropriate, and surface the next-step conversation.
+
+
+Every check-in gets logged in the tracker. The standard for a check-in message: warm, personal, references something real about their journey, never a copy-paste blast that reads like one.
+
+
+## Spotting Disengagement Early
+
+
+Watch for: missed or repeatedly rescheduled calls, gone quiet in Circle, one-word replies to check-ins, or a coach flagging low energy. Any one of these gets a personal outreach within 24 hours. Two together get flagged to the coach and Sophie.
+
+
+Re-engagement plays: reference their original "why" from the closer's notes, share a relevant client story or podcast episode, make re-entry small (one call, one post, one exercise), and coordinate with their coach so the next session meets them where they actually are. The True Self rule applies to clients too: withdrawal is the adapted self protecting itself, not proof the program is not working, and never a reason to quietly let someone disappear.
+
+
+## Handling Common Client Questions
+
+
+Build and maintain a living FAQ as you go. Starting set:
+
+
+- **Scheduling and reschedules:** two reschedules per coaching engagement with 48 hours notice, per the agreement.
+- **"Can I get more 1:1 calls?"** Yes, upgrades exist (for example 3-call upsells and VIP Sophie call upgrades). Route to Chris for pricing and paperwork; upgrades get papered as contract amendments.
+- **"My spouse won't participate."** Reassure from the philosophy: the program is built for one willing spouse. Loop in their coach.
+- **"Is this working?"** Empathize, point to their own documented wins, and coordinate with their coach. Never promise outcomes or timelines.
+- **Refunds:** never negotiate, never imply flexibility. Acknowledge warmly and escalate to Chris same day.
+
+
+## Payment Issues and Failed Rebills (written companion)
+
+
+- Failed recurring/installment payments alert in the private #payments Slack channel. Initial checkout failures are usually user error and are not your queue.
+- On a failed rebill: warm, no-shame outreach to the client within 24 hours ("payments fail for boring reasons all the time, let's get it sorted"), help them update their card, confirm the retry went through, and log it.
+- ThrivePay/Splitit installment questions have their own SOP (Loom): what we can fix on our end vs what routes to ThriveCart support. Note: ThrivePay cannot take American Express, and in-house plans max out at 3 payments.
+- A client going unresponsive about a failed payment escalates to Chris by day [CONFIRM: 3].
+
+
+## Escalation Procedures
+
+
+- **To Chris:** anything involving money, contracts, refunds, access, legal threats, or a client relationship at risk.
+- **To Sophie:** coaching methodology concerns, a client in emotional crisis (after any safety escalation), sensitive client-experience judgment calls.
+- **Safety red flags** (suicidal intent, fear of spouse, violence in the home, a child at risk): same standard as coaches, same day, no exceptions. See the red-flags page in Coach Onboarding; it applies to you too.
+
+
+---
+
+
+## COURSE: CLOSER ONBOARDING
+
+
+## Offers and Pricing (written companion)
+
+
+- The core offer is a 12-week relationship turnaround program, delivered through 1:1 coaching calls, group calls, and the Circle community. Tiers range from group-focused to VIP 1:1. Current pricing runs $4,500 to $12,000. [CONFIRM exact ladder, tier names, and current inclusions per tier before publishing]
+- Payment paths you can offer on a call: pay in full, in-house split pay up to 3 payments, ThrivePay Installments up to 12 months interest free (no Amex, US-focused), and BNPL at checkout via Stripe.
+- No refunds, no cancellations. The agreement says it, and you say it plainly and without apology before payment. Surprised clients become problem clients; informed clients become committed ones.
+- Upsells and upgrades exist (extra 1:1 calls, VIP Sophie calls, couples add-ons). Learn them, because the right upgrade at close is a service, not a squeeze.
+
+
+## Who the Program Is For, and Who It Is Not For
+
+
+**For:** the one willing spouse fighting for a marriage the other spouse is drifting from or leaving. Walkaways, divorce-on-the-table, exhausted pursuers, roommate marriages. People who have usually already tried therapy and are terrified it is too late. They need belief, a proven path, and a push past paralysis.
+
+
+**Not for:** people in active safety crises (fear of their spouse, violence in the home, suicidal intent). Those conversations stop being sales calls immediately: be a human, point them to appropriate help, escalate to Chris and Sophie, never pitch.
+
+
+Two things that are NOT disqualifiers: a resistant spouse (the program is built for one willing spouse) and hopeless language ("I don't even know if I want this anymore"). That is the adapted self talking, and it is exactly who we help.
+
+
+Money deserves a straight word here: 9 out of 10 financial objections are really value-clarity problems. Financing exists. If the value and the outcome are clear, people find a way. Your job is not to pressure, it is to help someone in a paralyzed, fear-soaked season make the smartest decision they can, and sometimes that takes a confident push. No client who committed and did the work has regretted it.
+
+
+## Client Results and Proof to Use on Calls
+
+
+Master the same proof set as everyone (testimonials page with Bill and Samantha, the 3-part Chris and Sophie story, CJ and Steve's turnaround, 500+ marriages). For calls specifically: tell client stories, don't narrate frameworks. A lead in pain does not need the methodology explained, they need to hear about the person exactly like them who made it out. Match the story to the profile: Bill for walkaway men, Samantha for wives whose husbands want out, CJ for burned-out pursuers.
+
+
+## Qualification: Fit, Finances, Readiness (written companion)
+
+
+By the time a lead reaches you they have usually passed the application (which gates finances) and consumed proof content. Verify anyway:
+
+
+- **Fit:** married or committed partnership they want to save, willing spouse is on the call or is the caller. Confirm the situation matches what the notes say.
+- **Finances:** confirm they understand this is a financial investment and who the decision-maker is. Decision-maker gaps that survive discovery come back as objections at close, so surface the spouse/money question in discovery, not at the pitch.
+- **Readiness:** the strongest predictor of a close is the lead articulating the value of the program in their own words before you ever pitch. If they cannot, you are still in discovery. Slow down.
+
+
+## Common Objections (written companion to the objection-handling videos)
+
+
+The recurring set, and the posture for each:
+
+
+- **"I need to talk to my spouse."** Should have surfaced in discovery. Clarify: is this a permission issue, a money issue, or fear dressed up as logistics?
+- **"I can't afford it."** Value clarity first, then financing paths. Never lead with the payment plan; lead with the cost of the marriage staying where it is.
+- **"I've tried everything already."** Agree, and differentiate: everything they tried required their spouse to participate. This doesn't.
+- **"My spouse won't do it."** The program is built for one willing spouse. This objection is our home turf.
+- **"Is it too far gone?"** Bill. Samantha. CJ filed and moved out. Too far gone is where our best stories start.
+- **"Isn't this just therapy?"** Most of our clients come to us after therapy failed them. Different mechanism: nervous system and identity, not talk-it-out.
+
+
+## CRM and Pipeline Updates (written companion)
+
+
+Non-negotiable, same day as the call:
+
+
+- Update the lead's stage in the pipeline tracker, every call, no exceptions.
+- Non-closes get a logged status AND a reason. This is sales data the whole business runs on, not admin busywork.
+- Log next steps and follow-up dates. Fathom records calls; your notes still need to capture the human details a recording doesn't surface.
+
+
+## Sales Follow-Up for Non-Closes
+
+
+A no on the call is often a "not yet." Qualified non-closes are worked, personally:
+
+
+- Same-day recap message: warm, references their words, no pressure.
+- Follow-up cadence: [CONFIRM: e.g. day 2, day 5, day 10, then handoff to the long-term nurture]
+- Coordinate with the setter team in Slack so a lead never gets doubled up on.
+- When a non-close re-engages, the closer who took the call owns them unless reassigned.
+
+
+## Handoff to CSM After a Close
+
+
+Same day as the close, deliver to the CSM: signed agreement, payment confirmation and plan type, your call notes (their situation, spouse dynamic, their "why" in their own words), and any special terms, which must be papered in the contract or an amendment, never verbal. The quality of your notes determines the quality of their first week. Close it like the marriage depends on it, hand it off like the client experience depends on it, because both do.
+
+
+---
+
+
+## COURSE: SETTER ONBOARDING
+
+
+## What Setting Is at SOC and What Success Looks Like
+
+
+You are Sophie in the DMs. Every message you send is written in first person as her, and it has to read like she typed it herself. Leads are coming to Sophie in the worst season of their marriage; the trust they extend to her name is the entire asset. Protect it.
+
+
+Success is not maximum bookings. Success is qualified, pre-sold leads arriving at calls already believing this is the answer, having consumed our proof content, and having said in their own words why they want it. One great conversation that books ready is worth five rushed ones that no-show or arrive cold.
+
+
+## Lead Sources
+
+
+Conversations come from: Sophie's organic content (Instagram is the dominant channel, plus TikTok and Facebook), paid Meta messaging ads, and CJ/affiliate audiences arriving warm. Ad leads generally run colder than organic and CJ leads: expect to do more discovery and belief-building, not less.
+
+
+## The SOC DM Framework (required reading)
+
+
+The full framework document is attached to this lesson and is the operating manual for your role. The essentials it covers:
+
+
+- **The conversation arc.** Every thread runs the full arc: open, real discovery, the cost of the situation, a matched proof resource, then an invitation. No shortcutting to the pitch, ever. We slow down on discovery and pull out the pain, the urgency, and the cost before we ever talk about a call.
+- **We discover, we don't diagnose.** No confident "reads" on a lead who hasn't given us anything real yet. On a bare opener: a plain human beat and one discovery question. Insight-carrying reflections are earned by what the lead has actually shared.
+- **The True Self lens.** Numbness, resentment, and "I don't feel anything" are the adapted self talking, never a disqualification. We separate the person from the cycle and open the possibility that anything is possible.
+- **Resource before pitch.** Every lead gets a matched proof resource (testimonial or podcast episode, always the actual link) and engages with it before any invitation. "Listen and tell me what lands."
+- **The invitation.** We reflect the lead's own words back and ask permission before pitching. The best sign a lead is ready: they articulate what the program would do for them in their own words.
+
+
+## Conversation Guidelines: Tone and Discipline
+
+
+- Warm, optimistic, hopeful. The lead should feel they came to exactly the right place. Confidence comes through short, certain lines, never long empathetic recaps.
+- Short messages, 3 to 4 sentences max. One question per message. Contractions always. First name sparingly. No em dashes or en dashes, ever.
+- No AI tells: no listing their words back, no stacked reflections, no polished formula. Brief human acknowledgment, then one clear question.
+- Never chase. No double-texting when they stall, no over-explaining. We are in demand; the lead leans in.
+- Lead things softer. Never open with a blunt refusal or negation, and never use hard-push phrasing like "so tell me straight." Warmth first, then the redirect.
+- Never romantic, never flirtatious, with anyone. Married leads get total respect for their marriage.
+- A lead's account of themselves is data. Their account of their spouse is one side of a story. Hold it that way for men and women alike.
+
+
+## Lead Qualification and the Green/Yellow/Red Lens
+
+
+- **Green:** acute crisis (spouse just left, divorce papers moving). Pre-sold pain, move with pace and care.
+- **Yellow:** chronic disconnection (roommate marriage, slow drift). Real fit, but urgency has to be surfaced through discovery before an invitation lands.
+- **Red:** not a fit right now (no committed relationship to save, free-therapy seeking with no ownership, or a safety situation, which follows the crisis protocol instead).
+
+
+Two rules that govern all scoring: hopeless language is never a red light, and a vague or resigned answer ("I've kind of accepted it") is not a decision to leave their marriage. That is exhaustion talking. Keep discovering: ask what the resignation is about and what they'd want if it cleared. Only route someone toward an exit once they have genuinely told us they want out.
+
+
+Money: no price anchoring in DMs, and no heavy financial pre-frames (they read as bracing for impact). The application gates finances. Your job is light vetting through natural discovery, surfacing whether they are the decision-maker and whether investing in the marriage is on the table for them.
+
+
+## Booking Flow (written companion)
+
+
+[CONFIRM current flow before publishing; as of the V7 framework:]
+
+
+- The destination is the application (the Relationship Reset Assessment) plus booking, sent only after the full arc: discovery done, proof resource consumed and discussed, and the lead has articulated fit in their own words.
+- No early links, no shortcuts. A link sent before belief is built is a booking that cancels or no-shows.
+- After the link: no chasing. If no booking within 24 to 48 hours, one warm check-in, then the Walkaway Sequence.
+- Emphasize confirming the call. Our 85+ percent show rate comes from leads who arrive committed, and it starts with how you frame the call.
+
+
+## Non-Fit Exits
+
+
+We never tell a lead the program isn't right for them. If someone isn't a fit right now: give one genuinely useful insight, point them to a resource with the actual link (the podcast, or the $47 Communication Reset at sophieorozco.thrivecart.com/the-communication-reset/), and leave it open-ended so they self-select. Doors stay open; people's situations change.
+
+
+## Crisis Protocol
+
+
+Stop the normal sequence immediately, no gates, no pitch, if a lead:
+
+
+- States suicidal intent, a plan, or means.
+- Says they are afraid of their spouse.
+- Discloses that a child is being harmed or is unsafe. Child safety overrides everything: make sure the child is safe now, gently learn what's happening, and steer toward appropriate help.
+
+
+Be a human first: one genuine, caring beat, encourage the right kind of help, and flag the thread to Chris immediately. Raw grief (a death, a miscarriage, just-discovered infidelity) also gets met as a person first, one genuine human beat, before any framework step. But note the threshold: volatility, jealousy, accusations, and eggshells language are painful marriage dynamics we coach, not crises. Don't over-read two words into a psychological event, and don't go to alert posture for hyperbolic frustration.
+
+
+## When to Pass to a Closer vs Keep Nurturing
+
+
+- **Book it** when the arc is complete: discovery done, cost surfaced, resource consumed and discussed, fit articulated in their own words, finances not an obvious wall.
+- **Keep nurturing** when belief isn't built yet: they haven't engaged the resource, can't say what they want, or the urgency isn't real to them yet. A booked lead who isn't ready is a wasted closer call and a burned lead.
+- **Flag to Chris** anything ambiguous, any crisis-protocol thread, and any lead asking questions you can't answer in Sophie's voice. Chris is the conductor and can override how any thread is handled.
+
+
+## Follow-Up: Walkaway Sequence and Lost Leads
+
+
+- Threads that stall after real engagement enter the **Walkaway Sequence**: spaced, warm, no-pressure touches that leave the door open without chasing. The sequence document is attached to this lesson.
+- Older dead threads are worked through the **Lost Lead Follow-Up System**. Situations change fast in struggling marriages, and a lead who ghosted in March may be in crisis in June. Re-opens start with genuine warmth and a real question, never "just following up."
+- Log every thread's status in the tracker so follow-ups are never doubled and no lead falls through.
+
+
+---
+
+
+## COURSE: VA / TECH OPS ONBOARDING
+
+
+## Platform Map: Every Tool We Run
+
+
+- **FG Funnels / GHL:** CRM, pipelines, automations, some payment links, and the Staff Hub membership portal. The operational hub.
+- **Circle:** the client community and client course content.
+- **ThriveCart (+ ThrivePay Installments):** main cart and financing. Settles to Stripe, except ThrivePay which deposits directly.
+- **Stripe:** payment processing under the main account plus ThriveCart's linked account; BNPL at checkout; Slack alerts to #payments.
+- **Calendly:** booking calendars for sales calls, integrated toward GHL.
+- **Instapage:** landing pages.
+- **Typeform:** the Relationship Reset Assessment application, piped to Slack and GHL via Zapier.
+- **ManyChat:** comment keyword automations on social.
+- **Google Sheets:** the lead pipeline and sales tracker. Treat it as production data.
+- **Slack:** all internal communication; Stripe and Typeform alerts land here.
+- **Kajabi:** hosts a legacy program component and email nurture sequence.
+- **Voomly / Wistia / YouTube:** video hosting for funnel assets.
+- **Loom:** SOP recording.
+
+
+## Payments Plumbing Overview (written companion)
+
+
+- ThriveCart is the main cart; GHL is used for quick one-off links and occasional payment plans. Both settle into Stripe. ThrivePay Installments is the exception: it deposits directly to the bank, minus its platform fee.
+- In-house payment plans go up to 3-pay only. Longer plans (up to 12 months) run through ThrivePay. ThrivePay cannot process American Express.
+- Failed-payment Slack alerts are configured for recurring/installment rebills only, not initial checkout failures.
+- You do not issue refunds. Any refund action is Chris only.
+
+
+## Access Management and the Access Log
+
+
+- You are the gatekeeper. Access is granted per role from the provisioning checklist, and every grant is recorded in the access log: person, platform, permission level, date.
+- Offboarding is same-day: run the offboarding checklist top to bottom, rotate any shared credentials the person touched, and date the log. No exceptions, no "next week."
+- Never share admin credentials in Slack or email. Use the password manager. [CONFIRM which password manager, or stand one up as an early project]
+
+
+---
+
+
+## Publishing Checklist (before any lesson goes live)
+
+
+
+
+1. Resolve every [CONFIRM] with Chris or Sophie.
+2. Verify pricing, tier names, and inclusions against the current contract and ThriveCart products.
+3. Confirm the team roster and remove or add names.
+4. Confirm the setter booking flow reflects how booking actually runs today.
+5. Have one person from each role read their course and flag anything that doesn't match reality.

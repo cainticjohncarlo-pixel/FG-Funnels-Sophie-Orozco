@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Continuation-Tracker System — SOP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F7F4EE; --card:#FFFFFF; --ink:#1E1B16; --muted:#6B6459;
+    --terra:#A9502C; --terra-soft:#F3E3DA; --green:#1D4A33; --green-soft:#E4EEE7;
+    --gold:#B98A2F; --line:#E4DDD2; --warn-bg:#FBEFE7; --warn:#8C3D14;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--cream);color:var(--ink);font-family:'Inter',system-ui,sans-serif;line-height:1.6;font-size:16px}
+  .wrap{max-width:880px;margin:0 auto;padding:0 20px 80px}
+  header.hero{background:var(--ink);color:#F7F4EE;padding:56px 20px 48px;text-align:center}
+  .hero .brand{font-family:'Playfair Display',serif;font-size:15px;letter-spacing:.18em;text-transform:uppercase;color:#CDB68A;margin-bottom:14px}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(30px,5vw,44px);font-weight:600;line-height:1.15;max-width:680px;margin:0 auto 14px}
+  .hero p{color:#BFB8AC;max-width:560px;margin:0 auto;font-size:16px}
+  .pill{display:inline-block;margin-top:22px;background:#2C2820;border:1px solid #4A4438;color:#E8C97E;font-size:13px;font-weight:600;padding:7px 16px;border-radius:999px;letter-spacing:.04em}
+  section{margin-top:56px}
+  .kicker{color:var(--terra);font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
+  h2{font-family:'Playfair Display',serif;font-size:clamp(24px,3.6vw,32px);font-weight:600;line-height:1.2;margin-bottom:12px}
+  p.lead{color:var(--muted);max-width:640px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:28px;margin-top:22px;box-shadow:0 1px 2px rgba(30,27,22,.04)}
+  .autonum{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--terra);color:#fff;font-weight:700;font-size:15px;margin-right:12px;flex:none}
+  .card h3{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;display:flex;align-items:center;margin-bottom:4px}
+  .card .sys{color:var(--muted);font-size:12.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin:0 0 16px 46px}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start}
+  @media(max-width:700px){.cols{grid-template-columns:1fr}}
+  .label{font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:8px}
+  .label + .label, .plain + .label{margin-top:18px}
+  ul.plain{list-style:none}
+  ul.plain li{padding-left:22px;position:relative;margin-bottom:9px}
+  ul.plain li::before{content:"";position:absolute;left:2px;top:9px;width:8px;height:8px;border-radius:50%;background:var(--terra)}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;background:#F1EDE4;border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--ink);white-space:nowrap}
+  /* flowcharts */
+  .flow{display:flex;flex-direction:column;align-items:center;gap:0;margin-top:4px}
+  .fnode{background:var(--green-soft);border:1.5px solid var(--green);color:var(--green);border-radius:10px;padding:10px 16px;font-size:14px;font-weight:600;text-align:center;max-width:300px;width:100%}
+  .fnode.start{background:var(--ink);border-color:var(--ink);color:#F3EBDD}
+  .fnode.action{background:#fff;border-color:var(--line);color:var(--ink);font-weight:500}
+  .fnode.you{background:var(--terra-soft);border-color:var(--terra);color:var(--terra)}
+  .fnode.stop{background:#F1EDE4;border-color:#C9C2B4;color:var(--muted);font-weight:500}
+  .farrow{color:var(--gold);font-size:20px;line-height:1;padding:6px 0;font-weight:700}
+  .fsplit{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;max-width:420px}
+  .fsplit .branch{flex:1;min-width:150px;max-width:200px;display:flex;flex-direction:column;align-items:center}
+  .fsplit .branch .tag{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .fsplit .fnode{font-size:12.5px;padding:8px 10px}
+  .fnote{font-size:12.5px;color:var(--muted);text-align:center;margin-top:10px;max-width:300px}
+  .master .fnode{max-width:460px}
+  .master .fsplit{max-width:480px}
+  .master .fsplit .branch{max-width:230px}
+  /* tables */
+  table{width:100%;border-collapse:collapse;margin-top:14px;font-size:14.5px}
+  th{text-align:left;background:var(--green-soft);color:var(--green);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;padding:10px 12px;border:1px solid var(--line)}
+  td{padding:11px 12px;border:1px solid var(--line);vertical-align:top}
+  tr:nth-child(even) td{background:#FBF9F5}
+  .tablewrap{overflow-x:auto}
+  /* callouts */
+  .ok{background:var(--green-soft);border-left:4px solid var(--green);border-radius:0 10px 10px 0;padding:14px 18px;font-size:14.5px;color:var(--green);margin-top:16px}
+  .warnbox{background:var(--warn-bg);border-left:4px solid var(--terra);border-radius:0 10px 10px 0;padding:14px 18px;font-size:14.5px;color:var(--warn);margin-top:16px}
+  .yours{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:20px}
+  .your{background:#fff;border:1.5px solid var(--green);border-radius:12px;padding:20px}
+  .your b{display:block;color:var(--green);margin-bottom:6px;font-size:15px}
+  .your p{font-size:14px;color:var(--muted)}
+  footer{margin-top:64px;padding-top:24px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="brand">Sophie Orozco Coaching</div>
+  <h1>Continuation-Tracker System</h1>
+  <p>How a client moves from the end of their program to their next one. Four automations, one pipeline, and what Krissy sees at each step.</p>
+  <div class="pill">Standard Operating Procedure · v1.0</div>
+</header>
+
+<div class="wrap">
+
+<section>
+  <div class="kicker">The Big Picture</div>
+  <h2>From graduation to the next program</h2>
+  <p class="lead">The system starts when a client reaches the end of their initial coaching program and follows them until they either enroll in a continuation program or decline every option. Nothing here sends emails. It reads what the client does and keeps the pipeline honest.</p>
+  <div class="card master">
+    <div class="flow">
+      <div class="fnode start">Client completes their program · day 77 from Program Start Date</div>
+      <div class="farrow">↓</div>
+      <div class="fnode">WF-CT1 Graduation Entry · tagged <code>graduated</code>, card created in Continuation Offer</div>
+      <div class="farrow">↓</div>
+      <div class="fnode action">Continuation outreach goes out (sent by the Client Journey System)</div>
+      <div class="farrow">↓</div>
+      <div class="fnode">WF-CT2 Engagement · a click, a reply, or a booked appointment moves the card to Engaged</div>
+      <div class="farrow">↓</div>
+      <div class="fsplit">
+        <div class="branch"><div class="tag">Interested</div><div class="fnode">WF-CT3 Enrolled · sale recorded with its value</div></div>
+        <div class="branch"><div class="tag">Not interested</div><div class="fnode you">WF-CT4 Declined · day 90+, card moves to Declined for Krissy</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="kicker">The Four Automations</div>
+  <h2>What each one does, and what starts it</h2>
+
+  <div class="card">
+    <h3><span class="autonum">1</span>Graduation Entry</h3>
+    <div class="sys">WF-CT1</div>
+    <div class="cols">
+      <div>
+        <div class="label">What starts it</div>
+        <ul class="plain">
+          <li>Program Start Date is filled in</li>
+          <li>77 days have passed since that date</li>
+          <li>The contact has the tag <code>existing client</code></li>
+        </ul>
+        <div class="label">What it does</div>
+        <ul class="plain">
+          <li>Adds the tag <code>graduated</code></li>
+          <li>Creates or updates a card in the <b>Continuation Program</b> pipeline, stage <b>Continuation Offer</b>, status Open</li>
+        </ul>
+        <div class="ok">The client is officially moved from active coaching into the continuation journey.</div>
+      </div>
+      <div class="flow">
+        <div class="fnode start">Day 77 reached</div>
+        <div class="farrow">↓</div>
+        <div class="fnode action">Has <code>existing client</code> tag?</div>
+        <div class="farrow">↓</div>
+        <div class="fnode">Add tag <code>graduated</code></div>
+        <div class="farrow">↓</div>
+        <div class="fnode">Card → Continuation Offer</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="autonum">2</span>Continuation Engagement</h3>
+    <div class="sys">WF-CT2</div>
+    <div class="cols">
+      <div>
+        <div class="label">What starts it (any one of these)</div>
+        <ul class="plain">
+          <li>The client clicks a tracked continuation link</li>
+          <li>An appointment is confirmed</li>
+          <li>The client replies</li>
+        </ul>
+        <div class="label">What it does</div>
+        <ul class="plain">
+          <li>Checks for the tag <code>outreach sent</code></li>
+          <li><b>Yes:</b> adds <code>continuation engaged</code> and moves the card to <b>Engaged</b></li>
+          <li><b>No:</b> nothing happens. The workflow ends</li>
+        </ul>
+        <div class="ok">Interested clients show up in the Engaged stage. Anyone who never received an offer is ignored.</div>
+      </div>
+      <div class="flow">
+        <div class="fnode start">Click · reply · appointment</div>
+        <div class="farrow">↓</div>
+        <div class="fnode action">Has <code>outreach sent</code>?</div>
+        <div class="farrow">↓</div>
+        <div class="fsplit">
+          <div class="branch"><div class="tag">Yes</div><div class="fnode">Tag engaged · card → Engaged</div></div>
+          <div class="branch"><div class="tag">No</div><div class="fnode stop">No action</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="autonum">3</span>Continuation Enrolled</h3>
+    <div class="sys">WF-CT3</div>
+    <div class="cols">
+      <div>
+        <div class="label">What starts it</div>
+        <ul class="plain">
+          <li>One of the seven enrollment tags is added to the contact (see the table below)</li>
+        </ul>
+        <div class="label">What it does</div>
+        <ul class="plain">
+          <li>Identifies the program from the tag</li>
+          <li>Creates or updates the card in stage <b>Enrolled</b></li>
+          <li>Sets the opportunity value to the program price</li>
+        </ul>
+        <div class="ok">The sale is on the pipeline with the right value. No spreadsheet.</div>
+      </div>
+      <div class="flow">
+        <div class="fnode start">Enrollment tag added</div>
+        <div class="farrow">↓</div>
+        <div class="fnode action">Identify the program</div>
+        <div class="farrow">↓</div>
+        <div class="fnode">Card → Enrolled</div>
+        <div class="farrow">↓</div>
+        <div class="fnode">Value assigned</div>
+      </div>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Tag to add</th><th>Program</th><th>Value recorded</th></tr></thead>
+        <tbody>
+          <tr><td><code>enrolled-continuermm-3mo</code></td><td>Continue RMM 3 Month</td><td>$1,500</td></tr>
+          <tr><td><code>enrolled-continuermm-6mo</code></td><td>Continue RMM 6 Month</td><td>$2,000</td></tr>
+          <tr><td><code>enrolled-forge-6mo</code></td><td>Forge 6 Month</td><td>$4,997</td></tr>
+          <tr><td><code>enrolled-forge-1yr</code></td><td>Forge 1 Year</td><td>$8,500</td></tr>
+          <tr><td><code>enrolled-rfb-6mo</code></td><td>RFB 6 Month</td><td>$4,997</td></tr>
+          <tr><td><code>enrolled-rfb-1yr</code></td><td>RFB 1 Year</td><td>$8,500</td></tr>
+          <tr><td><code>enrolled-rmmplus</code></td><td>RMM Plus</td><td>$2,997</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="autonum">4</span>Continuation Declined</h3>
+    <div class="sys">WF-CT4</div>
+    <div class="cols">
+      <div>
+        <div class="label">What starts it</div>
+        <ul class="plain">
+          <li>90 or more days have passed on the date field</li>
+          <li>The contact has the tag <code>graduated</code></li>
+        </ul>
+        <div class="label">What it does</div>
+        <ul class="plain">
+          <li>Checks for any enrollment tag (Continue RMM, Forge, RFB, RMM Plus)</li>
+          <li><b>Enrolled:</b> stops. Nothing changes</li>
+          <li><b>Not enrolled:</b> adds <code>declined-all</code> and moves the card to <b>Declined</b></li>
+        </ul>
+        <div class="ok">Clients who passed on everything are visible in one place for a personal follow-up.</div>
+      </div>
+      <div class="flow">
+        <div class="fnode start">Graduated · 90+ days</div>
+        <div class="farrow">↓</div>
+        <div class="fnode action">Any enrollment tag?</div>
+        <div class="farrow">↓</div>
+        <div class="fsplit">
+          <div class="branch"><div class="tag">Enrolled</div><div class="fnode stop">Stop</div></div>
+          <div class="branch"><div class="tag">Not enrolled</div><div class="fnode you">Tag declined-all · card → Declined</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="kicker">The Moving Parts</div>
+  <h2>Fields, tags and the pipeline</h2>
+  <p class="lead">Everything below is shared across the four workflows. Renaming or deleting any of it breaks the system silently.</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Name</th><th>Type</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>Program Start Date</td><td>Date field</td><td>When the client started. Set by the Client Journey System at Closed Won.</td></tr>
+        <tr><td><code>existing client</code></td><td>Tag</td><td>Identifies active coaching clients</td></tr>
+        <tr><td><code>graduated</code></td><td>Tag</td><td>Marks clients who completed their program</td></tr>
+        <tr><td><code>outreach sent</code></td><td>Tag</td><td>The client received a continuation offer. Applied by the Client Journey System.</td></tr>
+        <tr><td><code>continuation engaged</code></td><td>Tag</td><td>The client interacted with an offer</td></tr>
+        <tr><td>Seven <code>enrolled-…</code> tags</td><td>Tags</td><td>Which continuation program was purchased (table in automation 3)</td></tr>
+        <tr><td><code>declined-all</code></td><td>Tag</td><td>The client declined every continuation option</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Pipeline</th><th>Stages</th></tr></thead>
+      <tbody>
+        <tr><td>Continuation Program</td><td>Continuation Offer · Engaged · Enrolled · Declined</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="kicker">Your Part</div>
+  <h2>The only things a human does</h2>
+  <div class="yours">
+    <div class="your"><b>A card lands in Engaged</b><p>The client clicked, replied, or booked. Reach out while the interest is warm.</p></div>
+    <div class="your"><b>A client buys a continuation program</b><p>Add the matching <code>enrolled-…</code> tag to their contact. That one tag records the sale and its value on the pipeline.</p></div>
+    <div class="your"><b>A card lands in Declined</b><p>Ninety days passed with no enrollment. This is the personal follow-up list.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="kicker">Where It Connects</div>
+  <h2>The system that runs before this one</h2>
+  <p class="lead">The <b>Client Journey System</b> sets Program Start Date at Closed Won, sends the continuation offers on days 28, 35 and 59, and applies the <code>outreach sent</code> tag that automation 2 checks. It has its own SOP.</p>
+  <div class="warnbox"><b>One thing to reconcile.</b> The Client Journey emails add clients to a pipeline called <b>Continuation Programs</b> (stages Outreach Sent, Needs Follow-Up). This system uses <b>Continuation Program</b> (Continuation Offer, Engaged, Enrolled, Declined). Confirm in GoHighLevel whether these are one pipeline or two, and align the names so both systems write to the same board.</div>
+</section>
+
+<footer>
+  <span>Continuation-Tracker System · SOP v1.0 · Sophie Orozco Coaching</span>
+  <span>Maintained by John Carlo Caintic</span>
+</footer>
+
+</div>
+</body>
+</html>

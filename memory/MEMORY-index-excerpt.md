@@ -1,0 +1,9 @@
+- [User identity](user_identity.md) — Full name: John Carlo Caintic. Use for signatures, deliverables, action plans.
+- [Outreach copy style](feedback_outreach_copy_style.md) — no em/en dashes, no "sales pitch" phrase, short/natural/concise tone in LinkedIn DMs
+- [Client emails use "I"](feedback_client_email_first_person.md) — never "we" in client-facing copy; he builds solo, "we" implies a team that doesn't exist
+- [Keep secrets device-local](feedback_env_secrets_local_only.md) — .env stays on the machine; never echo keys into chat/commits/output. Redirect paste attempts to the file.
+- [Sophie Orozco GHL build](project_sophie_orozco_ghl.md) — FG Funnels client; NO deletions on the live account, audit only; platform gotchas (no date math, If/Else caps at 10) already proven by testing; Communication Reset setup guide live at communication-reset-guide.vercel.app (15 Sep 2026)
+- [Take initiative, no repeat questions](feedback_take_initiative_no_repeat_questions.md) — draft for approval instead of asking; never re-ask answered questions
+- [Windows Bash heredoc limit](env_windows_bash_heredoc_limit.md) — heredocs over ~30KB fail with ENAMETOOLONG on this machine, and double backslashes collapse to single inside heredocs (breaks inline Python regex); use Write tool for large files or anything with backslashes
+- [Proposal page style](feedback_proposal_page_style.md) — user wants the "Sophie SOP" look for client-facing pages: dark warm header, cream body, forest green numbers, Playfair + Inter; called it "clean"
+- [Team messages human and short](feedback_team_messages_human_short.md) — every Slack/team message must sound human, be as short as possible, direct; no preamble, no restating; Chris called earlier reply AI-sounding

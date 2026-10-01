@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Onboarding Automations Reference — Sophie Orozco Coaching</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F7F4EE; --card:#FFFFFF; --ink:#1E1B16; --muted:#6B6459;
+    --terra:#A9502C; --terra-soft:#F3E3DA; --green:#1D4A33; --green-soft:#E4EEE7;
+    --gold:#B98A2F; --line:#E4DDD2; --warn-bg:#FBEFE7; --warn:#8C3D14; --red:#B3261E;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--cream);color:var(--ink);font-family:'Inter',system-ui,sans-serif;line-height:1.6;font-size:16px}
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px 80px}
+  header.hero{background:var(--ink);color:#F7F4EE;padding:48px 20px 40px;text-align:center}
+  .hero .brand{font-family:'Playfair Display',serif;font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#CDB68A;margin-bottom:12px}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,40px);font-weight:600;line-height:1.15;margin-bottom:12px}
+  .hero p{color:#BFB8AC;max-width:520px;margin:0 auto;font-size:15.5px}
+  section{margin-top:44px}
+  h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3.4vw,28px);font-weight:600;margin-bottom:14px}
+  .kicker{color:var(--terra);font-weight:700;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
+  /* steps */
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:18px}
+  .step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .step .n{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--terra);color:#fff;font-weight:700;font-size:14px;margin-bottom:10px}
+  .step b{display:block;margin-bottom:5px;font-size:15.5px}
+  .step p{font-size:14px;color:var(--muted)}
+  /* table */
+  .tablewrap{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:16px}
+  table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:640px}
+  th{text-align:left;background:var(--green-soft);color:var(--green);font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:12px 14px;border-bottom:1px solid var(--line)}
+  td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:#FBF9F5}
+  .prog{font-weight:600}
+  .tagbtn{display:inline-flex;align-items:center;gap:8px;background:#F4F1EA;border:1px solid var(--line);border-radius:8px;padding:7px 11px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;color:var(--ink);cursor:pointer;transition:.15s;white-space:nowrap}
+  .tagbtn:hover{background:var(--terra-soft);border-color:var(--terra)}
+  .tagbtn.copied{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+  .tagbtn .ic{opacity:.5;font-size:12px}
+  .wf{font-size:13px;color:var(--muted)}
+  /* callouts */
+  .warnbox{background:var(--warn-bg);border-left:4px solid var(--terra);border-radius:0 12px 12px 0;padding:16px 20px;margin-top:18px}
+  .warnbox b{color:var(--warn)}
+  .warnbox p{font-size:14.5px;color:var(--warn);margin-top:4px}
+  .retired{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .retired span{background:#fff;border:1px dashed var(--red);color:var(--red);border-radius:8px;padding:6px 10px;font-family:ui-monospace,monospace;font-size:12.5px;text-decoration:line-through}
+  .rules{list-style:none;margin-top:16px}
+  .rules li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px 16px 46px;position:relative;margin-bottom:10px;font-size:15px}
+  .rules li::before{content:"✓";position:absolute;left:18px;top:15px;color:var(--green);font-weight:700}
+  .rules li.no::before{content:"✕";color:var(--red)}
+  .always{background:var(--green-soft);border:1.5px solid var(--green);border-radius:14px;padding:20px;margin-top:18px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .always b{color:var(--green);font-size:16px}
+  footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#F7F4EE;padding:11px 20px;border-radius:999px;font-size:14px;font-weight:500;transition:.25s;pointer-events:none;opacity:0}
+  .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="brand">Sophie Orozco Coaching</div>
+  <h1>Onboarding Automations Reference</h1>
+  <p>Which tag to add when a deal closes, so the client's onboarding sends automatically. Click any tag to copy it.</p>
+</header>
+
+<div class="wrap">
+
+<section>
+  <div class="kicker">The Process</div>
+  <h2>Three steps, every closed deal</h2>
+  <div class="steps">
+    <div class="step"><div class="n">1</div><b>Mark the deal won</b><p>Move the opportunity to Closed Won <b>and</b> set its Status to Won. Both, not just one.</p></div>
+    <div class="step"><div class="n">2</div><b>Fill Offer Discussed</b><p>On the contact record, select the exact program they bought.</p></div>
+    <div class="step"><div class="n">3</div><b>Add their tags</b><p>One program tag from the table below, plus <code>existing client</code>. That fires their onboarding.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="kicker">The Tags</div>
+  <h2>Find the program. Copy the tag.</h2>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Program purchased</th><th>Tag to apply</th><th>Onboarding automations</th></tr></thead>
+      <tbody>
+        <tr><td class="prog">Couples Coaching — men</td><td><button class="tagbtn" data-tag="client - couples coaching men">client - couples coaching men <span class="ic">copy</span></button></td><td class="wf">(men) Couples</td></tr>
+        <tr><td class="prog">Couples Coaching — women</td><td><button class="tagbtn" data-tag="client - couples coaching women">client - couples coaching women <span class="ic">copy</span></button></td><td class="wf">(women) Couples</td></tr>
+        <tr><td class="prog">Couples Coaching VIP — men</td><td><button class="tagbtn" data-tag="client - vip sophie men">client - vip sophie men <span class="ic">copy</span></button></td><td class="wf">Premium Men Couples</td></tr>
+        <tr><td class="prog">Couples Coaching VIP — women</td><td><button class="tagbtn" data-tag="client - vip sophie women">client - vip sophie women <span class="ic">copy</span></button></td><td class="wf">Premium Women Couples</td></tr>
+        <tr><td class="prog">RMM Accelerator — men</td><td><button class="tagbtn" data-tag="client - rmm accelerator men">client - rmm accelerator men <span class="ic">copy</span></button></td><td class="wf">RMM Accelerator (men)</td></tr>
+        <tr><td class="prog">RMM Accelerator — women</td><td><button class="tagbtn" data-tag="client - rmm accelerator women">client - rmm accelerator women <span class="ic">copy</span></button></td><td class="wf">RMM Accelerator (women)</td></tr>
+        <tr><td class="prog">RMM standard — men</td><td><button class="tagbtn" data-tag="client - rmm men">client - rmm men <span class="ic">copy</span></button></td><td class="wf">RMM Men</td></tr>
+        <tr><td class="prog">RMM standard — women</td><td><button class="tagbtn" data-tag="client - rmm women">client - rmm women <span class="ic">copy</span></button></td><td class="wf">RMM Women</td></tr>
+        <tr><td class="prog">RMM Group Only — men</td><td><button class="tagbtn" data-tag="client - group only men">client - group only men <span class="ic">copy</span></button></td><td class="wf">RMM Group Only (men)</td></tr>
+        <tr><td class="prog">RMM Group Only — women</td><td><button class="tagbtn" data-tag="client - group only women">client - group only women <span class="ic">copy</span></button></td><td class="wf">RMM Group Only (women)</td></tr>
+        <tr><td class="prog">RMM Course Only — men</td><td><button class="tagbtn" data-tag="client - rmm course only men">client - rmm course only men <span class="ic">copy</span></button></td><td class="wf">RMM Course only Men</td></tr>
+        <tr><td class="prog">RMM Course Only — women</td><td><button class="tagbtn" data-tag="client - rmm course only women">client - rmm course only women <span class="ic">copy</span></button></td><td class="wf">RMM Course only Women</td></tr>
+        <tr><td class="prog">Self-Paced — men</td><td><button class="tagbtn" data-tag="client - rmm self paced men">client - rmm self paced men <span class="ic">copy</span></button></td><td class="wf">RMM- SELF PACED (Men)</td></tr>
+        <tr><td class="prog">Self-Paced — women</td><td><button class="tagbtn" data-tag="client - rmm self paced women">client - rmm self paced women <span class="ic">copy</span></button></td><td class="wf">RMM- SELF PACED (Women)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="always">
+    <b>Plus this on every client, always:</b>
+    <button class="tagbtn" data-tag="existing client">existing client <span class="ic">copy</span></button>
+  </div>
+</section>
+
+<section>
+  <div class="kicker">Rules</div>
+  <h2>Five rules that keep this clean</h2>
+  <ul class="rules">
+    <li><b>One program tag per client.</b> Two tags means two onboarding emails.</li>
+    <li><b>Copy, never type.</b> Tags are case and space sensitive. A typo creates a new tag that triggers nothing.</li>
+    <li><b>Couples: tag the primary contact only.</b> The Circle invite link in their email works for both partners, so forward it to the spouse. Tagging both doubles everything.</li>
+    <li class="no"><b>Never re-add a tag a client already has.</b> It can restart their onboarding and send duplicates.</li>
+    <li class="no"><b>Tagged the wrong offer? Do not just remove it.</b> Tell Client Success immediately so the sequence can be stopped.</li>
+  </ul>
+</section>
+
+<footer>
+  <span>Onboarding Automations Reference · Sophie Orozco Coaching</span>
+  <span>Maintained by John Carlo Caintic</span>
+</footer>
+
+</div>
+
+<div class="toast" id="toast">Copied</div>
+
+<script>
+  const toast = document.getElementById('toast');
+  document.querySelectorAll('.tagbtn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const tag = btn.dataset.tag;
+      try { await navigator.clipboard.writeText(tag); }
+      catch (e) {
+        const ta = document.createElement('textarea');
+        ta.value = tag; document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); } catch (err) {}
+        document.body.removeChild(ta);
+      }
+      btn.classList.add('copied');
+      const ic = btn.querySelector('.ic');
+      const old = ic.textContent; ic.textContent = 'copied ✓';
+      toast.textContent = 'Copied: ' + tag;
+      toast.classList.add('show');
+      setTimeout(() => { btn.classList.remove('copied'); ic.textContent = old; toast.classList.remove('show'); }, 1600);
+    });
+  });
+</script>
+</body>
+</html>

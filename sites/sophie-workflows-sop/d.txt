@@ -1,0 +1,37 @@
+<claude-code-hint v="1" type="plugin" value="vercel@claude-plugins-official" />
+Retrieving project…
+Deploying cainticjohncarlo-pixels-projects/sophie-workflows-sop
+Uploading [--------------------] (0.0B/77.9KB)
+Uploading [========------------] (32.1KB/77.9KB)
+Uploading [============--------] (48.1KB/77.9KB)
+Uploading [================----] (64.1KB/77.9KB)
+Uploading [====================] (77.9KB/77.9KB)
+Inspect: https://vercel.com/cainticjohncarlo-pixels-projects/sophie-workflows-sop/DCxgHXpdV2LNEtHpzRA329UsT6nP [5s]
+Production: https://sophie-workflows-1es45rq93-cainticjohncarlo-pixels-projects.vercel.app [5s]
+Building...
+Building...
+[2K[1A[2K[GProduction: https://sophie-workflows-1es45rq93-cainticjohncarlo-pixels-projects.vercel.app [8s]
+Completing...
+Aliased: https://sophie-workflows-sop.vercel.app [8s]
+{
+  "status": "ok",
+  "deployment": {
+    "id": "dpl_DCxgHXpdV2LNEtHpzRA329UsT6nP",
+    "url": "https://sophie-workflows-1es45rq93-cainticjohncarlo-pixels-projects.vercel.app",
+    "inspectorUrl": "https://vercel.com/cainticjohncarlo-pixels-projects/sophie-workflows-sop/DCxgHXpdV2LNEtHpzRA329UsT6nP",
+    "readyState": "READY",
+    "target": "production",
+    "deploymentApiUrl": "https://api.vercel.com/v13/deployments/dpl_DCxgHXpdV2LNEtHpzRA329UsT6nP"
+  },
+  "message": "Deployment sophie-workflows-1es45rq93-cainticjohncarlo-pixels-projects.vercel.app ready.",
+  "next": [
+    {
+      "command": "vercel inspect sophie-workflows-1es45rq93-cainticjohncarlo-pixels-projects.vercel.app",
+      "when": "Inspect deployment"
+    },
+    {
+      "command": "vercel deploy --prod",
+      "when": "Promote to production"
+    }
+  ]
+}

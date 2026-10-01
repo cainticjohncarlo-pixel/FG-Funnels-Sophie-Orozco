@@ -1,0 +1,1821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>RMM Catch-Up Workflow — Setup Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F7F4EE; --card:#FFFFFF; --ink:#1E1B16; --muted:#6B6459;
+    --terra:#A9502C; --terra-soft:#F3E3DA; --green:#1D4A33; --green-soft:#E4EEE7;
+    --gold:#B98A2F; --line:#E4DDD2; --warn-bg:#FBEFE7; --warn:#8C3D14;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--cream);color:var(--ink);font-family:'Inter',system-ui,sans-serif;line-height:1.65;font-size:16px}
+  .wrap{max-width:980px;margin:0 auto;padding:0 20px 90px}
+  header.hero{background:var(--ink);color:#F7F4EE;padding:48px 20px 40px;text-align:center}
+  .hero .brand{font-family:'Playfair Display',serif;font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#CDB68A;margin-bottom:12px}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,40px);font-weight:600;line-height:1.15;margin-bottom:12px}
+  .hero p{color:#BFB8AC;max-width:660px;margin:0 auto;font-size:15.5px}
+  section{margin-top:44px}
+  h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3.4vw,28px);font-weight:600;margin-bottom:8px}
+  .lead{color:var(--muted);font-size:15px;margin-bottom:4px}
+  .kicker{color:var(--terra);font-weight:700;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
+  code{font-family:ui-monospace,monospace;font-size:12.5px;background:#F4F1EA;border:1px solid var(--line);border-radius:5px;padding:1px 6px}
+  .small{font-size:14px;color:var(--muted)}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-top:16px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .stat .v{font-family:'Playfair Display',serif;font-size:32px;font-weight:600;color:var(--green);line-height:1.1}
+  .stat .l{font-size:13px;color:var(--muted);margin-top:4px}
+  .why{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:16px}
+  .wbox{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .wbox .n{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--terra);color:#fff;font-weight:700;font-size:13px;margin-bottom:8px}
+  .wbox b{display:block;margin-bottom:4px;font-size:15px}
+  .wbox p{font-size:13.5px;color:var(--muted)}
+  .diagram{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 10px 8px;margin-top:16px}
+  .diagram svg{width:100%;height:auto;display:block}
+  .node{fill:#FBF9F5;stroke:var(--green);stroke-width:1.6}
+  .ntext{font-family:'Inter',sans-serif;font-size:13.5px;font-weight:600;fill:var(--ink)}
+  .ltext{font-family:'Inter',sans-serif;font-size:12.5px;fill:var(--muted)}
+  .pill{fill:var(--terra-soft);stroke:var(--terra);stroke-width:1}
+  .ptext{font-family:'Inter',sans-serif;font-size:12px;font-weight:600;fill:var(--terra)}
+  .edge{fill:none;stroke:#6B6459;stroke-width:1.4}
+  .loop{stroke:var(--terra);stroke-dasharray:5 4}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;margin-top:18px;scroll-margin-top:16px}
+  .chead{display:flex;gap:14px;align-items:center;padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:16px}
+  .num{flex:none;width:34px;height:34px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px}
+  .card h3{font-family:'Playfair Display',serif;font-size:21px;font-weight:600;line-height:1.25}
+  .card p{margin-bottom:10px}
+  .card a{color:var(--green);font-weight:600}
+  .crumb{display:inline-block;background:#F4F1EA;border:1px solid var(--line);border-radius:6px;padding:1px 8px;font-size:14px;font-weight:600;white-space:nowrap}
+  .kv{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;align-items:center;margin:8px 0 12px;font-size:14.5px}
+  .kv .k{color:var(--muted);font-weight:600;white-space:nowrap}
+  .tagbtn{display:inline-flex;align-items:center;gap:8px;background:#F4F1EA;border:1px solid var(--line);border-radius:8px;padding:6px 12px;font-family:ui-monospace,monospace;font-size:13px;color:var(--ink);cursor:pointer;transition:.15s;text-align:left;margin:2px 6px 2px 0}
+  .tagbtn:hover{background:var(--terra-soft);border-color:var(--terra)}
+  .tagbtn.copied{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+  .tagbtn .ic{opacity:.5;font-size:11.5px}
+  .tblwrap{overflow-x:auto;background:#FBF9F5;border:1px solid var(--line);border-radius:12px;margin:8px 0 14px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{text-align:left;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);padding:10px 14px;border-bottom:1px solid var(--line);line-height:1.35;vertical-align:bottom}
+  td{padding:9px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+  tr:last-child td{border-bottom:none}
+  .mapTbl td{font-size:13.5px}
+  .note{background:var(--warn-bg);border-left:4px solid var(--terra);border-radius:0 12px 12px 0;padding:12px 16px;margin:12px 0 4px;font-size:14px;color:var(--warn)}
+  .note b{color:var(--warn)}
+  .note code{background:#fff}
+  .jump{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  .jump a{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:13.5px;font-weight:600;color:var(--green);text-decoration:none}
+  .jump a:hover{border-color:var(--terra);color:var(--terra)}
+  .emgroup{margin-top:36px}
+  .h2s{font-size:22px}
+  .mailcard{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:14px;overflow:hidden;scroll-margin-top:16px}
+  .mhead{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line);background:#FBF9F5}
+  .mhead .wk{flex:none;font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--green);border-radius:999px;padding:3px 10px}
+  .mhead .subj{flex:1;font-weight:600;font-size:15px}
+  .mbody{position:relative;padding:14px 16px 16px}
+  .mailtxt{font-family:'Inter',system-ui,sans-serif;font-size:14.5px;line-height:1.6;white-space:pre-wrap;word-break:break-word;margin:0;max-height:360px;overflow-y:auto;padding-right:110px}
+  .cpy{flex:none;background:#F4F1EA;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:600;color:var(--ink);cursor:pointer;font-family:inherit;transition:.15s}
+  .cpy:hover{background:var(--terra-soft);border-color:var(--terra)}
+  .cpy.done{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+  .cpy.body{position:absolute;top:12px;right:16px}
+  footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#F7F4EE;padding:11px 20px;border-radius:999px;font-size:14px;transition:.25s;pointer-events:none;opacity:0}
+  .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+  .top{position:fixed;right:20px;bottom:24px;background:var(--ink);color:#F7F4EE;border:none;border-radius:999px;padding:11px 18px;font-size:13px;cursor:pointer;opacity:0;transition:.2s;font-family:inherit}
+  .top.show{opacity:.92}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="brand">Sophie Orozco Coaching</div>
+  <h1>RMM Catch-Up Workflow: Setup Plan</h1>
+  <p>How to put the clients who missed the RMM 12 week emails and the weekly check-ins back on track at the week they are actually in, using four small loop workflows in GHL.</p>
+</header>
+
+<div class="wrap">
+
+<section>
+  <div class="kicker">The situation</div>
+  <h2>Who this is for</h2>
+  <p class="lead">From Hazel's list, matched to GHL on Sept 29, 2026.</p>
+  <div class="stats">
+    <div class="stat"><div class="v">63</div><div class="l">clients on the list, weeks 1 to 9</div></div>
+    <div class="stat"><div class="v">63</div><div class="l">missing the RMM 12 week emails</div></div>
+    <div class="stat"><div class="v">36</div><div class="l">also missing the weekly check-ins</div></div>
+    <div class="stat"><div class="v">11</div><div class="l">need a data fix first (step 10)</div></div>
+  </div>
+</section>
+
+<section>
+  <div class="kicker">Why a normal tag will not do</div>
+  <h2>The problem, in three lines</h2>
+  <div class="why">
+    <div class="wbox"><span class="n">1</span><b>The sequences always start at week 1</b><p>Both published sequences send the day 0 email, then week 1, then one email every 7 days. There is no way to start a contact at week 7.</p></div>
+    <div class="wbox"><span class="n">2</span><b>GHL cannot skip steps</b><p>A workflow runs top to bottom. An If/Else branch does not merge back, so "skip the first six weeks" cannot be built inside the existing workflow.</p></div>
+    <div class="wbox"><span class="n">3</span><b>So the catch-up loops instead</b><p>A number field says which week the client is in. The workflow sends that week's email, waits 7 days, moves the number up, and re-enters itself.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="kicker">The design</div>
+  <h2>One loop, four copies</h2>
+  <p class="lead">Catch-Up RMM (men), Catch-Up RMM (women), Catch-Up Check-In (men), Catch-Up Check-In (women). Same shape, different tag and templates.</p>
+  <div class="diagram">
+<svg viewBox="0 0 900 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Catch-up loop">
+  <defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6B6459"/></marker></defs>
+  <rect class="node" x="40" y="30" width="200" height="54" rx="12"/><text class="ntext" x="140.0" y="48.5" text-anchor="middle" dominant-baseline="middle"><tspan x="140.0" dy="0">Tag added</tspan><tspan x="140.0" dy="17">catchup- rmm (men)</tspan></text>
+  <rect class="node" x="320" y="30" width="240" height="54" rx="12"/><text class="ntext" x="440.0" y="48.5" text-anchor="middle" dominant-baseline="middle"><tspan x="440.0" dy="0">If/Else on RMM Week</tspan><tspan x="440.0" dy="17">branches 1 to 6, none → next</tspan></text>
+  <rect class="node" x="620" y="30" width="240" height="54" rx="12"/><text class="ntext" x="740.0" y="48.5" text-anchor="middle" dominant-baseline="middle"><tspan x="740.0" dy="0">If/Else on RMM Week</tspan><tspan x="740.0" dy="17">branches 7 to 12</tspan></text>
+  <rect class="pill" x="410.4" y="123" width="79.2" height="24" rx="12"/><text class="ptext" x="450" y="136" text-anchor="middle" dominant-baseline="middle">week = 7</text>
+  <rect class="node" x="330" y="170" width="240" height="50" rx="12"/><text class="ntext" x="450.0" y="195.0" text-anchor="middle" dominant-baseline="middle"><tspan x="450.0" dy="0">Send lesson 7 email</tspan></text>
+  <rect class="node" x="330" y="250" width="240" height="50" rx="12"/><text class="ntext" x="450.0" y="275.0" text-anchor="middle" dominant-baseline="middle"><tspan x="450.0" dy="0">Wait 7 days</tspan></text>
+  <rect class="node" x="330" y="330" width="240" height="50" rx="12"/><text class="ntext" x="450.0" y="355.0" text-anchor="middle" dominant-baseline="middle"><tspan x="450.0" dy="0">Set RMM Week = 8</tspan></text>
+  <rect class="node" x="330" y="410" width="240" height="50" rx="12"/><text class="ntext" x="450.0" y="426.5" text-anchor="middle" dominant-baseline="middle"><tspan x="450.0" dy="0">Remove tag, wait 1 min,</tspan><tspan x="450.0" dy="17">add tag again</tspan></text>
+  <rect class="node" x="640" y="330" width="220" height="50" rx="12" stroke-dasharray="6 4"/><text class="ntext" x="750.0" y="346.5" text-anchor="middle" dominant-baseline="middle"><tspan x="750.0" dy="0">Branch 12: send lesson 12,</tspan><tspan x="750.0" dy="17">remove tag, end</tspan></text>
+  <path class="edge" d="M240,57 L316,57" marker-end="url(#arr)"/>
+  <path class="edge" d="M560,57 L616,57" marker-end="url(#arr)"/>
+  <path class="edge" d="M740,84 L740,110 Q740,118 732,118 L470,118 Q460,118 460,126 L460,122" marker-end="url(#arr)"/>
+  <path class="edge" d="M450,147 L450,166" marker-end="url(#arr)"/>
+  <path class="edge" d="M450,220 L450,246" marker-end="url(#arr)"/>
+  <path class="edge" d="M450,300 L450,326" marker-end="url(#arr)"/>
+  <path class="edge" d="M450,380 L450,406" marker-end="url(#arr)"/>
+  <path class="edge loop" d="M330,435 L300,435 Q290,435 290,425 L290,110 Q290,100 300,100 L440,100 Q450,100 450,92 L450,88" marker-end="url(#arr)"/>
+  <text class="ltext" x="40" y="120">Re-entry: the contact comes</text>
+  <text class="ltext" x="40" y="138">back in and lands in the</text>
+  <text class="ltext" x="40" y="156">next branch</text>
+</svg></div>
+  <div class="tblwrap "><table><thead><tr><th>Piece</th><th>What it is</th></tr></thead><tbody><tr><td><b>RMM Week</b> and <b>Check-In Week</b></td><td>Two number fields on the contact, one per loop type. Set once at enrollment, then each loop moves its own field up by one each week. Separate fields so the RMM loop and the check-in loop never overwrite each other.</td></tr><tr><td><b>Trigger tag</b></td><td>One per workflow, for example <code>catchup- rmm (men)</code>. Adding it enrolls the contact. The loop removes and re-adds it every 7 days.</td></tr><tr><td><b>Two If/Else blocks</b></td><td>Weeks 1 to 6 and weeks 7 to 12, because one If/Else holds at most 10 branches.</td></tr><tr><td><b>Each branch</b></td><td>Send that week's email, wait 7 days, set RMM Week to the next number, remove the tag, add it back.</td></tr><tr><td><b>Allow Re-Entry</b></td><td>On, in the workflow settings. This is what lets the re-added tag bring the contact back in.</td></tr></tbody></table></div>
+</section>
+
+<section><div class="kicker">Part A</div><h2>Prepare, 3 steps</h2><p class=lead>One field, four tags, and the emails saved as templates so the loop can pick them.</p><div class="card" id="s1"><div class="chead"><div class="num">1</div><h3>Create the two week fields</h3></div>
+<p>Go to <span class="crumb">Settings</span> → <span class="crumb">Custom Fields</span> → <span class="crumb">Add Field</span> and create both. One drives the RMM loops, the other drives the check-in loops. They are separate so the two loops never overwrite each other's number.</p>
+<div class="tblwrap "><table><thead><tr><th>Setting</th><th>Field 1, for the RMM loops</th><th>Field 2, for the check-in loops</th></tr></thead><tbody><tr><td>Object</td><td>Contact</td><td>Contact</td></tr><tr><td>Type</td><td>Number</td><td>Number</td></tr><tr><td>Name</td><td><button class="tagbtn" data-tag="RMM Week">RMM Week <span class="ic">copy</span></button></td><td><button class="tagbtn" data-tag="Check-In Week">Check-In Week <span class="ic">copy</span></button></td></tr><tr><td>Key, fills in by itself</td><td><code>rmm_week</code></td><td><code>checkin_week</code></td></tr><tr><td>Folder</td><td>Contact, or wherever program_start_date lives</td><td>Same folder</td></tr><tr><td>Description</td><td>Current RMM week, 1 to 12. Set at enrollment, moved up by 1 every 7 days by the Catch-Up RMM workflows.</td><td>Current check-in week, 1 to 12. Set at enrollment, moved up by 1 every 7 days by the Catch-Up Check-In workflows.</td></tr></tbody></table></div>
+<p class="small">Each number decides which branch the contact lands in for its own loop, and moves up by one every 7 days inside that loop.</p>
+</div><div class="card" id="s2"><div class="chead"><div class="num">2</div><h3>Create the four trigger tags</h3></div>
+<p>Go to <span class="crumb">Settings</span> → <span class="crumb">Tags</span> and add these exactly.</p>
+<div class="tblwrap "><table><thead><tr><th>Tag</th><th>Starts</th></tr></thead><tbody><tr><td><button class="tagbtn" data-tag="catchup- rmm (men)">catchup- rmm (men) <span class="ic">copy</span></button></td><td>Catch-Up RMM (men)</td></tr><tr><td><button class="tagbtn" data-tag="catchup- rmm (women)">catchup- rmm (women) <span class="ic">copy</span></button></td><td>Catch-Up RMM (women)</td></tr><tr><td><button class="tagbtn" data-tag="catchup- checkin (men)">catchup- checkin (men) <span class="ic">copy</span></button></td><td>Catch-Up Check-In (men)</td></tr><tr><td><button class="tagbtn" data-tag="catchup- checkin (women)">catchup- checkin (women) <span class="ic">copy</span></button></td><td>Catch-Up Check-In (women)</td></tr></tbody></table></div>
+<div class="note"><b>Do not reuse the normal tags.</b> <code>general- rrm men</code>, <code>general- rmm women</code> and the two <code>rmm- checkin</code> tags always start at week 1. That is the whole reason the catch-up exists.</div>
+</div><div class="card" id="s3"><div class="chead"><div class="num">3</div><h3>Know where each week's email text lives</h3></div>
+<p>The four live sequences are plain text typed straight into each Send Email action. There are no templates to pick, so the catch-up branches are built by <b>copying the text out of the live action and pasting it into the new one</b>. Keep both workflows open in two tabs.</p>
+<div class="tblwrap "><table><thead><tr><th>Sequence</th><th>Where the text is</th></tr></thead><tbody><tr><td>Men's lessons</td><td><span class="crumb">Automation</span> → <span class="crumb">Workflows</span> → <span class="crumb">GENERAL- RMM Men 12 Weeks with Calls</span></td></tr><tr><td>Women's lessons</td><td><span class="crumb">Automation</span> → <span class="crumb">Workflows</span> → <span class="crumb">RMM Women 12 Weeks with Calls- GENERAL</span></td></tr><tr><td>Check-ins</td><td><span class="crumb">Automation</span> → <span class="crumb">Workflows</span> → <span class="crumb">Check-In Sequence (men)</span> and (women)</td></tr></tbody></table></div>
+<p><b>Shortcut:</b> every week's subject and message for all four sequences is already on this page, in the <a href="#emails">Email copy</a> section at the bottom, each with a copy button. Copy from there. The live workflows are the fallback if anything looks off. This map shows which subject belongs to which week:</p>
+<div class="tblwrap mapTbl"><table><thead><tr><th>Week</th><th>Men's lesson subject</th><th>Women's lesson subject</th><th>Check-in subject</th></tr></thead><tbody><tr><td><b>1</b></td><td>The Hardest Lesson Most Men Need to Learn</td><td>Starting where you actually are</td><td>Week 1 Check-In</td></tr><tr><td><b>2</b></td><td>Becoming the Man You Want to Be</td><td>This is where things start to shift</td><td>Week 2 Check-In</td></tr><tr><td><b>3</b></td><td>Clean Up Your Side of the Street</td><td>Allowing yourself to want more</td><td>Week 3 Check-In</td></tr><tr><td><b>4</b></td><td>Say Less, Say It Better</td><td>Taking a deeper look at your role</td><td>Week 4 Check-In</td></tr><tr><td><b>5</b></td><td>Letting Go of What You&#x27;re Carrying</td><td>Letting Go of what you have been carrying</td><td>Week 5 Check-In</td></tr><tr><td><b>6</b></td><td>What she needs might not be what she says</td><td>How you communicate changes everything</td><td>Week 6 Check-In</td></tr><tr><td><b>7</b></td><td>Understanding Her Without Losing Yourself</td><td>Stepping into your Queen Energy</td><td>Week 7 Check-In</td></tr><tr><td><b>8</b></td><td>What You Reinforce Grows</td><td>Understanding how he operates</td><td>Week 8 Check-In</td></tr><tr><td><b>9</b></td><td>Get Clear on Where You&#x27;re Going</td><td>Rebuilding Trust with yourself and others</td><td>Week 9 Check-In</td></tr><tr><td><b>10</b></td><td>Rebuilding Intimacy and Connection</td><td>Shifting what you focus on</td><td>Week 10 Check-In</td></tr><tr><td><b>11</b></td><td>Trust, Betrayal, and What Comes Next</td><td>Letting yourself be closer</td><td>Week 11 Check-In</td></tr><tr><td><b>12</b></td><td>Building What Comes Next</td><td>Taking this with you</td><td>Week 12 Check-In</td></tr></tbody></table></div>
+<div class="note"><b>Copy each week exactly, do not reuse one email with the week number changed.</b> Every check-in week has its own Typeform link and its own middle line. Week 1 links to <code>form.typeform.com/to/iVaUVrNq</code>, Week 7 to <code>form.typeform.com/to/uA5xMksu</code>, and the women's check-ins use a different set of forms again. Copy each week from the matching gender's workflow, or clients land on the wrong form.</div>
+<p class="small">Skip the day 0 emails, the intro and the baseline snapshot. Everyone on the catch-up list is past week 1.</p>
+</div></section><section><div class="kicker">Part B</div><h2>Build the first loop, 5 steps</h2><p class=lead>Build Catch-Up RMM (men) completely, test it, then clone it three times in Part C.</p><div class="card" id="s4"><div class="chead"><div class="num">4</div><h3>Create the first of four workflows</h3></div>
+<p>There will be four workflows in the end, one per sequence and gender. Build the <b>men's RMM</b> one fully in steps 4 to 8, then clone it for the other three in step 9. Do not build the four from scratch.</p>
+<div class="tblwrap "><table><thead><tr><th>Workflow</th><th>Trigger tag</th><th>Emails pasted from</th><th>Built in</th></tr></thead><tbody><tr><td><button class="tagbtn" data-tag="Catch-Up RMM (men)">Catch-Up RMM (men) <span class="ic">copy</span></button></td><td><button class="tagbtn" data-tag="catchup- rmm (men)">catchup- rmm (men) <span class="ic">copy</span></button></td><td>GENERAL- RMM Men 12 Weeks with Calls</td><td>Steps 4 to 8</td></tr><tr><td><button class="tagbtn" data-tag="Catch-Up RMM (women)">Catch-Up RMM (women) <span class="ic">copy</span></button></td><td><button class="tagbtn" data-tag="catchup- rmm (women)">catchup- rmm (women) <span class="ic">copy</span></button></td><td>RMM Women 12 Weeks with Calls- GENERAL</td><td>Step 9, clone</td></tr><tr><td><button class="tagbtn" data-tag="Catch-Up Check-In (men)">Catch-Up Check-In (men) <span class="ic">copy</span></button></td><td><button class="tagbtn" data-tag="catchup- checkin (men)">catchup- checkin (men) <span class="ic">copy</span></button></td><td>Check-In Sequence (men)</td><td>Step 9, clone</td></tr><tr><td><button class="tagbtn" data-tag="Catch-Up Check-In (women)">Catch-Up Check-In (women) <span class="ic">copy</span></button></td><td><button class="tagbtn" data-tag="catchup- checkin (women)">catchup- checkin (women) <span class="ic">copy</span></button></td><td>Check-In Sequence (women)</td><td>Step 9, clone</td></tr></tbody></table></div>
+<p>Go to <span class="crumb">Automation</span> → <span class="crumb">Workflows</span> → <span class="crumb">Create Workflow</span> → <span class="crumb">Start from Scratch</span>.</p>
+<div class="kv"><span class="k">Name</span><span><button class="tagbtn" data-tag="Catch-Up RMM (men)">Catch-Up RMM (men) <span class="ic">copy</span></button></span></div>
+<p>Open <b>Settings</b> at the top and turn on <b>Allow Re-Entry</b>. Without it the loop stops after the first week.</p>
+</div><div class="card" id="s5"><div class="chead"><div class="num">5</div><h3>Add the trigger</h3></div>
+<div class="tblwrap "><table><thead><tr><th>Setting</th><th>Value</th></tr></thead><tbody><tr><td>Trigger</td><td>Contact Tag</td></tr><tr><td>Filter</td><td>Tag added</td></tr><tr><td>Tag</td><td><button class="tagbtn" data-tag="catchup- rmm (men)">catchup- rmm (men) <span class="ic">copy</span></button></td></tr></tbody></table></div>
+</div><div class="card" id="s6"><div class="chead"><div class="num">6</div><h3>Add two If/Else blocks on RMM Week</h3></div>
+<p>Add an <b>If/Else</b> block named <b>Weeks 1 to 6</b> with six branches. Each branch has one condition:</p>
+<div class="tblwrap "><table><thead><tr><th>Branch</th><th>Condition</th></tr></thead><tbody><tr><td>Week 1</td><td>Custom Field <b>RMM Week</b> · Is · <b>1</b></td></tr><tr><td>Week 2</td><td>Custom Field <b>RMM Week</b> · Is · <b>2</b></td></tr><tr><td>Week 3</td><td>Custom Field <b>RMM Week</b> · Is · <b>3</b></td></tr><tr><td>Week 4</td><td>Custom Field <b>RMM Week</b> · Is · <b>4</b></td></tr><tr><td>Week 5</td><td>Custom Field <b>RMM Week</b> · Is · <b>5</b></td></tr><tr><td>Week 6</td><td>Custom Field <b>RMM Week</b> · Is · <b>6</b></td></tr></tbody></table></div>
+<p>On its <b>None</b> path add a second If/Else named <b>Weeks 7 to 12</b> with branches for 7 to 12 the same way.</p>
+<p class="small">Two blocks because an If/Else holds at most 10 branches.</p>
+</div><div class="card" id="s7"><div class="chead"><div class="num">7</div><h3>Fill in every branch, same six actions</h3></div>
+<p><b>Where to connect:</b> under each Week card there is a small <b>+</b> sitting above the grey <b>END</b>. Click that + to add the first action. Each action you save shows a new + under it for the next one. The chain ends at the same END that is already there.</p>
+<p>Start with the <b>Week 1</b> card and add these six, in this order. Only the template and the field value change from branch to branch.</p>
+<div class="tblwrap "><table><thead><tr><th>#</th><th>Click + then choose</th><th>In the panel that opens</th><th>Week 1 example</th></tr></thead><tbody><tr><td>1</td><td><b>Send Email</b></td><td>From name <b>Sophie Orozco Coaching</b>, from email <b>hello@sophieorozco.com</b>. Paste this week's subject into Subject and this week's message into the message box, both from the <a href='#emails'>Email copy</a> section below. Keep <code>{{{{contact.first_name}}}}</code> as is. Save.</td><td><a href='#em-rmm_men-1'>RMM men, Week 1</a></td></tr><tr><td>2</td><td><b>Wait</b></td><td>Wait type <b>Time Delay</b>. Enter the number and pick Days. Save.</td><td><b>7</b> Days</td></tr><tr><td>3</td><td><b>Update Contact Field</b></td><td>Field <b>RMM Week</b>. Type the next week's number in the value box. Save.</td><td>RMM Week = <b>2</b></td></tr><tr><td>4</td><td><b>Remove Contact Tag</b></td><td>Pick the workflow's own trigger tag. Save.</td><td><button class="tagbtn" data-tag="catchup- rmm (men)">catchup- rmm (men) <span class="ic">copy</span></button></td></tr><tr><td>5</td><td><b>Wait</b></td><td>Time Delay, <b>1</b> Minute. This gap lets the remove finish before the add. Save.</td><td>1 Minute</td></tr><tr><td>6</td><td><b>Add Contact Tag</b></td><td>The same trigger tag again. Save.</td><td><button class="tagbtn" data-tag="catchup- rmm (men)">catchup- rmm (men) <span class="ic">copy</span></button></td></tr></tbody></table></div>
+<p>Action 6 is what makes it a loop. Adding the tag fires the trigger again, the contact re-enters, and because the field now says 2 they land in the Week 2 card. Nothing needs to be drawn between branches.</p>
+<p>Repeat for Week 2 through Week 11, changing two things each time:</p>
+<div class="tblwrap "><table><thead><tr><th>Branch</th><th>Action 1 pastes the live step for</th><th>Action 3 sets RMM Week to</th></tr></thead><tbody><tr><td>Week 1</td><td>Week 1</td><td><b>2</b></td></tr><tr><td>Week 2</td><td>Week 2</td><td><b>3</b></td></tr><tr><td>Week 3</td><td>Week 3</td><td><b>4</b></td></tr><tr><td>Week 4</td><td>Week 4</td><td><b>5</b></td></tr><tr><td>Week 5</td><td>Week 5</td><td><b>6</b></td></tr><tr><td>Week 6</td><td>Week 6</td><td><b>7</b></td></tr><tr><td>Week 7</td><td>Week 7</td><td><b>8</b></td></tr><tr><td>Week 8</td><td>Week 8</td><td><b>9</b></td></tr><tr><td>Week 9</td><td>Week 9</td><td><b>10</b></td></tr><tr><td>Week 10</td><td>Week 10</td><td><b>11</b></td></tr><tr><td>Week 11</td><td>Week 11</td><td><b>12</b></td></tr></tbody></table></div>
+<div class="note"><b>Week 12 gets only two actions.</b> Send Email with the live Week 12 text, then Remove Contact Tag. No field update, no add tag. Leave it on END. If you add the tag back, the contact re-enters with RMM Week = 13, matches nothing, and falls into the None path.</div>
+<p><b>Both None cards.</b> The None under Weeks 1 to 6 already holds the Weeks 7 to 12 block, which is right. The None under Weeks 7 to 12 only fires if RMM Week is blank or outside 1 to 12. Leave it on END, or add one <b>Send Internal Notification</b> to yourself there so a mis-set field gets noticed.</p>
+<p><b>Before you save the workflow:</b> open <b>Settings</b> at the top of the builder and confirm <b>Allow Re-Entry</b> is on. It is off by default, and without it the contact is blocked at action 6 and the loop stops after one week.</p>
+</div><div class="card" id="s8"><div class="chead"><div class="num">8</div><h3>Test it before cloning</h3></div>
+<p>Temporarily change the 7 day wait in branches 11 and 12 to <b>2 minutes</b>. Then on a test contact:</p>
+<div class="tblwrap "><table><thead><tr><th>Do</th><th>Expect</th></tr></thead><tbody><tr><td>Set RMM Week to 11, add the tag</td><td>Lesson 11 email arrives right away</td></tr><tr><td>Wait 3 minutes</td><td>RMM Week reads 12, the tag was removed and re-added</td></tr><tr><td>Open Enrollment History</td><td>The contact shows two enrollments</td></tr><tr><td>Check the inbox</td><td>Lesson 12 arrived, tag is gone, no third enrollment</td></tr></tbody></table></div>
+<p>Put both waits back to <b>7 days</b> and save. Publish only after that.</p>
+</div></section><section><div class="kicker">Part C</div><h2>Clone it three times, 1 step</h2><div class="card" id="s9"><div class="chead"><div class="num">9</div><h3>Clone and swap</h3></div>
+<p>On the workflow list, open the <b>⋯</b> menu on Catch-Up RMM (men) and choose <b>Clone</b>. For each clone change only three things: the name, the trigger tag, and the 12 email texts.</p>
+<div class="tblwrap "><table><thead><tr><th>Clone name</th><th>Trigger tag</th><th>Paste the emails from</th></tr></thead><tbody><tr><td><button class="tagbtn" data-tag="Catch-Up RMM (women)">Catch-Up RMM (women) <span class="ic">copy</span></button></td><td><button class="tagbtn" data-tag="catchup- rmm (women)">catchup- rmm (women) <span class="ic">copy</span></button></td><td>RMM Women 12 Weeks with Calls- GENERAL, weeks 1 to 12</td></tr><tr><td><button class="tagbtn" data-tag="Catch-Up Check-In (men)">Catch-Up Check-In (men) <span class="ic">copy</span></button></td><td><button class="tagbtn" data-tag="catchup- checkin (men)">catchup- checkin (men) <span class="ic">copy</span></button></td><td>Check-In Sequence (men), weeks 1 to 12</td></tr><tr><td><button class="tagbtn" data-tag="Catch-Up Check-In (women)">Catch-Up Check-In (women) <span class="ic">copy</span></button></td><td><button class="tagbtn" data-tag="catchup- checkin (women)">catchup- checkin (women) <span class="ic">copy</span></button></td><td>Check-In Sequence (women), weeks 1 to 12</td></tr></tbody></table></div>
+<p class="small">The remove and add tag actions in every branch must also point at the clone's own tag. Check all 12 branches, it is the easiest thing to miss.</p>
+<div class="note"><b>The two check-in clones also switch fields.</b> In both If/Else blocks change every condition from RMM Week to <b>Check-In Week</b>, and in branches 1 to 11 change the Update Contact Field action to set <b>Check-In Week</b>. That is 12 conditions and 11 updates per clone. The RMM women clone keeps RMM Week.</div>
+</div></section><section><div class="kicker">Part D</div><h2>Enroll the clients, 3 steps</h2><p class=lead>The cleaned list with contact IDs is the file Catch-Up-Clients.csv. It says, per client, the week, the gender, and whether they need one sequence or both.</p><div class="card" id="s10"><div class="chead"><div class="num">10</div><h3>Fix the data first</h3></div>
+<div class="tblwrap "><table><thead><tr><th>Client</th><th>Problem</th><th>Fix</th></tr></thead><tbody><tr><td>Can (John) Evizi, Alex Baldassari</td><td>Not found in GHL</td><td>Hazel confirms the name or email on their record</td></tr><tr><td>Melissa Gorsich Reitter, Oli Adams, Steve Piorro, Bjarni Freyr, Jed Padilla, Javier Alcover, Vadim Kuzilov</td><td>No program tag, so no gender</td><td>Hazel or Luann confirms men or women, and the program</td></tr><tr><td>Kali Piorro, Paul Fluharty</td><td>Tagged couples coaching with no gender</td><td>Confirm men or women</td></tr><tr><td>Nick Cazel</td><td>Sheet carries Heather Kauffman's email</td><td>Confirm his own email</td></tr><tr><td>Lacey Williams</td><td>No email on the sheet</td><td>Confirm the email</td></tr><tr><td>Curtis Spearman</td><td>Listed twice</td><td>Enroll once</td></tr><tr><td>Shea Fehrenbach, Deborah Mitter</td><td>Hazel flagged wrong tag</td><td>Confirm the program before enrolling</td></tr></tbody></table></div>
+</div><div class="card" id="s11"><div class="chead"><div class="num">11</div><h3>Confirm the week on enrollment day</h3></div>
+<p>Hazel's weeks were correct on the day she calculated them, Sept 28. The rule is: <b>full weeks since the start date, plus one</b>. A client who started July 29 is in week 9 on Sept 28 and week 10 from Sept 30. Recalculate on the enrollment day itself, never from the sheet's column, or clients who rolled over since receive the week they just finished.</p>
+<div class="note"><b>Done Sept 30:</b> 43 clients enrolled at that day's week, women's RMM loop, both check-in loops, and 3 week 1 clients on the normal tags. The 40 men's RMM enrollments wait on the email fix in Catch-Up RMM (men).</div>
+<div class="tblwrap "><table><thead><tr><th>Current week on the sheet</th><th>Clients</th><th>Action</th></tr></thead><tbody><tr><td>Week 1</td><td>5</td><td>No catch-up. Add the normal tags today.</td></tr><tr><td>Week 2</td><td>10</td><td>Catch-up</td></tr><tr><td>Week 3</td><td>9</td><td>Catch-up</td></tr><tr><td>Week 4</td><td>6</td><td>Catch-up</td></tr><tr><td>Week 5</td><td>7</td><td>Catch-up</td></tr><tr><td>Week 6</td><td>8</td><td>Catch-up</td></tr><tr><td>Week 7</td><td>12</td><td>Catch-up</td></tr><tr><td>Week 8</td><td>3</td><td>Catch-up</td></tr><tr><td>Week 9</td><td>3</td><td>Catch-up</td></tr></tbody></table></div>
+<p class="small">Week 1 clients get the normal tags from the <a href="https://client-tagging-sop.vercel.app" target="_blank" rel="noopener">Client Tagging SOP</a> instead. Their sequences start at week 1 as designed.</p>
+</div><div class="card" id="s12"><div class="chead"><div class="num">12</div><h3>Enroll in batches, one week at a time</h3></div>
+<p>Do it by week so a mistake only touches a few people. For each client:</p>
+<div class="tblwrap "><table><thead><tr><th>#</th><th>Action</th></tr></thead><tbody><tr><td>1</td><td>Open the contact, set <b>RMM Week</b> to the client's current week. If they also need check-ins, set <b>Check-In Week</b> to the same number</td></tr><tr><td>2</td><td>Add <button class="tagbtn" data-tag="catchup- rmm (men)">catchup- rmm (men) <span class="ic">copy</span></button> or <button class="tagbtn" data-tag="catchup- rmm (women)">catchup- rmm (women) <span class="ic">copy</span></button></td></tr><tr><td>3</td><td>If the list says they also need check-ins, add <button class="tagbtn" data-tag="catchup- checkin (men)">catchup- checkin (men) <span class="ic">copy</span></button> or <button class="tagbtn" data-tag="catchup- checkin (women)">catchup- checkin (women) <span class="ic">copy</span></button></td></tr><tr><td>4</td><td>Open Conversations on the contact and confirm the week's email went out</td></tr></tbody></table></div>
+<p class="small">Faster path once the first batch checks out: <span class="crumb">Contacts</span> → <span class="crumb">Import</span> the CSV, choose <b>update existing contacts by email</b>, map the week column to RMM Week and to Check-In Week, and a tags column to Tags. The import applies the tags, which starts the loops.</p>
+<div class="note"><b>The first email sends the moment the tag lands.</b> Enroll during working hours, and if the team wants to keep check-ins on Fridays, enroll on a Friday.</div>
+</div></section><section><div class="kicker">Part E</div><h2>Verify after 7 days, 1 step</h2><div class="card" id="s13"><div class="chead"><div class="num">13</div><h3>Spot check three clients</h3></div>
+<p>Pick one client each from an early, middle and late week. On day 8 after enrollment check:</p>
+<div class="tblwrap "><table><thead><tr><th>Check</th><th>Expect</th></tr></thead><tbody><tr><td>RMM Week, and Check-In Week if enrolled in check-ins</td><td>Each one higher than the day they were enrolled</td></tr><tr><td>Tags</td><td>The catch-up tag is present again</td></tr><tr><td>Conversations</td><td>Next week's lesson, and check-in if enrolled, went out on day 7</td></tr><tr><td>Enrollment History on the workflow</td><td>Two entries for the contact</td></tr></tbody></table></div>
+<p>If all three pass, the loop is running for everyone.</p>
+</div></section><section id="emails"><div class="kicker">Email copy</div><h2>Every week, ready to paste</h2><p class="lead">Taken from the emails these sequences actually sent, with the client's name swapped for the merge field. Copy subject and body straight into the Send Email action of the matching branch.</p><div class="jump"><a href="#em-rmm_men">RMM lessons, men</a><a href="#em-rmm_women">RMM lessons, women</a><a href="#em-checkin_men">Check-ins, men</a><a href="#em-checkin_women">Check-ins, women</a></div></section><section id="em-rmm_men" class="emgroup"><h2 class="h2s">RMM lessons, men</h2><p class="lead">Paste into Catch-Up RMM (men). From GENERAL- RMM Men 12 Weeks with Calls.</p><div class="mailcard" id="em-rmm_men-1">
+  <div class="mhead"><span class="wk">Week 1</span><span class="subj">The Hardest Lesson Most Men Need to Learn</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Welcome to Week 1.
+
+This week lays the foundation for everything that follows.
+And it starts with one of the hardest lessons most men will ever learn:
+You cannot control her.
+You cannot control how she feels.
+How quickly she heals.
+How she responds.
+Or whether she notices your efforts right away.
+But you can control how you show up.
+And that&#x27;s where real change begins.
+
+This week, we&#x27;ll focus on:
+💌 Relinquishing control
+💌 Understanding your Locus of Control
+💌 Surrender and acceptance
+💌 The Law of Detachment
+💌 Why trying to prove you&#x27;ve changed often creates more distance
+Most men begin this journey believing that if they explain themselves better...
+Try harder...
+Or show enough change...
+Their wife will finally respond differently.
+But the truth is, the more pressure you create, the more distance often follows.
+Because growth isn&#x27;t something you convince someone of.
+It&#x27;s something they experience over time.
+
+This week, your goal is to shift from:
+• Trying to control her responses
+• Speeding up the process
+• Proving your growth
+And instead focus on:
+• Owning your actions
+• Letting go of what you can&#x27;t control
+• Showing up consistently without chasing an outcome
+
+As you work through the material, pay close attention to the Locus of Control exercise.
+It&#x27;s one of the most important tools in this program.
+Because it helps you stop wasting energy on things outside of your control and start focusing on the things that actually create change.
+
+Throughout the week, notice when you feel the urge to:
+• Defend yourself
+• Explain your intentions
+• Seek reassurance
+• Get her to acknowledge your efforts
+
+When that urge shows up, pause.
+Take a breath.
+And remind yourself:
+Real change isn&#x27;t something you prove.
+It&#x27;s something you practice.
+
+Your assignments this week:
+• Complete the Week 1 Workbook
+• Complete the Locus of Control Exercise
+• Practice letting go of the need to manage her reactions and focus on your own
+Remember:
+Surrender isn&#x27;t giving up on your marriage.
+It&#x27;s giving up the need to control the outcome.
+And trusting the process of your own growth.
+Stay consistent this week.
+The work you do here will shape everything that comes next.
+
+With love,
+RMM Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-rmm_men-2">
+  <div class="mhead"><span class="wk">Week 2</span><span class="subj">Becoming the Man You Want to Be</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Welcome to Week 2.
+
+Last week, you learned to let go of control.
+This week, we&#x27;re going deeper.
+Because lasting change doesn&#x27;t come from learning the right thing to say.
+Or finding the perfect way to get through to her.
+It comes from changing the man behind the actions.
+Most men focus on fixing the relationship.
+But healthy relationships are built by healthy individuals.
+And the more intentional you become, the more your relationship has the opportunity to change alongside you.
+
+This week, we&#x27;ll focus on:
+💌 Understanding how your beliefs shape your behavior
+💌 Moving from blame to personal leadership
+💌 Creating more peace, presence, and purpose in your life
+💌 Taking care of yourself so you&#x27;re not running on empty
+💌 Recognizing how past experiences may still be influencing your relationships today
+
+As you work through this week&#x27;s material, pay close attention to the Beliefs Worksheet.
+Many of the thoughts, reactions, and patterns you struggle with today didn&#x27;t begin in your marriage.
+They often started years ago.
+And until you become aware of them, they&#x27;ll continue influencing how you show up.
+Awareness is where change begins.
+
+This week, notice when you&#x27;re:
+• Blaming circumstances instead of taking ownership
+• Reacting instead of responding
+• Neglecting your own well-being
+• Acting from old fears, hurts, or assumptions
+When you notice these patterns, don&#x27;t judge yourself.
+Simply pay attention.
+Because you can&#x27;t change what you don&#x27;t recognize.
+Your assignments this week:
+• Complete the Week 2 Workbook
+• Finish the Beliefs Worksheet
+• Define the kind of husband and man you want to become
+• Notice your patterns and reactions throughout the week
+• Prioritize your physical and emotional well-being
+
+Remember:
+You cannot create a different relationship while remaining the same man.
+The relationship changes when you change.
+Not overnight.
+But through small, consistent choices made day after day.
+Stay intentional this week.
+The man you&#x27;re becoming is built by the actions you take today.
+Next week, we&#x27;ll focus on cleaning up your side of the street and breaking the patterns that keep relationships stuck.
+
+With love,
+RMM Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-rmm_men-3">
+  <div class="mhead"><span class="wk">Week 3</span><span class="subj">Clean Up Your Side of the Street</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Welcome to Week 3.
+
+This is where things start to come together.
+Over the last two weeks, you&#x27;ve worked on letting go of control.
+You&#x27;ve started becoming more aware of how you&#x27;re showing up.
+Now it&#x27;s time to take ownership of the patterns that may be keeping you stuck.
+
+Because the goal isn&#x27;t to fix your wife.
+And it&#x27;s not to fix your marriage overnight.
+The goal is to clean up your side of the street.
+That&#x27;s where lasting change begins.
+
+This week, you&#x27;ll learn to recognize:
+💌 Defensiveness and shutting down
+💌 Over-explaining and trying to win
+💌 Monitoring her moods and reactions
+💌 The relationship patterns you&#x27;ve repeated over time
+One of the most important exercises this week is identifying your patterns.
+
+Because what you don&#x27;t recognize...
+You tend to repeat.
+Many of the challenges you&#x27;re facing today aren&#x27;t happening because of one conversation or one mistake.
+They&#x27;re often the result of habits, reactions, and behaviors that have been playing out for years.
+The good news?
+Patterns can be changed.
+But first, they have to be seen.
+This week, you&#x27;ll also begin creating a clear vision for the man you want to become and the marriage you want to build.
+Because when you have clarity, it&#x27;s easier to respond with purpose instead of reacting emotionally.
+
+As you move through the week, notice when you&#x27;re:
+• Trying to defend yourself
+• Explaining instead of listening
+• Watching for her reactions instead of focusing on your own growth
+• Falling back into familiar relationship habits
+
+Don&#x27;t beat yourself up when you notice these moments.
+Just pay attention.
+Awareness is the first step toward doing something different.
+
+Your assignments this week:
+• Complete the Week 3 Workbook
+• Finish the Relationship Patterns Exercise
+• Notice your &quot;relationship killers&quot; in real time
+• Stop tracking her responses and focus on your own growth
+• Create a clear vision for the future you want to build
+
+Remember:
+Awareness isn&#x27;t about blame.
+It&#x27;s about freedom.
+Because once you can see your patterns, you no longer have to live by them.
+Stay committed to the process this week.
+Next week, we&#x27;ll build the communication skills that help your growth translate into real connection.
+
+With love,
+RMM Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-rmm_men-4">
+  <div class="mhead"><span class="wk">Week 4</span><span class="subj">Say Less, Say It Better</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Welcome to Week 4.
+
+So far, you&#x27;ve spent time working on your mindset.
+Your patterns.
+
+And the way you&#x27;ve been showing up in your relationship.
+
+This week, we&#x27;re focusing on something that impacts every part of your marriage:
+Communication.
+Most men believe better communication means explaining more.
+Defending themselves better.
+Or finding the perfect words to get their point across.
+But stronger communication rarely comes from saying more.
+It comes from listening better.
+Speaking with intention.
+And knowing when to pause.
+Because communication isn&#x27;t about winning the argument.
+It&#x27;s about creating understanding.
+Connection.
+And trust.
+
+This week, you&#x27;ll learn:
+💌 How to truly listen instead of reacting
+💌 When to take a break before conflict escalates
+💌 The difference between criticism and making a clear request
+💌 How to repair after a mistake
+💌 Why unspoken expectations often create resentment
+
+One of the biggest mistakes men make is focusing on being understood before understanding.
+But when people feel heard, conversations change.
+Defensiveness decreases.
+And connection becomes possible.
+
+As you move through this week, notice when you feel the urge to:
+• Interrupt
+• Defend yourself
+• Explain your intentions
+• Prove your point
+
+When those moments arise, pause.
+Take a breath.
+
+And focus on understanding before being understood.
+Because how you communicate matters just as much as what you communicate.
+
+Your assignments this week:
+• Complete the Week 4 Workbook
+• Practice listening without interrupting or fixing
+• Pause when conversations become heated
+• Turn one criticism into a clear request
+• Notice where you have unspoken expectations
+
+Remember:
+Better communication isn&#x27;t about saying more.
+It&#x27;s about saying what matters.
+At the right time.
+In the right way.
+Stay intentional this week.
+The communication skills you build now will strengthen every step you take moving forward.
+
+Next week, we&#x27;ll work through resentment and forgiveness so you can stop carrying what no longer serves you.
+
+With love,
+RMM Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-rmm_men-5">
+  <div class="mhead"><span class="wk">Week 5</span><span class="subj">Letting Go of What You&#x27;re Carrying</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Welcome to Week 5.
+
+This week, we&#x27;re talking about something that quietly damages more relationships than most people realize:
+Resentment.
+The truth is, unresolved hurt doesn&#x27;t simply disappear with time.
+It stays beneath the surface.
+Showing up in your patience.
+Your reactions.
+The way you speak to your wife.
+And the way you connect with her.
+When disappointment, frustration, and unmet expectations go unaddressed, they create distance.
+Even when you&#x27;re trying to move forward.
+That&#x27;s why this week is so important.
+Because healing isn&#x27;t just about learning new skills.
+It&#x27;s also about letting go of the things that are weighing you down.
+
+This week, you&#x27;ll explore:
+💌 Where resentment has built up in your relationship
+💌 The expectations and hurts beneath it
+💌 How forgiveness helps you move forward
+💌 How unresolved emotions show up in everyday interactions
+
+Many men carry resentment without fully realizing it.
+They tell themselves they&#x27;re over it.
+That it happened a long time ago.
+Or that it shouldn&#x27;t affect them anymore.
+But what remains unhealed often continues to influence how you show up today.
+Forgiveness doesn&#x27;t mean what happened was okay.
+And it doesn&#x27;t mean you excuse the pain.
+It means you&#x27;re choosing not to let the past continue controlling your present.
+As you move through this week, notice where you find yourself:
+• Replaying old hurts
+• Holding onto disappointment
+• Keeping score
+• Reacting to the past instead of responding to the present
+When those moments arise, approach them with honesty.
+Not judgment.
+Because awareness is what creates the opportunity to heal.
+
+Your assignments this week:
+• Complete the Week 5 Workbook
+• Work through the Resentment Worksheet
+• Complete the Forgiveness Meditation
+• Notice where resentment is showing up in your daily interactions
+
+Remember:
+The things you refuse to release often become the things that continue to weigh you down.
+Healing begins when you&#x27;re willing to face what you&#x27;ve been carrying.
+And that&#x27;s exactly what you&#x27;ll begin doing this week.
+Stay committed to the process.
+
+Next week, we&#x27;ll focus on leadership and how your actions help create the relationship you&#x27;re working toward.
+
+With love,
+RMM Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-rmm_men-6">
+  <div class="mhead"><span class="wk">Week 6</span><span class="subj">What she needs might not be what she says</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Welcome to Week 6.
+
+This week is about leadership.
+Not control.
+Not dominance.
+And not having all the answers.
+Real leadership starts with learning to lead yourself well.
+Because the way you think, act, and respond sets the tone for every relationship in your life.
+Especially your marriage.
+
+Many men believe leadership is about telling people what to do.
+But healthy leadership looks very different.
+It&#x27;s steady.
+Grounded.
+Consistent.
+And it shows up most when life feels uncertain.
+
+This week, you&#x27;ll learn:
+💌 What healthy masculine leadership actually looks like
+💌 How to become more decisive and intentional
+💌 Why self-respect shapes your relationships
+💌 The difference between complaints and clearly communicating your needs
+💌 How stillness and mental clarity help you stay grounded
+
+One of the biggest shifts you&#x27;ll make this week is realizing that leadership isn&#x27;t about changing other people.
+It&#x27;s about taking responsibility for yourself.
+Your mindset.
+Your actions.
+And the standards you choose to live by.
+
+As you move through the week, notice where you&#x27;re:
+• Avoiding decisions
+• Looking to others for validation
+• Complaining instead of communicating clearly
+• Acting in ways that don&#x27;t align with your values
+
+When those moments arise, don&#x27;t judge yourself.
+Just pay attention.
+Because leadership begins with awareness.
+And grows through consistent action.
+
+Your assignments this week:
+• Complete the Week 6 Workbook
+• Practice making clear decisions
+• Notice where you lose self-respect and make adjustments
+• Turn one complaint into a clear need
+• Complete the practices and meditations
+
+Remember:
+Leadership isn&#x27;t something you tell people about.
+It&#x27;s something they experience through your actions.
+The more consistently you show up as the man you want to be, the more your relationships begin to reflect that change.
+Stay committed to the process this week.
+
+Next week, we&#x27;ll focus on understanding her more deeply and creating emotional safety in your relationship.
+
+With love,
+RMM Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-rmm_men-7">
+  <div class="mhead"><span class="wk">Week 7</span><span class="subj">Understanding Her Without Losing Yourself</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Welcome to Week 7.
+
+Up until now, the focus has been on you.
+Your mindset.
+Your habits.
+Your leadership.
+And the way you&#x27;ve been showing up in your relationship.
+This week, we&#x27;re expanding that focus.
+Not to fix her.
+Not to manage her emotions.
+But to better understand what&#x27;s happening so you can respond in a way that creates connection instead of distance.
+
+Many men believe that when their wife is upset, they need to solve the problem.
+Fix the emotion.
+Or defend themselves.
+But most of the time, those reactions create even more disconnection.
+Because what people often need most in difficult moments isn&#x27;t a solution.
+It&#x27;s to feel heard.
+Understood.
+And safe.
+This week, you&#x27;ll learn:
+💌 What emotional safety actually looks like
+💌 How to stay present when she is upset
+💌 Why listening matters more than fixing
+💌 How your reactions either create connection or distance
+💌 How to stay grounded during emotional moments
+One of the biggest shifts you&#x27;ll make this week is learning that safety is not the same thing as agreement.
+You don&#x27;t have to agree with everything she says.
+You don&#x27;t have to have the perfect response.
+And you don&#x27;t have to fix every emotion.
+What matters is your ability to stay calm.
+Present.
+And open when things aren&#x27;t calm.
+As you move through the week, notice when you feel the urge to:
+• Fix the situation immediately
+• Defend yourself
+• Explain your intentions
+• Shut down or withdraw
+When those moments arise, pause.
+Focus on staying present before trying to change the conversation.
+Because your presence often matters more than your words.
+Your assignments this week:
+• Complete the Week 7 Workbook
+• Practice staying present when she is emotional
+• Listen without fixing, interrupting, or defending
+• Notice your automatic reactions (shutdown, urgency, defensiveness)
+• Focus on your tone, body language, and presence
+Remember:
+You do not need the perfect response.
+You need a steady one.
+Because steadiness creates safety.
+And safety creates connection.
+Stay committed to the process this week.
+Next week, we&#x27;ll build on this foundation by strengthening appreciation, respect, and emotional connection.
+
+With love,
+RMM Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-rmm_men-8">
+  <div class="mhead"><span class="wk">Week 8</span><span class="subj">What You Reinforce Grows</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Welcome to Week 8.
+This week is about something simple.
+But incredibly powerful.
+Appreciation.
+And admiration.
+These are two things that often get overlooked in relationships.
+Not because they don&#x27;t matter.
+But because most people become focused on what&#x27;s missing.
+What&#x27;s frustrating.
+Or what still needs to change.
+Over time, whatever you focus on becomes the emotional tone of the relationship.
+And that&#x27;s why this week&#x27;s work matters so much.
+The goal is to shift from:
+• Noticing problems to noticing what&#x27;s working
+• Holding back appreciation to expressing it directly
+• Assuming she knows to actually saying it
+Because appreciation doesn&#x27;t have to be big.
+Or complicated.
+It just needs to be genuine.
+Specific.
+And consistent.
+Simple things like:
+• &quot;I appreciate how you handled that.&quot;
+• &quot;I noticed that, and I really value it.&quot;
+• &quot;I like how you showed up there.&quot;
+
+Small moments matter more than you think.
+This week, we&#x27;ll also talk about admiration.
+Because appreciation is about what someone does.
+Admiration is about who they are.
+It&#x27;s recognizing qualities, strengths, and character.
+When a woman feels seen and appreciated, connection tends to grow.
+When she doesn&#x27;t, distance often follows.
+This week is also an opportunity to practice gratitude.
+Not as a way of ignoring problems.
+But as a way of training yourself to notice more than just what&#x27;s wrong.
+Because what you consistently focus on shapes how you experience your relationship.
+
+As you move through the week, notice:
+• What you&#x27;re paying attention to
+• How often you express appreciation
+• Whether you&#x27;re focusing more on problems or positives
+• The qualities you genuinely admire in her
+Your assignments this week:
+• Express one genuine appreciation every day
+• Notice what you&#x27;re focusing on (problems vs. positives)
+• Say one thing you genuinely admire about her out loud
+
+Remember:
+What you reinforce grows.
+The things you consistently acknowledge tend to become stronger.
+
+And the things you continually focus on often shape the direction of your relationship.
+Stay intentional this week.
+
+Next week, we&#x27;ll focus on direction and intentional goal setting so you can begin building your relationship with purpose instead of reaction.
+
+With love,
+RMM Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-rmm_men-9">
+  <div class="mhead"><span class="wk">Week 9</span><span class="subj">Get Clear on Where You&#x27;re Going</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Welcome to Week 9.
+
+Up until now, you&#x27;ve been doing the internal work.
+You&#x27;ve worked on your mindset.
+Your habits.
+Your reactions.
+And the way you show up in your relationship.
+This week, we shift into something equally important:
+Direction.
+
+Because without clarity on where you&#x27;re going, it&#x27;s easy to fall back into old patterns.
+To react instead of lead.
+To drift instead of build.
+Many men spend their lives responding to problems as they arise.
+Putting out fires.
+Managing what&#x27;s urgent.
+And hoping things eventually improve.
+But growth rarely happens by accident.
+It happens when you&#x27;re intentional about where you&#x27;re headed.
+That&#x27;s what this week is about.
+Getting clear on what matters most.
+
+This week, you&#x27;ll use the Circle of Life to look at the bigger picture:
+💌 Your relationship
+💌 Your health
+💌 Your career
+💌 Your personal growth
+💌 Your finances
+💌 Your environment
+
+Because your relationship doesn&#x27;t exist in isolation.
+When one area of your life is struggling, it often affects everything else.
+And when you strengthen one area, it often creates positive momentum across the board.
+
+You&#x27;ll also begin defining your direction by asking yourself:
+• What kind of relationship am I building?
+• What kind of man am I becoming?
+• What deserves my focus right now?
+The goal isn&#x27;t to have every detail figured out.
+You don&#x27;t need a perfect plan.
+You simply need clarity on what&#x27;s most important.
+Because clarity helps you stop reacting and start moving with purpose.
+
+As you move through this week, notice:
+• Where you&#x27;re drifting instead of leading
+• What areas of life need more attention
+• Where your actions align with your goals
+• What small changes could create meaningful momentum
+
+Your assignments this week:
+• Complete the Circle of Life Exercise
+• Identify your top focus areas
+• Set 2–3 simple goals
+• Take one small action toward each goal
+
+Remember:
+Clarity creates direction.
+Direction creates momentum.
+And momentum creates change.
+Stay intentional this week.
+
+Next week, we&#x27;ll focus on intimacy and rebuilding deeper connection in your relationship.
+
+With love,
+RMM Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-rmm_men-10">
+  <div class="mhead"><span class="wk">Week 10</span><span class="subj">Rebuilding Intimacy and Connection</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Welcome to Week 10.
+
+This week we focus on intimacy.
+
+Intimacy is not just physical—it is emotional connection, safety, and how close both people feel in the relationship.
+A common mistake is focusing only on the physical side while ignoring the emotional environment that creates it.
+
+Intimacy actually starts outside the bedroom:
+• Presence vs distraction
+• Connection vs withdrawal
+• Safety vs pressure
+What you do day to day shapes closeness over time.
+This week, you&#x27;ll look at:
+• Your patterns around intimacy
+• How you respond to distance or rejection
+• Where pressure or expectation shows up
+• Your tendency to shut down or pull away
+The key is awareness. Most reactions in this area are driven by deeper emotional patterns, not the moment itself.
+When things don&#x27;t go how you want, notice your reaction:
+• Do you shut down?
+• Get frustrated?
+• Pull away?
+
+These reactions create more distance. Learning to stay grounded changes the dynamic.
+This week is not about fixing anything or forcing change. It is about removing pressure so connection can rebuild naturally.
+
+Your work this week:
+• Go through the intimacy material
+• Notice your emotional reactions (pressure, frustration, withdrawal)
+• Focus on being present outside of intimacy
+• Remove pressure or expectation for outcomes
+One thing to remember: intimacy is built, not demanded.
+
+Next week, we focus on trust, healing, and rebuilding after rupture.</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-rmm_men-11">
+  <div class="mhead"><span class="wk">Week 11</span><span class="subj">Trust, Betrayal, and What Comes Next</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Welcome to Week 11.
+
+This is one of the most difficult weeks in the process—trust, betrayal, and infidelity.
+
+If this is part of your story, you already know how heavy it feels.
+Before anything else: betrayal is painful, disorienting, and not something you caused alone.
+At the same time, in many cases it reflects deeper relationship issues—not to excuse it, but to understand what needs to change moving forward.
+This week is about clarity, not confusion or blame.
+You&#x27;ll look at:
+• Why infidelity can happen in relationships
+• Limerence and emotional intensity
+• What&#x27;s required to rebuild trust
+• How to handle things if you are currently in it
+Trust is not rebuilt through words. It is rebuilt through consistent actions over time—small behaviors, follow-through, and emotional steadiness.
+Trying to rush it only adds pressure.
+What matters now is how you show up:
+• Are you grounded or reactive?
+• Focused on growth or stuck in the past?
+• Responding or trying to control outcomes?
+If betrayal is present, there is no quick fix. Only:
+• Honesty
+• Boundaries
+• Consistency
+• Time
+And effort from both people.
+Your work this week:
+• Go through all Week 11 lessons
+• Notice emotional reactions (anger, shutdown, control)
+• Focus only on what you can control
+• Stay consistent in your actions and responses
+
+One thing to remember: you don&#x27;t force trust back—you become the kind of man where trust can exist again.
+Next week, we bring everything together and focus on rebuilding the relationship moving forward.</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-rmm_men-12">
+  <div class="mhead"><span class="wk">Week 12</span><span class="subj">Building What Comes Next</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Welcome to Week 12.
+
+You made it to the final week.
+Most men don&#x27;t stay consistent long enough to actually change how they show up—you did.
+
+This week is about what comes next.
+This is not the end. It&#x27;s the transition from learning to living it.
+
+Everything you&#x27;ve worked on:
+• Letting go of control
+• Taking ownership
+• Cleaning up your patterns
+• Improving communication
+• Leading yourself
+• Creating connection
+
+This is now your baseline—not something you visit, but how you live.
+
+You are not going back to the old version of your relationship. You are building something new.
+
+Relationship 2.0 means:
+• You own your side
+• You communicate clearly
+• You stay steady under pressure
+• You create connection instead of chasing it
+
+A strong relationship is not one person doing everything. It&#x27;s two people contributing.
+But your job is not to wait—it&#x27;s to keep showing up consistently as the man you&#x27;ve become.
+
+Moving forward:
+• Stay aware of your patterns
+• Communicate clearly and directly
+• Lead yourself first
+• Keep appreciation and connection active
+• Stay aligned with your vision
+You will slip at times. That&#x27;s normal.
+
+When it happens:
+• Don&#x27;t spiral
+
+With Love,
+RMM Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div></section><section id="em-rmm_women" class="emgroup"><h2 class="h2s">RMM lessons, women</h2><p class="lead">Paste into Catch-Up RMM (women). From RMM Women 12 Weeks with Calls- GENERAL.</p><div class="mailcard" id="em-rmm_women-1">
+  <div class="mhead"><span class="wk">Week 1</span><span class="subj">Starting where you actually are</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Hey {{contact.first_name}},
+
+Welcome.
+Before anything else, I want you to take a breath and just acknowledge that you&#x27;re here.
+You made a decision to step into this work, and that matters.
+This first week isn&#x27;t about changing everything overnight.
+It&#x27;s about getting honest about where you are right now.
+Your patterns.
+Your relationships.
+What&#x27;s been working… and what hasn&#x27;t.
+No fixing yet. Just seeing it clearly.
+A lot of what we&#x27;re focusing on this week is acceptance.
+Not in a &quot;this is just how it is, nothing will change&quot; way…
+but in a grounded, honest way.
+Because real change only happens when you stop fighting reality and actually look at it.
+You&#x27;ll go through things like:
+- Letting go of control
+
+- Looking at outside influences and opinions
+
+- Taking responsibility for your role
+
+- Understanding your patterns and timeline
+
+Some of this might feel uncomfortable.
+That&#x27;s normal.
+Most of us are used to either avoiding this or trying to jump straight to solutions.
+This week slows that down.
+What I want you to focus on:
+Go through the content, but don&#x27;t rush it.
+- Complete the Week 1 workbook
+
+- Write your commitment letter and take it seriously
+
+- Pay attention to where you&#x27;re holding on tightly or trying to control outcomes
+
+- Notice where you&#x27;ve been giving your power away
+
+And be honest with yourself as you do it. That&#x27;s where the value is.
+You might catch yourself thinking:
+&quot;I already know this&quot;
+or
+&quot;I just want to get to the next part&quot;
+Stay here.
+This foundation matters more than you think.
+Also, stay connected this week.
+Come to the calls.
+Share in the group.
+Let yourself be seen a little, even if it feels unfamiliar.
+You&#x27;re not meant to do this in your head alone.
+If you do this week fully, you&#x27;ll start to see things more clearly.
+And that clarity is what everything else builds on.
+We&#x27;re just getting started.</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-rmm_women-2">
+  <div class="mhead"><span class="wk">Week 2</span><span class="subj">This is where things start to shift</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Alright, welcome to Week 2.
+This is where we start getting into the stuff that actually drives your relationships… even if you don&#x27;t always see it.
+We&#x27;re looking at your self-beliefs, how you treat yourself, and the patterns you&#x27;ve been carrying into relationships.
+Not in a surface-level way, but in a real, honest way.
+Because the truth is, how you feel about yourself shows up everywhere.
+It shows up in what you tolerate, how you communicate, how you react, and what you believe you deserve.
+This week isn&#x27;t about &quot;fixing&quot; anything yet.
+It&#x27;s about noticing.
+A lot of you already know some of this… but there&#x27;s a difference between knowing it and actually seeing it in your own life.
+That&#x27;s what we&#x27;re doing here.
+Here&#x27;s what I want you focused on:
+Go through the material, but more importantly, slow down enough to actually reflect as you do it.
+- Do the Self Beliefs worksheet and be honest, not ideal
+
+- Use the Emotion Wheel when you feel triggered or off instead of brushing it off
+
+- Start using the Self Care Planner like it actually matters (because it does)
+
+- Take your time with the Relationship Patterns exercise — this one tends to open a lot up
+
+If you rush this, you&#x27;ll miss the point.
+You might notice some resistance this week.
+That can look like:
+&quot;I already know this&quot;
+&quot;I&#x27;ll come back to it later&quot;
+or just not fully engaging with it
+That&#x27;s normal.
+Just don&#x27;t let that be the reason you stay in the same patterns.
+Also, stay connected.
+Come to the calls, share in the group, ask questions, let yourself be seen a bit.
+This work goes a lot further when you&#x27;re not doing it in your own head.
+If you take this week seriously, you&#x27;ll start to notice things you didn&#x27;t fully see before.
+How you talk to yourself.
+Where you override your needs.
+The patterns that keep repeating.
+And that awareness is what everything else builds on.
+Go all in on this week. Don&#x27;t half do it.
+
+I&#x27;ll see you on the calls,
+Sophie Orozco Coaching</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-rmm_women-3">
+  <div class="mhead"><span class="wk">Week 3</span><span class="subj">Allowing yourself to want more</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Welcome to Week 3.
+By now, you&#x27;ve started to look at yourself a little more honestly.
+Your patterns, your habits, the way you&#x27;ve been showing up.
+And for a lot of people, this is where something begins to open… even if it&#x27;s subtle.
+This week, we&#x27;re turning toward something new.
+Not just what&#x27;s been happening,
+but what you actually want moving forward.
+Your vision.
+Your future.
+The version of you you&#x27;re stepping into.
+For some of you, this will feel exciting.
+For others, it might feel a little unclear… or even uncomfortable.
+You might not be used to slowing down and asking yourself what you really want.
+Or trusting what comes up.
+That&#x27;s okay.  There&#x27;s nothing you need to force here.  The intention this week is to start creating clarity, gently.
+As you move through the module:
+
+Take your time with the workbook and let yourself really reflect
+
+Be present with the meditations (these are important, not optional background noise)
+
+Let the contrast of what hasn&#x27;t worked help you see what you do want
+Try not to rush to an answer. Let it unfold a bit.
+And just like the past weeks, this only works if you stay engaged.
+Come to the calls.
+Share in the group.
+Let yourself be seen, even if what you&#x27;re sharing feels incomplete.
+That&#x27;s where a lot of the clarity comes from.
+If you give yourself space to actually do this work, you may notice:
+
+A clearer sense of direction
+A deeper connection to what you want
+And a shift in how you start thinking about your future
+You don&#x27;t need to have it all figured out.
+Just be willing to explore it, and stay in the process.
+Excited to hear what comes up for you this week,
+Sophie Orozco Coaching</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-rmm_women-4">
+  <div class="mhead"><span class="wk">Week 4</span><span class="subj">Taking a deeper look at your role</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Welcome to Week 4.
+By now, you&#x27;ve started to build awareness around yourself…
+how you think, how you feel, and how you show up.
+This week, we take that one step further.
+We start looking at your role in your relationships.
+This isn&#x27;t about blame.
+It&#x27;s not about making yourself wrong or taking responsibility for things that weren&#x27;t yours.
+It&#x27;s about gently and honestly asking:
+Where have I contributed to the patterns I say I don&#x27;t want?
+This can be a tender week.
+You might notice moments of defensiveness, or the urge to focus on what the other person did.
+That&#x27;s normal.
+Just see if you can stay with yourself in it.
+As you move through this week:
+Take your time with the material. This isn&#x27;t one to rush.
+- Go all in on the workbook and actually reflect, not just answer quickly
+
+- Move slowly through the lessons around relationship patterns, resentment, and repair
+
+- Pay attention to where you&#x27;ve been holding onto things or avoiding honest communication
+
+- Let yourself really understand what it means to &quot;clean your side of the street&quot;
+
+This work has a lot of depth to it if you let it.
+Also, stay connected.
+Come to the calls.
+Share what&#x27;s coming up, even if it feels a little uncomfortable to say out loud.
+You&#x27;re not the only one working through this.
+If you allow yourself to be honest this week, you may start to see:
+Where you&#x27;ve had more power than you realized
+Where you&#x27;ve been protecting yourself in ways that no longer serve you
+And what it might look like to show up differently
+There&#x27;s no need to get it perfect.
+Just stay open, and stay with the process.
+
+I&#x27;m here with you in this,
+Sophie Orozco Coaching</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-rmm_women-5">
+  <div class="mhead"><span class="wk">Week 5</span><span class="subj">Letting Go of what you have been carrying</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Welcome to Week 5.
+This week tends to bring things a little closer to the surface.
+We&#x27;re moving into resentment, forgiveness, and the emotions that often sit underneath both.
+A lot of what we carry in relationships isn&#x27;t always obvious.
+It builds over time.
+Unspoken feelings, past experiences, things that didn&#x27;t feel resolved.
+And even when we think we&#x27;ve moved on… those things can still shape how we show up.
+This week is about gently starting to release some of that.
+Not by forcing yourself to &quot;just forgive,&quot;
+but by actually understanding what&#x27;s there first.
+As you go through the material:
+Give yourself space with this.
+- Take your time with the workbook — this is one to really sit with
+
+- Move through the resentment work honestly, even if it brings things up
+
+- Be present with the forgiveness and inner child practices
+
+- Notice what emotions come up, rather than pushing them away
+
+There&#x27;s no rush here.
+You might feel more emotional than usual this week.
+That&#x27;s okay.
+It doesn&#x27;t mean anything is going wrong.
+It usually means you&#x27;re actually allowing yourself to feel something that&#x27;s been there for a while.
+Stay connected as you move through this.
+Come to the calls.
+Share in the group if you feel comfortable.
+You don&#x27;t have to carry this alone.
+If you stay with this work, even gently, you may notice:
+A little more space in yourself
+A little less emotional weight
+And a different relationship to things that used to feel heavy
+Be patient with yourself this week.
+You&#x27;re doing deeper work now.
+
+Take it one step at a time,
+Sophie Orozco Coaching</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-rmm_women-6">
+  <div class="mhead"><span class="wk">Week 6</span><span class="subj">How you communicate changes everything</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Welcome to Week 6.
+Up until now, most of the work has been internal.
+Your awareness, your patterns, your emotions.
+This week, we start bringing that into how you actually show up with others.
+Because no matter how much awareness you have…
+If it&#x27;s not reflected in how you communicate, your relationships won&#x27;t change.
+This week is about learning a different way to communicate.
+More clearly.
+More honestly.
+And without falling into the same patterns.
+You&#x27;ll be working with tools like:
+- Active listening
+
+- Non-violent communication
+
+- Boundaries
+
+- The feedback wheel
+
+And while these might seem simple, they take practice.
+Your work this week:
+This is a &quot;practice in real life&quot; kind of week.
+- Go through the lessons and workbook slowly
+
+- Pay attention to how you usually communicate, especially in moments of tension
+
+- Start applying what you&#x27;re learning in small, real interactions
+
+- Notice when you fall back into old patterns (that awareness matters)
+
+You don&#x27;t have to get it perfect.
+Just start catching it and trying something different.
+You might notice this week brings up frustration.
+Communication is where patterns tend to show up quickly.
+That&#x27;s okay.
+It doesn&#x27;t mean you&#x27;re doing it wrong.
+It means you&#x27;re seeing it more clearly.
+Also, stay connected.
+Come to the calls.
+Bring real situations you&#x27;re navigating.
+Share what&#x27;s working and what&#x27;s not.
+This is where a lot of the learning clicks.
+If you stay engaged this week, you may start to notice:
+More clarity in your conversations
+Less reactivity
+And a different kind of confidence in how you express yourself
+Take it one conversation at a time.
+You&#x27;re learning a new way of showing up.
+
+Keep practicing,
+Sophie Orozco Coaching</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-rmm_women-7">
+  <div class="mhead"><span class="wk">Week 7</span><span class="subj">Stepping into your Queen Energy</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Welcome to Week 7.
+Up until now, you&#x27;ve done a lot of deeper work…
+understanding your patterns, your emotions, and how you&#x27;ve been showing up.
+This week is a shift.
+It&#x27;s not about fixing anything.
+It&#x27;s about stepping into a different version of yourself.
+We&#x27;re focusing on your feminine energy.
+And at the core of that is something simple, but often overlooked:
+Your desires.
+What you want.
+What you feel.
+What you need.
+For a lot of women, this doesn&#x27;t come naturally at first.
+You may be used to:
+- thinking about what others need
+
+- staying in control
+
+- or second-guessing what you feel
+
+So if this feels unfamiliar, that&#x27;s okay.
+This is where you start reconnecting.
+A big part of stepping into your &quot;queen&quot; energy is learning to trust yourself again.
+And that starts with awareness in real time.
+Throughout your day, come back to yourself and ask:
+How do I feel right now?
+What do I want?
+What do I need?
+Not once… but consistently.
+Your work this week:
+Stay gentle with yourself, but stay engaged.
+- Complete the journal exercise and list out 20 desires
+
+- Check in with yourself throughout the day (this is where the real shift happens)
+
+- Notice where you override your feelings or needs
+
+- Allow yourself to feel what you feel, without shutting it down
+
+Don&#x27;t overthink your answers. Let them be honest.
+There&#x27;s also a layer of vulnerability here.
+Stepping into this energy isn&#x27;t about being perfect or having it all together.
+It&#x27;s about allowing yourself to be seen… even when you&#x27;re still figuring things out.
+That can feel uncomfortable.
+Just take it one step at a time.
+Stay connected this week.
+Come to the calls.
+Share what you&#x27;re noticing.
+Let yourself be witnessed a little more than you normally would.
+If you stay with this work, you may begin to notice:
+A stronger connection to yourself
+More clarity around what you actually want
+And a shift in how you show up… without forcing it
+You don&#x27;t have to chase this version of you.
+You just have to keep coming back to yourself.
+
+Step into it in your own way,
+Sophie Orozco Coaching</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-rmm_women-8">
+  <div class="mhead"><span class="wk">Week 8</span><span class="subj">Understanding how he operates</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Welcome to Week 8.
+This week, we start looking at something that can bring a lot of clarity into your relationships.
+How masculine energy operates.
+Up until now, a lot of the focus has been on you…
+your patterns, your communication, your emotional world.
+This week expands that.
+Because one of the biggest sources of frustration in relationships is expecting someone to think, feel, or respond the way you would.
+Men are not women.
+And they&#x27;re not meant to be.
+This isn&#x27;t about making one way right or wrong.
+It&#x27;s about understanding the differences so you&#x27;re not constantly feeling confused, disappointed, or disconnected.
+As you move through this week:
+Stay open.
+Some of this may challenge the way you&#x27;ve been interpreting things.
+- Go through the lessons and workbook slowly
+
+- Pay attention to the characteristics and drives of masculine energy
+
+- Notice where you may have been expecting him to show up in a way that doesn&#x27;t align with how he&#x27;s wired
+
+- Let this be about understanding, not judging
+
+You may have moments where things start to &quot;click.&quot;
+Where you see past situations differently.
+Where something that felt personal… starts to make more sense.
+At the same time, this isn&#x27;t about dismissing your needs.
+It&#x27;s about learning how to meet each other with more awareness.
+Stay connected this week.
+Come to the calls.
+Share what you&#x27;re noticing.
+Ask questions when something doesn&#x27;t fully land yet.
+If you stay open to this, you may begin to notice:
+Less confusion
+Less personalization
+And more clarity in how you relate to men
+
+Take what resonates, and let yourself learn something new.
+
+You don&#x27;t have to force it,
+Sophie Orozco Coaching</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-rmm_women-9">
+  <div class="mhead"><span class="wk">Week 9</span><span class="subj">Rebuilding Trust with yourself and others</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Welcome to Week 9.
+This week, we&#x27;re moving into a more tender and complex topic.
+Infidelity and trust.
+This can bring up a lot.
+For some of you, it may connect to personal experiences.
+For others, it may bring up fears, questions, or things you&#x27;ve never fully processed.
+Whatever comes up for you… just notice it.
+There&#x27;s nothing you need to push away or rush through.
+This week isn&#x27;t just about what happens in a relationship.
+It&#x27;s also about your relationship with trust itself.
+Trust in others…
+and trust in yourself.
+As you go through the material:
+Move gently, but stay present.
+- Take your time with the workbook and be honest with what&#x27;s there
+
+- Go through the lessons around infidelity, limerence, and trust with an open mind
+
+- Notice your emotional responses without judging them
+
+- Allow yourself space to process, rather than trying to immediately &quot;figure it out&quot;
+
+You might feel more emotional this week.
+That&#x27;s okay.
+It doesn&#x27;t mean anything is wrong.
+It usually means something important is being acknowledged.
+Stay connected.
+Come to the calls.
+Share if and when you feel ready.
+Listen to others if that feels more supportive.
+There&#x27;s a lot of healing that happens in simply not being alone in it.
+If you stay with this work, you may begin to notice:
+A deeper understanding of trust
+More awareness around your own boundaries and needs
+And a shift in how you hold past or current experiences
+Go gently with yourself this week.
+There&#x27;s no timeline for this kind of work.
+You might find that this week brings up a deeper awareness around trust, patterns, and what you want moving forward.
+For some of you, this is also the point where you start thinking about what&#x27;s next.
+If you&#x27;re feeling that… you&#x27;re not alone.
+There is a next level of this work where we go deeper into feminine energy, self-trust, and how you show up in relationships in a more embodied, powerful way.  This is where women really step into their voice, their standards, and how they show up in relationships
+If that&#x27;s something you&#x27;re curious about, you can book a call with us to explore it.
+No pressure, just a conversation to see what feels aligned for you.
+https://calendly.com/luann-sophieorozco/clarity-call-with-luann
+
+Just stay present with it,
+Sophie Orozco Coaching</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-rmm_women-10">
+  <div class="mhead"><span class="wk">Week 10</span><span class="subj">Shifting what you focus on</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Welcome to Week 10.
+After the depth of the past couple of weeks, this one is a bit of a shift.
+We&#x27;re focusing on appreciation, gratitude, and what happens when you intentionally start noticing what&#x27;s working.
+Where your attention goes, your experience tends to follow.
+And in relationships, it&#x27;s very easy to focus on what&#x27;s missing, what&#x27;s frustrating, or what isn&#x27;t being done the way you&#x27;d like.
+This week is about gently shifting that.
+Not by ignoring real issues…
+But by creating more balance in what you&#x27;re seeing and expressing.
+Your focus this week:
+Keep it simple, but consistent.
+- Each day, write down 3 things you feel grateful for about your partner
+
+- Express at least one of them directly using:
+&quot;I really appreciated you… it made me feel…&quot;
+
+You can do this:
+- In a text
+
+- On a call
+
+- In person
+
+- Or with a written note
+
+What matters is that it&#x27;s genuine.
+We&#x27;re also expanding this beyond just your partner.
+- Get a pack of thank you cards
+
+- Write 1–3 each week to people who have supported you
+
+- Let them know how and why their presence has made your life better
+
+This isn&#x27;t just about them.
+It shifts something in you when you take the time to acknowledge it.
+As you move through the week, notice:
+How it feels to express appreciation
+What changes in your interactions
+And what happens when you actively look for the good
+If this feels unfamiliar or even a little uncomfortable at first, that&#x27;s okay.
+You&#x27;re practicing something new.
+Stay connected this week.
+Come to the calls.
+Share what you&#x27;re noticing, even the small shifts.
+They matter more than you think.
+If you stay consistent with this, you may begin to notice:
+More softness in your relationships
+More connection
+And a different emotional tone overall
+Keep it simple, and stay with it.
+
+Excited to hear what you notice this week,
+Sophie Orozco Coaching</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-rmm_women-11">
+  <div class="mhead"><span class="wk">Week 11</span><span class="subj">Letting yourself be closer</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">This week is a different kind of work.
+Not heavier. Not necessarily harder.
+Just… closer.
+When most people hear &quot;intimacy,&quot; they think about physical connection.
+But real intimacy starts somewhere else.
+It starts in how safe you feel being seen.
+How open you&#x27;re willing to be.
+How much of yourself you actually let someone experience.
+And that&#x27;s not always easy.
+Even if you want connection, there can still be moments where you pull back a little.
+Where you filter what you say.
+Where you stay guarded without fully realizing it.
+This week is about noticing that.
+Not forcing anything. Just becoming aware of where you let people in… and where you don&#x27;t.
+As you move through the material, don&#x27;t rush it.
+Let it land where it lands.
+Pay attention to:
+- where you feel open
+
+- where you close off
+
+- what feels safe… and what doesn&#x27;t
+
+There&#x27;s a lot of information in that.
+And when it comes to your relationship, see if you can take one small step toward more openness.
+Not everything all at once.
+Just a little more honesty.
+A little more presence.
+A little less holding back.
+You don&#x27;t need to perform intimacy.
+You just have to allow it.
+Stay close to the process this week.
+Come to the calls.
+Share if it feels right.
+Or just listen and take it in.
+Both matter.
+There&#x27;s no perfect way to do this.
+Just a willingness to soften where you can.
+That&#x27;s enough.</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-rmm_women-12">
+  <div class="mhead"><span class="wk">Week 12</span><span class="subj">Taking this with you</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">You made it to Week 12.
+Before anything else, take a moment and really acknowledge that.
+You showed up for this work.
+You stayed with it.
+And you allowed yourself to see things differently.
+That&#x27;s not small.
+Over the past weeks, you&#x27;ve built something real.
+Not just ideas… but awareness.
+You&#x27;ve started to notice your patterns in real time.
+You&#x27;ve practiced communicating differently.
+You&#x27;ve reconnected with yourself in a deeper way.
+And even if it doesn&#x27;t feel dramatic, something has shifted.
+This week isn&#x27;t about adding more.
+It&#x27;s about taking in what&#x27;s already changed.
+As you move through this final module, give yourself a little space to reflect.
+Where were you when you started?
+What feels different now?
+What are you no longer willing to ignore?
+Let those answers be honest.
+And just as important…
+What do you want to keep choosing moving forward?
+Because this work doesn&#x27;t end here.
+This is where it becomes something you live.
+Some of you may feel complete with this chapter.
+And some of you may feel like you&#x27;re just getting started.
+Like there&#x27;s more of you that wants to come forward.
+More depth. More embodiment. More alignment.
+If that&#x27;s you, I want you to know there is a next step.
+Inside the Radiant Feminine Blueprint, we go deeper into this work.
+Into your feminine energy, your self-trust, your standards, and how you show up in relationships in a more embodied, powerful way.
+If that feels aligned, you&#x27;re invited to book a call with us and explore it.
+No pressure, just a conversation to see what feels right for you.
+https://calendly.com/luann-sophieorozco/clarity-call-with-luann
+Either way, what you&#x27;ve done here matters.
+And what you do with it moving forward matters even more.
+Keep coming back to yourself.
+Keep choosing awareness.
+Keep showing up in a way that feels true to you.
+You don&#x27;t need to do it perfectly.
+Just don&#x27;t go back to being disconnected from yourself.
+I&#x27;m really glad you were part of this.</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div></section><section id="em-checkin_men" class="emgroup"><h2 class="h2s">Check-ins, men</h2><p class="lead">Paste into Catch-Up Check-In (men). From Check-In Sequence (men). Each week has its own Typeform link.</p><div class="mailcard" id="em-checkin_men-1">
+  <div class="mhead"><span class="wk">Week 1</span><span class="subj">Week 1 Check-In</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Hi {{contact.first_name}},
+
+It&#x27;s time for your Week 1 Check-In.
+
+Please complete your check-in using the link below:
+https://form.typeform.com/to/iVaUVrNq
+
+Remember, completing your weekly check-ins is part of staying on track with your goals and is required for clients participating in the guarantee program.
+
+Let us know if you have any questions.
+Sophie Orozco Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-checkin_men-2">
+  <div class="mhead"><span class="wk">Week 2</span><span class="subj">Week 2 Check-In</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Hi {{contact.first_name}},
+
+It&#x27;s time for your Week 2 Check-In.
+
+Please complete your check-in using the link below:
+https://form.typeform.com/to/xFnjCVVf
+
+Remember, completing your weekly check-ins is part of staying on track with your goals and is required for clients participating in the guarantee program.
+
+Let us know if you have any questions.
+Sophie Orozco Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-checkin_men-3">
+  <div class="mhead"><span class="wk">Week 3</span><span class="subj">Week 3 Check-In</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Hi {{contact.first_name}},
+
+It&#x27;s time for your Week 3 Check-In.
+
+Please complete your check-in using the link below:
+https://form.typeform.com/to/TNYuqkxr
+
+Your feedback helps us monitor your progress and provide the support you need.
+
+Let us know if you have any questions.
+Sophie Orozco Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-checkin_men-4">
+  <div class="mhead"><span class="wk">Week 4</span><span class="subj">Week 4 Check-In</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Hi {{contact.first_name}},
+
+It&#x27;s time for your Week 4 Check-In.
+
+Please complete your check-in using the link below:
+https://form.typeform.com/to/hFw3kcAL
+
+Remember, completing your weekly check-ins is part of staying on track with your goals and is required for clients participating in the guarantee program.
+
+Let us know if you have any questions.
+Sophie Orozco Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-checkin_men-5">
+  <div class="mhead"><span class="wk">Week 5</span><span class="subj">Week 5 Check-In</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Hi {{contact.first_name}},
+
+It&#x27;s time for your Week 5 Check-In.
+
+Please complete your check-in using the link below:
+https://form.typeform.com/to/AmK1RoEQ
+
+Remember, completing your weekly check-ins is part of staying on track with your goals and is required for clients participating in the guarantee program.
+
+Let us know if you have any questions.
+Sophie Orozco Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-checkin_men-6">
+  <div class="mhead"><span class="wk">Week 6</span><span class="subj">Week 6 Check-In</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Hi {{contact.first_name}},
+
+It&#x27;s time for your Week 6 Check-In.
+
+Please complete your check-in using the link below:
+https://form.typeform.com/to/GYpSwzes
+
+Remember, completing your weekly check-ins is part of staying on track with your goals and is required for clients participating in the guarantee program.
+
+Let us know if you have any questions.
+Sophie Orozco Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-checkin_men-7">
+  <div class="mhead"><span class="wk">Week 7</span><span class="subj">Week 7 Check-In</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Hi {{contact.first_name}},
+
+It&#x27;s time for your Week 7 Check-In.
+
+Please complete your check-in using the link below:
+https://form.typeform.com/to/uA5xMksu
+
+Your feedback helps us monitor your progress and provide the support you need.
+
+Let us know if you have any questions.
+Sophie Orozco Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-checkin_men-8">
+  <div class="mhead"><span class="wk">Week 8</span><span class="subj">Week 8 Check-In</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Hi {{contact.first_name}},
+
+It&#x27;s time for your Week 8 Check-In.
+
+Please complete your check-in using the link below:
+https://form.typeform.com/to/ROlPcGvj
+
+Remember, completing your weekly check-ins is part of staying on track with your goals and is required for clients participating in the guarantee program.
+
+Let us know if you have any questions.
+Sophie Orozco Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-checkin_men-9">
+  <div class="mhead"><span class="wk">Week 9</span><span class="subj">Week 9 Check-In</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Hi {{contact.first_name}},
+
+It&#x27;s time for your Week 9 Check-In.
+
+Please complete your check-in using the link below:
+https://form.typeform.com/to/qfuz0Q4M
+
+Remember, completing your weekly check-ins is part of staying on track with your goals and is required for clients participating in the guarantee program.
+
+Let us know if you have any questions.
+Sophie Orozco Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  <div class="note" style="margin:0 16px 16px">The live workflow&#x27;s Week 9 email says &quot;Week 5 Check-In&quot; in the body. Corrected to &quot;Week 9 Check-In&quot; here. Fix the live workflow too.</div>
+</div><div class="mailcard" id="em-checkin_men-10">
+  <div class="mhead"><span class="wk">Week 10</span><span class="subj">Week 10 Check-In</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Hi {{contact.first_name}},
+
+It&#x27;s time for your Week 10 Check-In.
+
+Please complete your check-in using the link below:
+https://form.typeform.com/to/X5qeI7oA
+
+Remember, completing your weekly check-ins is part of staying on track with your goals and is required for clients participating in the guarantee program.
+
+Let us know if you have any questions.
+Sophie Orozco Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-checkin_men-11">
+  <div class="mhead"><span class="wk">Week 11</span><span class="subj">Week 11 Check-In</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Hi {{contact.first_name}},
+
+It&#x27;s time for your Week 11 Check-In.
+
+Please complete your check-in using the link below:
+https://form.typeform.com/to/hVDGZnnM
+
+Your feedback helps us monitor your progress and provide the support you need.
+
+Let us know if you have any questions.
+Sophie Orozco Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-checkin_men-12">
+  <div class="mhead"><span class="wk">Week 12</span><span class="subj">Week 12 Check-In</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Hi {{contact.first_name}},
+
+It&#x27;s time for your Week 12 Check-In.
+
+Please complete your check-in using the link below:
+https://form.typeform.com/to/KoQ2nxPG
+
+Remember, completing your weekly check-ins is part of staying on track with your goals and is required for clients participating in the guarantee program.
+
+Let us know if you have any questions.
+Sophie Orozco Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div></section><section id="em-checkin_women" class="emgroup"><h2 class="h2s">Check-ins, women</h2><p class="lead">Paste into Catch-Up Check-In (women). From Check-In Sequence (women). Each week has its own Typeform link.</p><div class="mailcard" id="em-checkin_women-1">
+  <div class="mhead"><span class="wk">Week 1</span><span class="subj">Week 1 Check-In</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Hi {{contact.first_name}},
+
+It&#x27;s time for your Week 1 Check-In.
+
+Please complete your check-in using the link below:
+https://form.typeform.com/to/CoIypLyY
+
+Remember, completing your weekly check-ins is part of staying on track with your goals and is required for clients participating in the guarantee program.
+
+Let us know if you have any questions.
+Sophie Orozco Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-checkin_women-2">
+  <div class="mhead"><span class="wk">Week 2</span><span class="subj">Week 2 Check-In</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Hi {{contact.first_name}},
+
+It&#x27;s time for your Week 2 Check-In.
+
+Please complete your check-in using the link below:
+https://form.typeform.com/to/NbjZxXjY
+
+Remember, completing your weekly check-ins is part of staying on track with your goals and is required for clients participating in the guarantee program.
+
+Let us know if you have any questions.
+Sophie Orozco Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-checkin_women-3">
+  <div class="mhead"><span class="wk">Week 3</span><span class="subj">Week 3 Check-In</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Hi {{contact.first_name}},
+
+It&#x27;s time for your Week 3 Check-In.
+
+Please complete your check-in using the link below:
+https://form.typeform.com/to/bgF1tG60
+
+Your feedback helps us monitor your progress and provide the support you need.
+
+Let us know if you have any questions.
+Sophie Orozco Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-checkin_women-4">
+  <div class="mhead"><span class="wk">Week 4</span><span class="subj">Week 4 Check-In</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Hi {{contact.first_name}},
+
+It&#x27;s time for your Week 4 Check-In.
+
+Please complete your check-in using the link below:
+https://form.typeform.com/to/NlRB66SW
+
+Remember, completing your weekly check-ins is part of staying on track with your goals and is required for clients participating in the guarantee program.
+
+Let us know if you have any questions.
+Sophie Orozco Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-checkin_women-5">
+  <div class="mhead"><span class="wk">Week 5</span><span class="subj">Week 5 Check-In</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Hi {{contact.first_name}},
+
+It&#x27;s time for your Week 5 Check-In.
+
+Please complete your check-in using the link below:
+https://form.typeform.com/to/Hwqk79Od
+
+Remember, completing your weekly check-ins is part of staying on track with your goals and is required for clients participating in the guarantee program.
+
+Let us know if you have any questions.
+Sophie Orozco Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-checkin_women-6">
+  <div class="mhead"><span class="wk">Week 6</span><span class="subj">Week 6 Check-In</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Hi {{contact.first_name}},
+
+It&#x27;s time for your Week 6 Check-In.
+
+Please complete your check-in using the link below:
+https://form.typeform.com/to/Wg30camr
+
+Remember, completing your weekly check-ins is part of staying on track with your goals and is required for clients participating in the guarantee program.
+
+Let us know if you have any questions.
+Sophie Orozco Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-checkin_women-7">
+  <div class="mhead"><span class="wk">Week 7</span><span class="subj">Week 7 Check-In</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Hi {{contact.first_name}},
+
+It&#x27;s time for your Week 7 Check-In.
+
+Please complete your check-in using the link below:
+https://form.typeform.com/to/dagmwseu
+
+Your feedback helps us monitor your progress and provide the support you need.
+
+Let us know if you have any questions.
+Sophie Orozco Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-checkin_women-8">
+  <div class="mhead"><span class="wk">Week 8</span><span class="subj">Week 8 Check-In</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Hi {{contact.first_name}},
+
+It&#x27;s time for your Week 8 Check-In.
+
+Please complete your check-in using the link below:
+https://form.typeform.com/to/QNEOXlcA
+
+Remember, completing your weekly check-ins is part of staying on track with your goals and is required for clients participating in the guarantee program.
+
+Let us know if you have any questions.
+Sophie Orozco Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-checkin_women-9">
+  <div class="mhead"><span class="wk">Week 9</span><span class="subj">Week 9 Check-In</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Hi {{contact.first_name}},
+
+It&#x27;s time for your Week 9 Check-In.
+
+Please complete your check-in using the link below:
+https://form.typeform.com/to/h3mMXagW
+
+Remember, completing your weekly check-ins is part of staying on track with your goals and is required for clients participating in the guarantee program.
+
+Let us know if you have any questions.
+Sophie Orozco Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  <div class="note" style="margin:0 16px 16px">The live workflow&#x27;s Week 9 email says &quot;Week 5 Check-In&quot; in the body. Corrected to &quot;Week 9 Check-In&quot; here. Fix the live workflow too.</div>
+</div><div class="mailcard" id="em-checkin_women-10">
+  <div class="mhead"><span class="wk">Week 10</span><span class="subj">Week 10 Check-In</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Hi {{contact.first_name}},
+
+It&#x27;s time for your Week 10 Check-In.
+
+Please complete your check-in using the link below:
+https://form.typeform.com/to/u2IY05g3
+
+Remember, completing your weekly check-ins is part of staying on track with your goals and is required for clients participating in the guarantee program.
+
+Let us know if you have any questions.
+Sophie Orozco Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-checkin_women-11">
+  <div class="mhead"><span class="wk">Week 11</span><span class="subj">Week 11 Check-In</span><button class="cpy" data-what="subject">copy subject</button></div>
+  <div class="mbody"><pre class="mailtxt">Hi {{contact.first_name}},
+
+It&#x27;s time for your Week 11 Check-In.
+
+Please complete your check-in using the link below:
+https://form.typeform.com/to/vJvsCisU
+
+Your feedback helps us monitor your progress and provide the support you need.
+
+Let us know if you have any questions.
+Sophie Orozco Team</pre><button class="cpy body" data-what="body">copy body</button></div>
+  
+</div><div class="mailcard" id="em-checkin_women-12"><div class="mhead"><span class="wk">Week 12</span><span class="subj">No sent copy exists yet</span></div><p class="small" style="padding:12px 16px">Nobody has reached this week in this sequence, so there is no sent email to copy. Open the live workflow, click the Week 12 step, and copy the subject and message from there.</p></div></section>
+
+<footer>
+  <span>RMM Catch-Up Workflow · Setup Plan · Updated Sept 29, 2026</span>
+  <span>Maintained by John Carlo Caintic</span>
+</footer>
+
+</div>
+
+<div class="toast" id="toast">Copied</div>
+<button class="top" id="top">↑ Top</button>
+
+<script>
+  const toast = document.getElementById('toast');
+  document.querySelectorAll('.tagbtn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const t = btn.dataset.tag;
+      try { await navigator.clipboard.writeText(t); }
+      catch (e) { const ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (err) {} document.body.removeChild(ta); }
+      btn.classList.add('copied');
+      const ic = btn.querySelector('.ic'); const old = ic.textContent; ic.textContent = 'copied ✓';
+      toast.textContent = 'Copied: ' + t; toast.classList.add('show');
+      setTimeout(() => { btn.classList.remove('copied'); ic.textContent = old; toast.classList.remove('show'); }, 1600);
+    });
+  });
+  document.querySelectorAll('.cpy').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const card = btn.closest('.mailcard');
+      const t = btn.dataset.what === 'subject' ? card.querySelector('.subj').textContent : card.querySelector('.mailtxt').textContent;
+      try { await navigator.clipboard.writeText(t); }
+      catch (e) { const ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (err) {} document.body.removeChild(ta); }
+      const old = btn.textContent; btn.textContent = 'copied ✓'; btn.classList.add('done');
+      toast.textContent = (btn.dataset.what === 'subject' ? 'Subject' : 'Body') + ' copied'; toast.classList.add('show');
+      setTimeout(() => { btn.textContent = old; btn.classList.remove('done'); toast.classList.remove('show'); }, 1600);
+    });
+  });
+  const topBtn = document.getElementById('top');
+  topBtn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+  window.addEventListener('scroll', () => topBtn.classList.toggle('show', window.scrollY > 700));
+</script>
+</body>
+</html>
